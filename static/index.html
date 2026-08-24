@@ -116,9 +116,14 @@
 </header>
 
 <main>
+  <div id="shared-banner" style="display:none" class="panel">
+    <div class="hint" style="margin-top:0" id="shared-meta"></div>
+  </div>
+
   <div class="tabs">
     <button id="tab-search" class="active">Find a paper</button>
     <button id="tab-paste">Paste paper text</button>
+    <button id="tab-upload">Upload PDF / Word</button>
   </div>
 
   <div id="pane-search" class="panel">
@@ -141,6 +146,17 @@
     </div>
   </div>
 
+  <div id="pane-upload" class="panel" style="display:none">
+    <input type="file" id="file-input" accept=".pdf,.docx"
+      style="font-family:system-ui,sans-serif;font-size:.92rem">
+    <div class="hint">Upload a paper as a PDF or Word (.docx) file, up to 25&nbsp;MB.
+      Scanned image-only PDFs can't be read — paste the text instead.</div>
+    <div id="upload-status" class="status" style="display:none"></div>
+    <div style="margin-top:.6rem">
+      <button id="analyze-upload" class="btn" disabled>Decode this file</button>
+    </div>
+  </div>
+
   <div id="paperview">
     <div class="panel">
       <div id="paper-tags"></div>
@@ -156,6 +172,14 @@
   <div id="analysis">
     <div class="status" id="analysis-status"></div>
     <div class="panel" id="analysis-body"></div>
+    <div id="sharebox" class="panel" style="display:none;margin-top:.8rem">
+      <div style="font-family:system-ui,sans-serif;font-size:.9rem;margin-bottom:.4rem">
+        <strong>Share this analysis</strong> — anyone with the link can read it:</div>
+      <div class="searchrow">
+        <input type="text" id="share-url" readonly>
+        <button id="copy-share" class="btn">Copy</button>
+      </div>
+    </div>
   </div>
 </main>
 
@@ -167,13 +191,14 @@ let currentPmid = null;
 
 // ---------- tabs ----------
 function showTab(which) {
-  $('tab-search').classList.toggle('active', which === 'search');
-  $('tab-paste').classList.toggle('active', which === 'paste');
-  $('pane-search').style.display = which === 'search' ? '' : 'none';
-  $('pane-paste').style.display = which === 'paste' ? '' : 'none';
+  for (const t of ['search', 'paste', 'upload']) {
+    $('tab-' + t).classList.toggle('active', which === t);
+    $('pane-' + t).style.display = which === t ? '' : 'none';
+  }
 }
 $('tab-search').onclick = () => showTab('search');
 $('tab-paste').onclick = () => showTab('paste');
+$('tab-upload').onclick = () => showTab('upload');
 
 // ---------- search ----------
 $('go').onclick = doSearch;
@@ -240,13 +265,48 @@ async function loadPaper(pmid) {
   }
 }
 
+// ---------- file upload ----------
+let uploaded = null; // {filename, text}
+
+$('file-input').onchange = async () => {
+  const file = $('file-input').files[0];
+  uploaded = null;
+  $('analyze-upload').disabled = true;
+  if (!file) return;
+  const st = $('upload-status');
+  st.style.display = '';
+  st.innerHTML = '<span class="spinner"></span>Reading ' + esc(file.name) + '&hellip;';
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const r = await fetch('/api/upload', {method: 'POST', body: fd});
+    if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    const data = await r.json();
+    uploaded = {filename: data.filename, text: data.text};
+    st.textContent = 'Extracted ' + data.chars.toLocaleString() + ' characters from ' +
+      data.filename + (data.truncated ? ' (very long paper — trimmed to fit)' : '') +
+      '. Ready to decode.';
+    $('analyze-upload').disabled = false;
+  } catch (e) {
+    st.innerHTML = '<div class="error">' + esc(e.message) + '</div>';
+  }
+};
+
 // ---------- analysis ----------
 $('analyze-paper').onclick = () => runAnalysis({ pmid: currentPmid });
 $('analyze-pasted').onclick = () => runAnalysis({ text: $('pasted').value });
+$('analyze-upload').onclick = () => {
+  if (uploaded) runAnalysis({
+    text: uploaded.text,
+    title: uploaded.filename,
+    source: 'uploaded file (' + uploaded.filename + ')'
+  });
+};
 
 async function runAnalysis(body) {
   $('analysis').style.display = '';
   $('analysis-body').innerHTML = '';
+  $('sharebox').style.display = 'none';
   $('analysis-status').innerHTML =
     '<span class="spinner"></span>Reading the paper like an editor-in-chief… this takes a minute for a careful review.';
   $('analysis').scrollIntoView({behavior: 'smooth'});
@@ -286,6 +346,7 @@ async function runAnalysis(body) {
           throw new Error(data.message);
         } else if (ev[1] === 'done') {
           $('analysis-status').textContent = 'Done. Remember: this is an educational breakdown, not medical advice.';
+          if (data.share_id) showShareLink(data.share_id);
         }
       }
     }
@@ -303,7 +364,54 @@ async function runAnalysis(body) {
 
 function disableButtons(v) {
   for (const id of ['analyze-paper', 'analyze-pasted', 'go']) $(id).disabled = v;
+  $('analyze-upload').disabled = v || !uploaded;
 }
+
+// ---------- sharing ----------
+function showShareLink(shareId) {
+  const url = location.origin + '/a/' + shareId;
+  $('share-url').value = url;
+  $('sharebox').style.display = '';
+}
+$('copy-share').onclick = async () => {
+  const input = $('share-url');
+  try {
+    await navigator.clipboard.writeText(input.value);
+  } catch {
+    input.select();
+    document.execCommand('copy');
+  }
+  $('copy-share').textContent = 'Copied!';
+  setTimeout(() => { $('copy-share').textContent = 'Copy'; }, 1500);
+};
+
+// ---------- shared-view bootstrap (/a/{id}) ----------
+(async function initSharedView() {
+  const m = /^\/a\/([A-Za-z0-9_-]{4,32})$/.exec(location.pathname);
+  if (!m) return;
+  $('analysis').style.display = '';
+  $('analysis-status').innerHTML = '<span class="spinner"></span>Loading shared analysis&hellip;';
+  try {
+    const r = await fetch('/api/analysis/' + m[1]);
+    if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
+    const a = await r.json();
+    const when = new Date(a.created_at * 1000).toLocaleDateString();
+    $('shared-banner').style.display = '';
+    $('shared-meta').innerHTML =
+      'Shared analysis of <strong>' + esc(a.title) + '</strong> · source: ' +
+      esc(a.source) + ' · decoded ' + esc(when) +
+      (a.pmid ? ' · <a href="https://pubmed.ncbi.nlm.nih.gov/' + esc(a.pmid) +
+        '/" target="_blank" rel="noopener">view on PubMed</a>' : '');
+    $('analysis-body').innerHTML = renderMarkdown(a.markdown);
+    $('analysis-status').textContent =
+      'This is a saved analysis. It is an educational breakdown, not medical advice.';
+    showShareLink(a.id);
+    $('analysis').scrollIntoView({behavior: 'smooth'});
+  } catch (e) {
+    $('analysis-status').textContent = '';
+    $('analysis-body').innerHTML = '<div class="error">' + esc(e.message) + '</div>';
+  }
+})();
 
 // ---------- tiny markdown renderer (headings, lists, bold/italic, quotes) ----------
 function esc(s) {

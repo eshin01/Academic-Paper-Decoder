@@ -8,12 +8,12 @@ from __future__ import annotations
 from pathlib import Path
 
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import analyzer, pubmed
+from . import analyzer, extract, pubmed, storage
 
 app = FastAPI(title="Academic Paper Decoder")
 
@@ -48,9 +48,30 @@ def api_paper(pmid: str):
         raise HTTPException(502, f"PubMed is unreachable: {e}") from e
 
 
+@app.post("/api/upload")
+def api_upload(file: UploadFile = File(...)):
+    """Extract analyzable text from an uploaded .pdf or .docx paper."""
+    data = file.file.read(extract.MAX_UPLOAD_BYTES + 1)
+    if not data:
+        raise HTTPException(400, "Empty file")
+    try:
+        text = extract.extract_text(file.filename or "", data)
+    except extract.ExtractionError as e:
+        raise HTTPException(422, str(e)) from e
+    truncated = len(text) > MAX_PASTED_CHARS
+    return {
+        "filename": file.filename,
+        "chars": len(text),
+        "truncated": truncated,
+        "text": text[:MAX_PASTED_CHARS],
+    }
+
+
 class AnalyzeRequest(BaseModel):
     pmid: str | None = None
     text: str | None = None
+    title: str | None = None
+    source: str | None = None
 
 
 @app.post("/api/analyze")
@@ -86,14 +107,35 @@ def api_analyze(req: AnalyzeRequest):
         raise HTTPException(400, "Provide either a pmid or pasted text")
 
     return StreamingResponse(
-        analyzer.stream_analysis(paper, pasted),
+        analyzer.stream_analysis(
+            paper,
+            pasted,
+            title=req.title,
+            source=req.source or "pasted text",
+        ),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
 
+@app.get("/api/analysis/{share_id}")
+def api_analysis(share_id: str):
+    if not share_id.replace("-", "").replace("_", "").isalnum() or len(share_id) > 32:
+        raise HTTPException(400, "Invalid share id")
+    result = storage.get_analysis(share_id)
+    if result is None:
+        raise HTTPException(404, "This shared analysis was not found.")
+    return result
+
+
 @app.get("/")
 def index():
+    return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/a/{share_id}")
+def share_page(share_id: str):
+    # The SPA reads the id from the URL and fetches /api/analysis/{id}.
     return FileResponse(STATIC_DIR / "index.html")
 
 

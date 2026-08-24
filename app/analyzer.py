@@ -8,6 +8,7 @@ from collections.abc import Iterator
 
 import anthropic
 
+from . import storage
 from .prompts import SYSTEM_PROMPT, build_user_message
 
 MODEL = os.environ.get("DECODER_MODEL", "claude-opus-5")
@@ -26,9 +27,15 @@ def _sse(event: str, data: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(data)}\n\n"
 
 
-def stream_analysis(paper: dict | None, pasted_text: str | None) -> Iterator[str]:
-    """Yield SSE-formatted chunks of the analysis."""
+def stream_analysis(
+    paper: dict | None,
+    pasted_text: str | None,
+    title: str | None = None,
+    source: str = "pasted text",
+) -> Iterator[str]:
+    """Yield SSE-formatted chunks of the analysis; persist it for sharing on success."""
     user_message = build_user_message(paper, pasted_text)
+    collected: list[str] = []
 
     try:
         client = get_client()
@@ -52,6 +59,7 @@ def stream_analysis(paper: dict | None, pasted_text: str | None) -> Iterator[str
             messages=[{"role": "user", "content": user_message}],
         ) as stream:
             for text in stream.text_stream:
+                collected.append(text)
                 yield _sse("delta", {"text": text})
             final = stream.get_final_message()
 
@@ -64,7 +72,30 @@ def stream_analysis(paper: dict | None, pasted_text: str | None) -> Iterator[str
                 },
             )
             return
-        yield _sse("done", {"output_tokens": final.usage.output_tokens})
+
+        markdown = "".join(collected)
+        share_id = None
+        if markdown.strip():
+            if paper:
+                save_title = paper.get("title") or title or "Untitled paper"
+                save_source = f"PubMed (PMID {paper.get('pmid')})"
+            else:
+                save_title = title or (pasted_text or "").strip()[:120] or "Pasted text"
+                save_source = source
+            try:
+                share_id = storage.save_analysis(
+                    title=save_title,
+                    source=save_source,
+                    markdown=markdown,
+                    pmid=paper.get("pmid") if paper else None,
+                )
+            except Exception:
+                # Sharing is a convenience — a storage hiccup shouldn't fail the analysis.
+                share_id = None
+        yield _sse(
+            "done",
+            {"output_tokens": final.usage.output_tokens, "share_id": share_id},
+        )
 
     except (anthropic.AuthenticationError, TypeError):
         # The SDK raises TypeError ("Could not resolve authentication method")

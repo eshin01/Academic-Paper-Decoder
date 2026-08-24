@@ -7,10 +7,14 @@ Too many headlines and social posts cite studies without knowing the study
 type, the sample size, the power, or the limitations. This tool lets anyone:
 
 1. **Find a paper** by title, topic, PMID, DOI, or PubMed link (searched live
-   against PubMed), or paste paper text directly.
+   against PubMed) — or **upload a PDF or Word (.docx) file**, or paste paper
+   text directly.
 2. **Read it decoded** — the app pulls the abstract (and the full text when
    the paper is open access on PubMed Central) and analyzes it the way an
    editor-in-chief at a high-prestige journal would.
+3. **Share it** — every finished analysis gets a permanent link (`/a/<id>`)
+   anyone can open, so you can answer a group-chat claim with the actual
+   breakdown of the study.
 
 Every analysis follows the same seven-part structure:
 
@@ -49,12 +53,20 @@ need no key. An optional `NCBI_API_KEY` raises the PubMed rate limit. See
 ## How it works
 
 ```
-static/index.html      single-page UI: search → pick paper → streamed analysis
-app/main.py            FastAPI routes (/api/search, /api/paper/{pmid}, /api/analyze)
+static/index.html      single-page UI: search / paste / upload → streamed analysis
+                       → share link; also renders shared analyses at /a/{id}
+app/main.py            FastAPI routes (/api/search, /api/paper/{pmid}, /api/upload,
+                       /api/analyze, /api/analysis/{id}, /a/{id})
 app/pubmed.py          NCBI E-utilities client; PMC open-access full-text fetch
+app/extract.py         text extraction for uploaded files (pypdf for PDF,
+                       stdlib zip/XML for .docx); 25 MB cap, friendly errors
+                       for scanned/password-protected files
+app/storage.py         SQLite store for finished analyses (data/analyses.db,
+                       override with DECODER_DB) — powers shareable links
 app/prompts.py         the "editor-in-chief" system prompt + paper packaging
 app/analyzer.py        Claude call (claude-opus-5, streaming, adaptive thinking),
-                       streamed to the browser as Server-Sent Events
+                       streamed to the browser as Server-Sent Events; saves the
+                       finished markdown and returns the share id
 ```
 
 Analysis notes:
