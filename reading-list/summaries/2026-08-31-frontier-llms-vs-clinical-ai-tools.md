@@ -2,8 +2,11 @@
 
 - **Authors:** Krithik Vishwanath, Anton Alyakin, … Daniel Alexander Alber, Eric Karl Oermann (NYU Langone and collaborators)
 - **Venue:** Nature Medicine, Brief Communication, July 2026 (32:2405–2409)
-- **DOI:** 10.1038/s41591-026-04431-5
-- **Decoded:** 2026-08-31 (from full-text PDF)
+- **DOI link:** https://doi.org/10.1038/s41591-026-04431-5 (as printed in the paper)
+- **Publisher page:** https://www.nature.com/articles/s41591-026-04431-5
+- **PubMed link:** not verified at decode time (omitted rather than guessed)
+- **Basis:** FULL TEXT — analyzed from the complete published open-access PDF (main text, Methods, and Extended Data), user-uploaded
+- **Decoded:** 2026-08-31
 
 ---
 
