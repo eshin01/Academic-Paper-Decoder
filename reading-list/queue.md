@@ -6,7 +6,7 @@ major new medical-AI paper published that week deserves priority (in which
 case it jumps the queue). Check off entries as they are decoded and added to
 `index.md`.
 
-- [ ] Gulshan V, et al. Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. JAMA, 2016. (The paper that kicked off modern deep learning in medical imaging.)
+- [x] Gulshan V, et al. Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. JAMA, 2016. (The paper that kicked off modern deep learning in medical imaging.) — decoded 2026-08-31
 - [ ] Esteva A, et al. Dermatologist-level classification of skin cancer with deep neural networks. Nature, 2017.
 - [ ] Obermeyer Z, et al. Dissecting racial bias in an algorithm used to manage the health of populations. Science, 2019. (Landmark on algorithmic bias in healthcare.)
 - [ ] Rajkomar A, et al. Scalable and accurate deep learning with electronic health records. npj Digital Medicine, 2018.
