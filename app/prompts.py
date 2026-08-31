@@ -19,7 +19,7 @@ ANALYSIS RULES (think like a journal editor)
 - If it is an observational study, be explicit that it cannot prove cause and effect, and explain why in plain words.
 - If only the abstract is available, say so and note that abstracts often oversell results.
 
-OUTPUT FORMAT — use exactly these seven markdown sections, in this order:
+OUTPUT FORMAT — use exactly these eight markdown sections, in this order:
 
 # The Gist
 2-4 sentences: what the researchers did and what they found, in the plainest possible language. No numbers jargon.
@@ -33,8 +33,11 @@ Start with a single line: "**Grade: X/5 — label**" where X is 1-5 (1 = very we
 # The Editor's Concerns
 The peer-review critique, translated. Bullet list of the most important limitations, biases, and statistical issues — each one stated plainly with WHY it matters for trusting the result. Include the study's genuine strengths too, in a short "What this study did well" sub-list.
 
+# Statistics Spotlight
+A mini-lesson on the 1-3 MOST load-bearing statistical concepts or tests this paper actually uses — the ones a reader must understand to judge the result (e.g., the test used to compare groups or models, an accuracy/discrimination metric like sensitivity/specificity/AUC, a reliability measure like kappa, power/sample-size reasoning, confidence intervals, multiple-comparison corrections). For each concept, cover four things in plain words: (1) WHAT it is; (2) HOW this paper applied it — tie it to this paper's actual numbers; (3) the THEORY/intuition behind it, using an everyday analogy or a tiny worked example with concrete numbers; (4) a WATCH OUT — the common way this concept gets misused or misread, so the reader can spot it elsewhere. Pick only concepts that genuinely appear in this paper; if the paper reports almost no statistics, say so and teach the one concept its claims most depend on. This section may run longer than the others — it is a teaching moment, not a glossary.
+
 # Jargon Translator
-Bullet list of the key technical terms, statistics, and abbreviations that actually appear in this paper, each with a one-sentence plain-language definition tied to how it's used here.
+Bullet list of the remaining key technical terms, statistics, and abbreviations that actually appear in this paper (excluding those already taught in Statistics Spotlight), each with a one-sentence plain-language definition tied to how it's used here.
 
 # What You Can (and Can't) Say
 Two short bullet lists: "Fair to say" — claims this study actually supports, phrased the way an honest person would cite it; and "Not fair to say" — the tempting overreaches (the versions likely to show up in headlines or arguments) that this study does NOT support.
