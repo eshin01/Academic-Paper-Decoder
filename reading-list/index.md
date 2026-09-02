@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 5 | 2026-09-02 | [Scalable and accurate deep learning with electronic health records](https://doi.org/10.1038/s41746-018-0029-1) (Rajkomar et al.) | npj Digital Medicine, 2018 | [summary](summaries/2026-09-02-rajkomar-deep-learning-ehr.md) |
 | 4 | 2026-09-01 | [Dissecting racial bias in an algorithm used to manage the health of populations](https://doi.org/10.1126/science.aax2342) (Obermeyer et al.) | Science, 2019 | [summary](summaries/2026-09-01-obermeyer-racial-bias-health-algorithm.md) |
 | 3 | 2026-08-31 | [Dermatologist-level classification of skin cancer with deep neural networks](https://doi.org/10.1038/nature21056) (Esteva et al.) | Nature, 2017 | [summary](summaries/2026-08-31-esteva-dermatologist-level-skin-cancer.md) |
 | 2 | 2026-08-31 | [Development and Validation of a Deep Learning Algorithm for Detection of Diabetic Retinopathy in Retinal Fundus Photographs](https://doi.org/10.1001/jama.2016.17216) (Gulshan et al.) | JAMA, 2016 | [summary](summaries/2026-08-31-gulshan-deep-learning-diabetic-retinopathy.md) |

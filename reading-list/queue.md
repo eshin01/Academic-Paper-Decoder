@@ -9,7 +9,7 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [x] Gulshan V, et al. Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. JAMA, 2016. (The paper that kicked off modern deep learning in medical imaging.) — decoded 2026-08-31
 - [x] Esteva A, et al. Dermatologist-level classification of skin cancer with deep neural networks. Nature, 2017. — decoded 2026-08-31
 - [x] Obermeyer Z, et al. Dissecting racial bias in an algorithm used to manage the health of populations. Science, 2019. (Landmark on algorithmic bias in healthcare.) — decoded 2026-09-01
-- [ ] Rajkomar A, et al. Scalable and accurate deep learning with electronic health records. npj Digital Medicine, 2018.
+- [x] Rajkomar A, et al. Scalable and accurate deep learning with electronic health records. npj Digital Medicine, 2018. — decoded 2026-09-02
 - [ ] Hannun AY, et al. Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network. Nature Medicine, 2019.
 - [ ] Komorowski M, et al. The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care. Nature Medicine, 2018.
 - [ ] Ardila D, et al. End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography. Nature Medicine, 2019.
