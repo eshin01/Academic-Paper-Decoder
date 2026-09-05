@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 8 | 2026-09-05 | [End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography](https://doi.org/10.1038/s41591-019-0447-x) (Ardila et al.) | Nature Medicine, 2019 | [summary](summaries/2026-09-05-ardila-lung-cancer-screening-ct.md) |
 | 7 | 2026-09-04 | [The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care](https://doi.org/10.1038/s41591-018-0213-5) (Komorowski et al.) | Nature Medicine, 2018 | [summary](summaries/2026-09-04-komorowski-ai-clinician-sepsis.md) |
 | 6 | 2026-09-03 | [Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network](https://doi.org/10.1038/s41591-018-0268-3) (Hannun et al.) | Nature Medicine, 2019 | [summary](summaries/2026-09-03-hannun-cardiologist-level-arrhythmia.md) |
 | 5 | 2026-09-02 | [Scalable and accurate deep learning with electronic health records](https://doi.org/10.1038/s41746-018-0029-1) (Rajkomar et al.) | npj Digital Medicine, 2018 | [summary](summaries/2026-09-02-rajkomar-deep-learning-ehr.md) |

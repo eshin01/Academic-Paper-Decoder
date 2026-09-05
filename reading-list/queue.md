@@ -12,7 +12,7 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [x] Rajkomar A, et al. Scalable and accurate deep learning with electronic health records. npj Digital Medicine, 2018. — decoded 2026-09-02
 - [x] Hannun AY, et al. Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network. Nature Medicine, 2019. — decoded 2026-09-03
 - [x] Komorowski M, et al. The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care. Nature Medicine, 2018. — decoded 2026-09-04
-- [ ] Ardila D, et al. End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography. Nature Medicine, 2019.
+- [x] Ardila D, et al. End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography. Nature Medicine, 2019. — decoded 2026-09-05
 - [ ] Campanella G, et al. Clinical-grade computational pathology using weakly supervised deep learning on whole slide images. Nature Medicine, 2019.
 - [ ] McKinney SM, et al. International evaluation of an AI system for breast cancer screening. Nature, 2020. (Also famous for the reproducibility debate it triggered.)
 - [ ] Liu X, et al. A comparison of deep learning performance against health-care professionals in detecting diseases from medical imaging: a systematic review and meta-analysis. Lancet Digital Health, 2019.
