@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 10 | 2026-09-07 | [International evaluation of an AI system for breast cancer screening](https://doi.org/10.1038/s41586-019-1799-6) (McKinney et al.) | Nature, 2020 | [summary](summaries/2026-09-07-mckinney-breast-cancer-screening-ai.md) |
 | 9 | 2026-09-06 | [Clinical-grade computational pathology using weakly supervised deep learning on whole slide images](https://doi.org/10.1038/s41591-019-0508-1) (Campanella et al.) | Nature Medicine, 2019 | [summary](summaries/2026-09-06-campanella-computational-pathology.md) |
 | 8 | 2026-09-05 | [End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography](https://doi.org/10.1038/s41591-019-0447-x) (Ardila et al.) | Nature Medicine, 2019 | [summary](summaries/2026-09-05-ardila-lung-cancer-screening-ct.md) |
 | 7 | 2026-09-04 | [The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care](https://doi.org/10.1038/s41591-018-0213-5) (Komorowski et al.) | Nature Medicine, 2018 | [summary](summaries/2026-09-04-komorowski-ai-clinician-sepsis.md) |

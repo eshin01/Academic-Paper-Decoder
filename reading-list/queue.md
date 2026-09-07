@@ -14,7 +14,7 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [x] Komorowski M, et al. The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care. Nature Medicine, 2018. — decoded 2026-09-04
 - [x] Ardila D, et al. End-to-end lung cancer screening with three-dimensional deep learning on low-dose chest computed tomography. Nature Medicine, 2019. — decoded 2026-09-05
 - [x] Campanella G, et al. Clinical-grade computational pathology using weakly supervised deep learning on whole slide images. Nature Medicine, 2019. — decoded 2026-09-06
-- [ ] McKinney SM, et al. International evaluation of an AI system for breast cancer screening. Nature, 2020. (Also famous for the reproducibility debate it triggered.)
+- [x] McKinney SM, et al. International evaluation of an AI system for breast cancer screening. Nature, 2020. (Also famous for the reproducibility debate it triggered.) — decoded 2026-09-07
 - [ ] Liu X, et al. A comparison of deep learning performance against health-care professionals in detecting diseases from medical imaging: a systematic review and meta-analysis. Lancet Digital Health, 2019.
 - [ ] Nagendran M, et al. Artificial intelligence versus clinicians: systematic review of design, reporting standards, and claims of deep learning studies. BMJ, 2020.
 - [ ] Wong A, et al. External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients. JAMA Internal Medicine, 2021. (The Epic sepsis model reality check.)
