@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 12 | 2026-09-09 | [Artificial intelligence versus clinicians: systematic review of design, reporting standards, and claims of deep learning studies](https://doi.org/10.1136/bmj.m689) (Nagendran et al.) | BMJ, 2020 | [summary](summaries/2026-09-09-nagendran-ai-versus-clinicians-bmj-review.md) |
 | 11 | 2026-09-08 | [A comparison of deep learning performance against health-care professionals in detecting diseases from medical imaging: a systematic review and meta-analysis](https://doi.org/10.1016/S2589-7500(19)30123-2) (Liu et al.) | Lancet Digital Health, 2019 | [summary](summaries/2026-09-08-liu-deep-learning-vs-clinicians-meta-analysis.md) |
 | 10 | 2026-09-07 | [International evaluation of an AI system for breast cancer screening](https://doi.org/10.1038/s41586-019-1799-6) (McKinney et al.) | Nature, 2020 | [summary](summaries/2026-09-07-mckinney-breast-cancer-screening-ai.md) |
 | 9 | 2026-09-06 | [Clinical-grade computational pathology using weakly supervised deep learning on whole slide images](https://doi.org/10.1038/s41591-019-0508-1) (Campanella et al.) | Nature Medicine, 2019 | [summary](summaries/2026-09-06-campanella-computational-pathology.md) |
