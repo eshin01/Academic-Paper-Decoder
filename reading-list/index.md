@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 13 | 2026-09-10 | [External Validation of a Widely Implemented Proprietary Sepsis Prediction Model in Hospitalized Patients](https://doi.org/10.1001/jamainternmed.2021.2626) (Wong et al.) | JAMA Internal Medicine, 2021 | [summary](summaries/2026-09-10-wong-epic-sepsis-model-external-validation.md) |
 | 12 | 2026-09-09 | [Artificial intelligence versus clinicians: systematic review of design, reporting standards, and claims of deep learning studies](https://doi.org/10.1136/bmj.m689) (Nagendran et al.) | BMJ, 2020 | [summary](summaries/2026-09-09-nagendran-ai-versus-clinicians-bmj-review.md) |
 | 11 | 2026-09-08 | [A comparison of deep learning performance against health-care professionals in detecting diseases from medical imaging: a systematic review and meta-analysis](https://doi.org/10.1016/S2589-7500(19)30123-2) (Liu et al.) | Lancet Digital Health, 2019 | [summary](summaries/2026-09-08-liu-deep-learning-vs-clinicians-meta-analysis.md) |
 | 10 | 2026-09-07 | [International evaluation of an AI system for breast cancer screening](https://doi.org/10.1038/s41586-019-1799-6) (McKinney et al.) | Nature, 2020 | [summary](summaries/2026-09-07-mckinney-breast-cancer-screening-ai.md) |
