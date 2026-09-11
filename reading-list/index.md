@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 14 | 2026-09-11 | [Adversarial attacks on medical machine learning](https://doi.org/10.1126/science.aaw4399) (Finlayson et al.) — *Policy Forum, not a research study* | Science, 2019 | [summary](summaries/2026-09-11-finlayson-adversarial-attacks-medical-ml.md) |
 | 13 | 2026-09-10 | [External Validation of a Widely Implemented Proprietary Sepsis Prediction Model in Hospitalized Patients](https://doi.org/10.1001/jamainternmed.2021.2626) (Wong et al.) | JAMA Internal Medicine, 2021 | [summary](summaries/2026-09-10-wong-epic-sepsis-model-external-validation.md) |
 | 12 | 2026-09-09 | [Artificial intelligence versus clinicians: systematic review of design, reporting standards, and claims of deep learning studies](https://doi.org/10.1136/bmj.m689) (Nagendran et al.) | BMJ, 2020 | [summary](summaries/2026-09-09-nagendran-ai-versus-clinicians-bmj-review.md) |
 | 11 | 2026-09-08 | [A comparison of deep learning performance against health-care professionals in detecting diseases from medical imaging: a systematic review and meta-analysis](https://doi.org/10.1016/S2589-7500(19)30123-2) (Liu et al.) | Lancet Digital Health, 2019 | [summary](summaries/2026-09-08-liu-deep-learning-vs-clinicians-meta-analysis.md) |
