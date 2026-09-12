@@ -19,7 +19,7 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [x] Nagendran M, et al. Artificial intelligence versus clinicians: systematic review of design, reporting standards, and claims of deep learning studies. BMJ, 2020. — decoded 2026-09-09
 - [x] Wong A, et al. External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients. JAMA Internal Medicine, 2021. (The Epic sepsis model reality check.) — decoded 2026-09-10
 - [x] Finlayson SG, et al. Adversarial attacks on medical machine learning. Science, 2019. — decoded 2026-09-11
-- [ ] Jumper J, et al. Highly accurate protein structure prediction with AlphaFold. Nature, 2021.
+- [x] Jumper J, et al. Highly accurate protein structure prediction with AlphaFold. Nature, 2021. — decoded 2026-09-12
 - [ ] Poplin R, et al. Prediction of cardiovascular risk factors from retinal fundus photographs via deep learning. Nature Biomedical Engineering, 2018.
 - [ ] Topol EJ. High-performance medicine: the convergence of human and artificial intelligence. Nature Medicine, 2019. (The definitive field review.)
 - [ ] Beam AL, Kohane IS. Big data and machine learning in health care. JAMA, 2018.
