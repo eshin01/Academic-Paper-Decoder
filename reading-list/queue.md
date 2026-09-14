@@ -21,9 +21,9 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [x] Finlayson SG, et al. Adversarial attacks on medical machine learning. Science, 2019. — decoded 2026-09-11
 - [x] Jumper J, et al. Highly accurate protein structure prediction with AlphaFold. Nature, 2021. — decoded 2026-09-12
 - [x] Poplin R, et al. Prediction of cardiovascular risk factors from retinal fundus photographs via deep learning. Nature Biomedical Engineering, 2018. — decoded 2026-09-13
-- [ ] Topol EJ. High-performance medicine: the convergence of human and artificial intelligence. Nature Medicine, 2019. (The definitive field review.)
+- [ ] Topol EJ. High-performance medicine: the convergence of human and artificial intelligence. Nature Medicine, 2019. (The definitive field review.) — *deferred 2026-09-14: full text unreachable (no PMC record; publisher and third-party hosts blocked by network policy; full-text service at monthly limit until 2026-10-01). Abstract-only was judged not worth decoding for a narrative review. Retry with a PDF or after the service resets.*
 - [ ] Beam AL, Kohane IS. Big data and machine learning in health care. JAMA, 2018.
-- [ ] Singhal K, et al. Large language models encode clinical knowledge. Nature, 2023. (Med-PaLM — the arrival of LLMs in medicine.)
+- [x] Singhal K, et al. Large language models encode clinical knowledge. Nature, 2023. (Med-PaLM — the arrival of LLMs in medicine.) — decoded 2026-09-14
 - [ ] Moor M, et al. Foundation models for generalist medical artificial intelligence. Nature, 2023.
 - [ ] Wu E, et al. How medical AI devices are evaluated: limitations and recommendations from an analysis of FDA-approved devices. Nature Medicine, 2021.
 - [ ] Alber DA, et al. Medical large language models are vulnerable to data-poisoning attacks. Nature Medicine, 2025.
