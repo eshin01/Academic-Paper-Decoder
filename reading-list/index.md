@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 19 | 2026-09-16 | [Health system-scale language models are all-purpose prediction engines](https://doi.org/10.1038/s41586-023-06160-y) (Jiang et al.) | Nature, 2023 | [summary](summaries/2026-09-16-jiang-nyutron-health-system-language-model.md) |
 | 18 | 2026-09-15 | [Medical large language models are vulnerable to data-poisoning attacks](https://doi.org/10.1038/s41591-024-03445-1) (Alber et al.) | Nature Medicine, 2025 | [summary](summaries/2026-09-15-alber-medical-llm-data-poisoning.md) |
 | 17 | 2026-09-14 | [Large language models encode clinical knowledge](https://doi.org/10.1038/s41586-023-06291-2) (Singhal et al.) | Nature, 2023 | [summary](summaries/2026-09-14-singhal-med-palm-llm-clinical-knowledge.md) |
 | 16 | 2026-09-13 | [Prediction of cardiovascular risk factors from retinal fundus photographs via deep learning](https://doi.org/10.1038/s41551-018-0195-0) (Poplin et al.) | Nature Biomedical Engineering, 2018 | [summary](summaries/2026-09-13-poplin-retinal-cardiovascular-risk.md) |

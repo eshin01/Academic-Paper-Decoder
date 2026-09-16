@@ -27,4 +27,17 @@ case it jumps the queue). Check off entries as they are decoded and added to
 - [ ] Moor M, et al. Foundation models for generalist medical artificial intelligence. Nature, 2023. — *deferred 2026-09-15: full text unreachable (no PMC record; publisher and third-party hosts blocked by network policy; full-text service at monthly limit until 2026-10-01), and this is a short commentary/review piece, so abstract-only was judged not worth decoding. Retry with a PDF or after the service resets.*
 - [ ] Wu E, et al. How medical AI devices are evaluated: limitations and recommendations from an analysis of FDA approvals. Nature Medicine, 2021. — *deferred 2026-09-15: full text unreachable (no PMC record; publisher and third-party hosts blocked by network policy; full-text service at monthly limit until 2026-10-01), and this is a short commentary/review piece, so abstract-only was judged not worth decoding. Retry with a PDF or after the service resets.*
 - [x] Alber DA, et al. Medical large language models are vulnerable to data-poisoning attacks. Nature Medicine, 2025. — decoded 2026-09-15
-- [ ] Jiang LY, et al. Health system-scale language models are all-purpose prediction engines. Nature, 2023. (Open-access full text available: PMC10338337.)
+- [x] Jiang LY, et al. Health system-scale language models are all-purpose prediction engines. Nature, 2023. — decoded 2026-09-16
+
+## Queue exhausted — needs restocking
+
+As of 2026-09-16 every queue entry has been decoded except the four deferred
+above, whose full text is not reachable from this environment (no PubMed
+Central record, publisher and third-party hosts blocked, and the paywalled
+full-text service at its monthly limit until 2026-10-01). All four are short
+commentary or review pieces, so an abstract-only decode would leave the
+Statistics Spotlight with no material.
+
+To keep the daily run going, either add new entries below, or supply a PDF for
+one of the deferred four. When picking replacements, prefer papers with an
+open-access copy in PubMed Central.
