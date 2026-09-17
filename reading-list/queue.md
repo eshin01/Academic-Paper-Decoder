@@ -41,3 +41,18 @@ Statistics Spotlight with no material.
 To keep the daily run going, either add new entries below, or supply a PDF for
 one of the deferred four. When picking replacements, prefer papers with an
 open-access copy in PubMed Central.
+
+## Restocked 2026-09-17
+
+Identifiers below verified against the live PubMed/NLM record.
+
+Open-access full text confirmed, decodable now:
+
+- [ ] Zech JR, et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLOS Medicine, 2018. (PMID 30399157, doi 10.1371/journal.pmed.1002683, PMC6219764. The paper showing models learn the hospital, not the disease.)
+- [ ] Seyyed-Kalantari L, et al. Underdiagnosis bias of artificial intelligence algorithms applied to chest radiographs in under-served patient populations. Nature Medicine, 2021. (PMID 34893776, doi 10.1038/s41591-021-01595-0, PMC8674135. Pairs with Obermeyer as the imaging counterpart on algorithmic bias.)
+
+On theme but not yet reachable — no PubMed Central copy and the publisher domain
+is blocked here. Retry later, or supply a PDF:
+
+- [ ] Huang HM, et al. Prediction models for in-hospital delirium using routinely collected electronic health record data: systematic review. JMIR Medical Informatics, 2026. (PMID 42748492, doi 10.2196/91618. Appraises 29 models with PROBAST and TRIPOD.)
+- [ ] Ahmed A, et al. Trust in generative AI for health information consumption and the effect of learned dependency: randomized controlled experimental study. Journal of Medical Internet Research, 2026. (PMID 42747973, doi 10.2196/98326. Two randomized experiments on whether habitual AI reliance degrades people's ability to spot errors.)
