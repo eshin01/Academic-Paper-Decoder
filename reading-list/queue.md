@@ -48,7 +48,7 @@ Identifiers below verified against the live PubMed/NLM record.
 
 Open-access full text confirmed, decodable now:
 
-- [ ] Zech JR, et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLOS Medicine, 2018. (PMID 30399157, doi 10.1371/journal.pmed.1002683, PMC6219764. The paper showing models learn the hospital, not the disease.)
+- [x] Zech JR, et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLOS Medicine, 2018. (PMID 30399157, doi 10.1371/journal.pmed.1002683, PMC6219764.) — decoded 2026-09-18
 - [ ] Seyyed-Kalantari L, et al. Underdiagnosis bias of artificial intelligence algorithms applied to chest radiographs in under-served patient populations. Nature Medicine, 2021. (PMID 34893776, doi 10.1038/s41591-021-01595-0, PMC8674135. Pairs with Obermeyer as the imaging counterpart on algorithmic bias.)
 
 On theme but not yet reachable — no PubMed Central copy and the publisher domain
