@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 22 | 2026-09-19 | [Underdiagnosis bias of artificial intelligence algorithms applied to chest radiographs in under-served patient populations](https://doi.org/10.1038/s41591-021-01595-0) (Seyyed-Kalantari et al.) | Nature Medicine, 2021 | [summary](summaries/2026-09-19-seyyed-kalantari-underdiagnosis-bias-chest-xray.md) |
 | 21 | 2026-09-18 | [Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs](https://doi.org/10.1371/journal.pmed.1002683) (Zech et al.) | PLOS Medicine, 2018 | [summary](summaries/2026-09-18-zech-cnn-generalization-chest-radiographs.md) |
 | 20 | 2026-09-17 | [Association of AI-derived abdominal organ volumetry with postoperative outcomes in clear cell renal cell carcinoma](https://doi.org/10.1080/07853890.2026.2730502) (Lou et al.) | Annals of Medicine, 2026 | [summary](summaries/2026-09-17-lou-ai-organ-volumetry-renal-cancer.md) |
 | 19 | 2026-09-16 | [Health system-scale language models are all-purpose prediction engines](https://doi.org/10.1038/s41586-023-06160-y) (Jiang et al.) | Nature, 2023 | [summary](summaries/2026-09-16-jiang-nyutron-health-system-language-model.md) |
