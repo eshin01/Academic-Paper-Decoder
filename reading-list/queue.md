@@ -51,11 +51,11 @@ Open-access full text confirmed, decodable now:
 - [x] Zech JR, et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLOS Medicine, 2018. (PMID 30399157, doi 10.1371/journal.pmed.1002683, PMC6219764.) — decoded 2026-09-18
 - [x] Seyyed-Kalantari L, et al. Underdiagnosis bias of artificial intelligence algorithms applied to chest radiographs in under-served patient populations. Nature Medicine, 2021. (PMID 34893776, doi 10.1038/s41591-021-01595-0, PMC8674135.) — decoded 2026-09-19
 
-On theme but not yet reachable — no PubMed Central copy and the publisher domain
-is blocked here. Retry later, or supply a PDF:
+Both 2026 JMIR entries below were queued as unreachable on 2026-09-17; PubMed
+Central copies appeared by 2026-09-20, so both are decodable:
 
-- [ ] Huang HM, et al. Prediction models for in-hospital delirium using routinely collected electronic health record data: systematic review. JMIR Medical Informatics, 2026. (PMID 42748492, doi 10.2196/91618. Appraises 29 models with PROBAST and TRIPOD.)
-- [ ] Ahmed A, et al. Trust in generative AI for health information consumption and the effect of learned dependency: randomized controlled experimental study. Journal of Medical Internet Research, 2026. (PMID 42747973, doi 10.2196/98326. Two randomized experiments on whether habitual AI reliance degrades people's ability to spot errors.)
+- [x] Huang HM, et al. Prediction models for in-hospital delirium using routinely collected electronic health record data: systematic review. JMIR Medical Informatics, 2026. (PMID 42748492, doi 10.2196/91618, PMC13581283.) — decoded 2026-09-20
+- [ ] Ahmed A, et al. Trust in generative AI for health information consumption and the effect of learned dependency: randomized controlled experimental study. Journal of Medical Internet Research, 2026. (PMID 42747973, doi 10.2196/98326, PMC13580606 — open-access copy now available, decodable.) Two randomized experiments on whether habitual AI reliance degrades people's ability to spot errors.
 
 ## Restocking needed again after 2026-09-19
 
