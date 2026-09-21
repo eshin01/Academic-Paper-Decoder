@@ -55,7 +55,7 @@ Both 2026 JMIR entries below were queued as unreachable on 2026-09-17; PubMed
 Central copies appeared by 2026-09-20, so both are decodable:
 
 - [x] Huang HM, et al. Prediction models for in-hospital delirium using routinely collected electronic health record data: systematic review. JMIR Medical Informatics, 2026. (PMID 42748492, doi 10.2196/91618, PMC13581283.) — decoded 2026-09-20
-- [ ] Ahmed A, et al. Trust in generative AI for health information consumption and the effect of learned dependency: randomized controlled experimental study. Journal of Medical Internet Research, 2026. (PMID 42747973, doi 10.2196/98326, PMC13580606 — open-access copy now available, decodable.) Two randomized experiments on whether habitual AI reliance degrades people's ability to spot errors.
+- [x] Ahmed A, et al. Trust in generative AI for health information consumption and the effect of learned dependency: randomized controlled experimental study. Journal of Medical Internet Research, 2026. (PMID 42747973, doi 10.2196/98326, PMC13580606.) — decoded 2026-09-21
 
 ## Restocking needed again after 2026-09-19
 
@@ -64,3 +64,16 @@ remains is the four deferred entries plus the two 2026 JMIR papers, none of
 which can be read in full from this environment today. Tomorrow's run will
 fall back to scanning the past week unless new entries are added or a PDF is
 supplied.
+
+## Restocking needed again after 2026-09-21
+
+Every queue entry with reachable full text has now been decoded. What remains
+is the four deferred entries from 2026-09-14/15 (Topol 2019, Beam and Kohane
+2018, Moor 2023, Wu 2021), none of which has a PubMed Central copy, all of
+which are short commentary or review pieces. Tomorrow's run falls back to
+scanning the past week unless new entries are added or a PDF is supplied.
+
+Worth noting: the two 2026 JMIR entries queued on 09-17 as unreachable became
+decodable within three days once PubMed Central copies appeared. Recent papers
+without a PMC record on the day they are queued are often worth re-checking
+rather than abandoning.
