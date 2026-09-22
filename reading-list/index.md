@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 25 | 2026-09-22 | [Automated three-dimensional radiomic body composition analysis enhances survival prediction in resectable non-small cell lung cancer](https://doi.org/10.1186/s41747-026-00802-2) (Huang et al.) | European Radiology Experimental, 2026 | [summary](summaries/2026-09-22-huang-body-composition-radiomics-nsclc.md) |
 | 24 | 2026-09-21 | [Trust in Generative AI for Health Information Consumption and the Effect of Learned Dependency](https://doi.org/10.2196/98326) (Ahmed et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-21-ahmed-trust-genai-learned-dependency.md) |
 | 23 | 2026-09-20 | [Prediction Models for In-Hospital Delirium Using Routinely Collected Electronic Health Record Data: Systematic Review](https://doi.org/10.2196/91618) (Huang et al.) | JMIR Medical Informatics, 2026 | [summary](summaries/2026-09-20-huang-delirium-prediction-models-review.md) |
 | 22 | 2026-09-19 | [Underdiagnosis bias of artificial intelligence algorithms applied to chest radiographs in under-served patient populations](https://doi.org/10.1038/s41591-021-01595-0) (Seyyed-Kalantari et al.) | Nature Medicine, 2021 | [summary](summaries/2026-09-19-seyyed-kalantari-underdiagnosis-bias-chest-xray.md) |

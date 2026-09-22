@@ -65,6 +65,16 @@ which can be read in full from this environment today. Tomorrow's run will
 fall back to scanning the past week unless new entries are added or a PDF is
 supplied.
 
+## Added 2026-09-22 — found while scanning, not yet reachable
+
+Identifiers verified against the live PubMed/NLM record. Neither has a PubMed
+Central copy yet and both publisher domains are blocked here. Re-check these
+rather than abandoning them; the two JMIR entries queued on 09-17 became
+decodable within three days.
+
+- [ ] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes.
+- [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught.
+
 ## Restocking needed again after 2026-09-21
 
 Every queue entry with reachable full text has now been decoded. What remains
