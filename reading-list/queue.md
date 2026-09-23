@@ -75,6 +75,16 @@ decodable within three days.
 - [ ] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes.
 - [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught.
 
+## Added 2026-09-23 — found while scanning, not yet reachable
+
+Identifier verified against the live PubMed/NLM record. No PubMed Central copy
+yet and the publisher domain is blocked here; re-check rather than abandoning.
+
+- [ ] Vladika J, et al. Improving reliability and explainability of medical question answering through atomic fact-checking in retrieval-augmented large language models: creation and validation study. Journal of Medical Internet Research, 2026;28:e92090. (PMID 42770666, doi 10.2196/92090.) Decomposes model answers into individual factual claims and verifies each against clinical guidelines; reports up to 50% answer improvement and 80% hallucination detection, with expert multireader assessment and real anonymised tumour board cases. Follows directly from the Alber data-poisoning and Ahmed trust entries. Highest-priority retry.
+
+Re-checked 2026-09-23: the two entries added on 09-22 (Berger PNAS, Feng JMIR
+microbleeds meta-analysis) still have no PubMed Central copy.
+
 ## Restocking needed again after 2026-09-21
 
 Every queue entry with reachable full text has now been decoded. What remains
