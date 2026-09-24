@@ -80,7 +80,7 @@ decodable within three days.
 Identifier verified against the live PubMed/NLM record. No PubMed Central copy
 yet and the publisher domain is blocked here; re-check rather than abandoning.
 
-- [ ] Vladika J, et al. Improving reliability and explainability of medical question answering through atomic fact-checking in retrieval-augmented large language models: creation and validation study. Journal of Medical Internet Research, 2026;28:e92090. (PMID 42770666, doi 10.2196/92090.) Decomposes model answers into individual factual claims and verifies each against clinical guidelines; reports up to 50% answer improvement and 80% hallucination detection, with expert multireader assessment and real anonymised tumour board cases. Follows directly from the Alber data-poisoning and Ahmed trust entries. Highest-priority retry.
+- [x] Vladika J, et al. Improving reliability and explainability of medical question answering through atomic fact-checking in retrieval-augmented large language models: creation and validation study. Journal of Medical Internet Research, 2026;28:e92090. (PMID 42770666, doi 10.2196/92090.) Decomposes model answers into individual factual claims and verifies each against clinical guidelines; reports up to 50% answer improvement and 80% hallucination detection, with expert multireader assessment and real anonymised tumour board cases. Follows directly from the Alber data-poisoning and Ahmed trust entries. **Decoded 2026-09-24** (PMC13595421 appeared three days after queueing) — graded 4/5, see summaries/2026-09-24-vladika-atomic-fact-checking-medical-qa.md.
 
 Re-checked 2026-09-23: the two entries added on 09-22 (Berger PNAS, Feng JMIR
 microbleeds meta-analysis) still have no PubMed Central copy.
@@ -97,3 +97,9 @@ Worth noting: the two 2026 JMIR entries queued on 09-17 as unreachable became
 decodable within three days once PubMed Central copies appeared. Recent papers
 without a PMC record on the day they are queued are often worth re-checking
 rather than abandoning.
+
+Re-checked 2026-09-24: the Vladika entry queued on 09-23 gained a PubMed
+Central copy (PMC13595421) within one day and was decoded today. The Berger
+(PNAS) and Feng (JMIR microbleeds) entries still have no PMC copy. This is now
+the third time the re-check habit has paid off — keep applying it before
+falling back to a fresh scan.
