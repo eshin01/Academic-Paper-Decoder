@@ -103,3 +103,18 @@ Central copy (PMC13595421) within one day and was decoded today. The Berger
 (PNAS) and Feng (JMIR microbleeds) entries still have no PMC copy. This is now
 the third time the re-check habit has paid off — keep applying it before
 falling back to a fresh scan.
+
+Re-checked 2026-09-25: neither Berger (PNAS, PMID 42766752) nor Feng (JMIR
+cerebral microbleeds meta-analysis, PMID 42767630) has a PubMed Central copy
+yet. Today's run fell back to a scan of the past week and decoded Cusacovich et
+al., a randomised, adjudicator-blinded simulation trial of a real-time AI
+diagnostic copilot (JMIR Formative Research, doi 10.2196/104579, PMID 42771885,
+PMC13597024) — graded 4/5, the first randomised design in this reading list.
+
+## Added 2026-09-25 — found while scanning, worth decoding later
+
+Identifiers verified against the live PubMed/NLM record; both have PubMed
+Central copies, so both are decodable whenever the queue needs restocking.
+
+- [ ] Huang J, et al. Radial wall strain for residual risk stratification after percutaneous coronary intervention. EuroIntervention, 2026;22(18):e978-e989. (PMID 42765400, doi 10.4244/EIJ-D-26-00126, PMC13573861.) Blinded post hoc analysis of the TARGET All Comers randomised trial, 1551 patients, 5-year follow-up; AI-derived plaque-strain marker with adjusted hazard ratios and AUCs. Would teach survival analysis, hazard ratios, and the hazards of post hoc analysis of a completed trial — all new to this list.
+- [ ] Yang W, et al. Effectiveness of ChatGPT and DeepSeek in urology medical education: randomized controlled trial. Journal of Medical Internet Research, 2026;28:e89315. (PMID 42766393, doi 10.2196/89315, PMC13592387.) Three-arm randomised education trial; useful for teaching multi-arm comparison and the multiple-comparisons problem.

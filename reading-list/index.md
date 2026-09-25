@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 28 | 2026-09-25 | [Real-Time Artificial Intelligence Diagnostic Copilot in Simulated Primary Care Consultations: Randomized Simulation Study](https://doi.org/10.2196/104579) (Cusacovich et al.) | JMIR Formative Research, 2026 | [summary](summaries/2026-09-25-cusacovich-ai-diagnostic-copilot-primary-care.md) |
 | 27 | 2026-09-24 | [Improving Reliability and Explainability of Medical Question Answering Through Atomic Fact-Checking in Retrieval-Augmented Large Language Models](https://doi.org/10.2196/92090) (Vladika et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-24-vladika-atomic-fact-checking-medical-qa.md) |
 | 26 | 2026-09-23 | [Serum BDNF and cognitive risk in maintenance hemodialysis: a machine learning study](https://doi.org/10.1080/0886022X.2026.2732422) (Tang et al.) | Renal Failure, 2026 | [summary](summaries/2026-09-23-tang-bdnf-cognitive-risk-hemodialysis.md) |
 | 25 | 2026-09-22 | [Automated three-dimensional radiomic body composition analysis enhances survival prediction in resectable non-small cell lung cancer](https://doi.org/10.1186/s41747-026-00802-2) (Huang et al.) | European Radiology Experimental, 2026 | [summary](summaries/2026-09-22-huang-body-composition-radiomics-nsclc.md) |
