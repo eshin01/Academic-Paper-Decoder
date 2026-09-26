@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 29 | 2026-09-26 | [Effectiveness of ChatGPT and DeepSeek in Urology Medical Education: Randomized Controlled Trial](https://doi.org/10.2196/89315) (Yang et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-26-yang-chatgpt-deepseek-urology-education.md) |
 | 28 | 2026-09-25 | [Real-Time Artificial Intelligence Diagnostic Copilot in Simulated Primary Care Consultations: Randomized Simulation Study](https://doi.org/10.2196/104579) (Cusacovich et al.) | JMIR Formative Research, 2026 | [summary](summaries/2026-09-25-cusacovich-ai-diagnostic-copilot-primary-care.md) |
 | 27 | 2026-09-24 | [Improving Reliability and Explainability of Medical Question Answering Through Atomic Fact-Checking in Retrieval-Augmented Large Language Models](https://doi.org/10.2196/92090) (Vladika et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-24-vladika-atomic-fact-checking-medical-qa.md) |
 | 26 | 2026-09-23 | [Serum BDNF and cognitive risk in maintenance hemodialysis: a machine learning study](https://doi.org/10.1080/0886022X.2026.2732422) (Tang et al.) | Renal Failure, 2026 | [summary](summaries/2026-09-23-tang-bdnf-cognitive-risk-hemodialysis.md) |

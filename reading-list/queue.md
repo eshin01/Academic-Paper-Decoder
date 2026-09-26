@@ -117,4 +117,19 @@ Identifiers verified against the live PubMed/NLM record; both have PubMed
 Central copies, so both are decodable whenever the queue needs restocking.
 
 - [ ] Huang J, et al. Radial wall strain for residual risk stratification after percutaneous coronary intervention. EuroIntervention, 2026;22(18):e978-e989. (PMID 42765400, doi 10.4244/EIJ-D-26-00126, PMC13573861.) Blinded post hoc analysis of the TARGET All Comers randomised trial, 1551 patients, 5-year follow-up; AI-derived plaque-strain marker with adjusted hazard ratios and AUCs. Would teach survival analysis, hazard ratios, and the hazards of post hoc analysis of a completed trial — all new to this list.
-- [ ] Yang W, et al. Effectiveness of ChatGPT and DeepSeek in urology medical education: randomized controlled trial. Journal of Medical Internet Research, 2026;28:e89315. (PMID 42766393, doi 10.2196/89315, PMC13592387.) Three-arm randomised education trial; useful for teaching multi-arm comparison and the multiple-comparisons problem.
+- [x] Yang W, et al. Effectiveness of ChatGPT and DeepSeek in urology medical education: randomized controlled trial. Journal of Medical Internet Research, 2026;28:e89315. (PMID 42766393, doi 10.2196/89315, PMC13592387.) Three-arm randomised education trial; useful for teaching multi-arm comparison and the multiple-comparisons problem. **Decoded 2026-09-26** — graded 2/5; the headline DeepSeek-beats-ChatGPT claim fails its own direct test (p=.35) and the primary result collapses under worst-case imputation (p=.41). See summaries/2026-09-26-yang-chatgpt-deepseek-urology-education.md.
+
+## Added 2026-09-26 — landmark, highest-priority retry
+
+Identifier verified against the live PubMed/NLM record. No PubMed Central copy
+yet and nature.com is blocked here, so it could not be decoded from full text
+today; decoding it abstract-only would have produced a summary whose numbers
+could not be traced to a methods section.
+
+- [ ] Zhou J, et al. Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence. Nature Medicine, 2026. (PMID 42773211, doi 10.1038/s41591-026-04656-4. Trial registration ChiCTR2300074806.) The EAGLE model detects oesophageal precancer and cancer on ordinary chest CT — trained on 6,813 patients from 2 centres, validated across 12 centres in 3 countries on 80,612 patients. Reports 98.5% specificity with 90.0% sensitivity for cancer and 52.5% for precancerous lesions; a real-world calibration cohort (n=35,402) cut false positives 72.7%; prospective hospital validation (n=17,446) reached 42.2% positive predictive value. By far the largest and most consequential medical-AI paper seen in these scans. Would teach screening arithmetic at low prevalence, positive predictive value versus specificity, operating-point selection, and threshold calibration. **Highest-priority retry — check for a PMC copy every day.**
+
+Re-checked 2026-09-26: Berger (PNAS, PMID 42766752) and Feng (JMIR cerebral
+microbleeds, PMID 42767630) still have no PubMed Central copy — day 4 and day 5
+of waiting respectively. The Huang radial wall strain entry added on 09-25 has a
+PMC record (PMC13573861) but its full-text body is EMPTY there: abstract only.
+Leaving it queued in case the full text is deposited later.
