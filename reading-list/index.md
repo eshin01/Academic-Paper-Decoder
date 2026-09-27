@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 30 | 2026-09-27 | [Diagnostic Accuracy of AI in Prediction and Assessment of Compromised Free Flaps: Systematic Review and Meta-Analysis](https://doi.org/10.2196/91174) (Huang et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-27-huang-ai-free-flap-monitoring-meta-analysis.md) |
 | 29 | 2026-09-26 | [Effectiveness of ChatGPT and DeepSeek in Urology Medical Education: Randomized Controlled Trial](https://doi.org/10.2196/89315) (Yang et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-26-yang-chatgpt-deepseek-urology-education.md) |
 | 28 | 2026-09-25 | [Real-Time Artificial Intelligence Diagnostic Copilot in Simulated Primary Care Consultations: Randomized Simulation Study](https://doi.org/10.2196/104579) (Cusacovich et al.) | JMIR Formative Research, 2026 | [summary](summaries/2026-09-25-cusacovich-ai-diagnostic-copilot-primary-care.md) |
 | 27 | 2026-09-24 | [Improving Reliability and Explainability of Medical Question Answering Through Atomic Fact-Checking in Retrieval-Augmented Large Language Models](https://doi.org/10.2196/92090) (Vladika et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-24-vladika-atomic-fact-checking-medical-qa.md) |

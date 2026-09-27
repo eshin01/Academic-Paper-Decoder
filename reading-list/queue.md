@@ -133,3 +133,16 @@ microbleeds, PMID 42767630) still have no PubMed Central copy — day 4 and day 
 of waiting respectively. The Huang radial wall strain entry added on 09-25 has a
 PMC record (PMC13573861) but its full-text body is EMPTY there: abstract only.
 Leaving it queued in case the full text is deposited later.
+
+Re-checked 2026-09-27: the Nature Medicine EAGLE paper (PMID 42773211), Berger
+(PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) all
+still lack a PubMed Central copy. Today's run fell back to a scan and decoded
+Huang et al., a PROSPERO-registered PRISMA-DTA meta-analysis of AI for free flap
+monitoring (JMIR, doi 10.2196/91174, PMID 42771768, PMC13596764) — graded 4/5.
+It delivered the pooled sensitivity/specificity, likelihood-ratio and diagnostic
+odds ratio teaching the 09-22 queue note asked for, plus confidence intervals
+versus prediction intervals.
+
+## Added 2026-09-27 — found while scanning, PMC copy confirmed
+
+- [ ] Yin X, et al. Clinical surveillance technologies in nonintensive care unit hospital settings: systematic review and Bayesian network meta-analysis of randomized trials. Journal of Medical Internet Research, 2026;28:e98205. (PMID 42784726, doi 10.2196/98205, PMC13606342.) 28 randomised trials comparing rule-based electronic surveillance, predictive-model surveillance and continuous physiologic monitoring against standard care. Every network estimate crossed no-effect and confidence in all comparisons was rated very low — a genuinely negative result on whether prediction-model alerting helps patients. Would teach Bayesian credible intervals, network meta-analysis and indirect comparison, CINeMA, and trial sequential analysis, all new to this list. Strong candidate for the next run.
