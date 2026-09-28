@@ -145,4 +145,19 @@ versus prediction intervals.
 
 ## Added 2026-09-27 — found while scanning, PMC copy confirmed
 
-- [ ] Yin X, et al. Clinical surveillance technologies in nonintensive care unit hospital settings: systematic review and Bayesian network meta-analysis of randomized trials. Journal of Medical Internet Research, 2026;28:e98205. (PMID 42784726, doi 10.2196/98205, PMC13606342.) 28 randomised trials comparing rule-based electronic surveillance, predictive-model surveillance and continuous physiologic monitoring against standard care. Every network estimate crossed no-effect and confidence in all comparisons was rated very low — a genuinely negative result on whether prediction-model alerting helps patients. Would teach Bayesian credible intervals, network meta-analysis and indirect comparison, CINeMA, and trial sequential analysis, all new to this list. Strong candidate for the next run.
+- [x] Yin X, et al. Clinical surveillance technologies in nonintensive care unit hospital settings: systematic review and Bayesian network meta-analysis of randomized trials. Journal of Medical Internet Research, 2026;28:e98205. (PMID 42784726, doi 10.2196/98205, PMC13606342.) 28 randomised trials comparing rule-based electronic surveillance, predictive-model surveillance and continuous physiologic monitoring against standard care. Every network estimate crossed no-effect and confidence in all comparisons was rated very low — a genuinely negative result on whether prediction-model alerting helps patients. Would teach Bayesian credible intervals, network meta-analysis and indirect comparison, CINeMA, and trial sequential analysis, all new to this list. **Decoded 2026-09-28** — graded **5/5**, the reading list's second 5/5 and its first for a null result: the authors declined to publish rankings their own method would have produced, reported that an earlier rule-based advantage vanished under better intervention classification, and deleted an unsupported methods claim from their own paper. See summaries/2026-09-28-yin-clinical-surveillance-network-meta-analysis.md.
+
+Re-checked 2026-09-28: the Nature Medicine EAGLE paper (PMID 42773211), Berger
+(PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) still
+have no PubMed Central copy — days 6, 7 and 8 of waiting. A targeted scan of the
+top-tier journals for 09-25 to 09-28 returned nothing new. EAGLE remains the
+highest-priority retry.
+
+## Restocking needed after 2026-09-28
+
+Every queue entry with reachable full text has now been decoded. The four
+oldest deferred entries (Topol 2019, Beam and Kohane 2018, Moor 2023, Wu 2021)
+and the three unreachable recent ones remain blocked on open access. Tomorrow's
+run falls back to scanning unless a PMC copy appears. The JMIR family and BMJ
+Open have been the most reliable sources of same-week decodable papers; Nature,
+Lancet, NEJM, JAMA and Science have never once been reachable here.

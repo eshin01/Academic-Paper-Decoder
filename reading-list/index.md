@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 31 | 2026-09-28 | [Clinical Surveillance Technologies in Nonintensive Care Unit Hospital Settings: Systematic Review and Bayesian Network Meta-Analysis of Randomized Trials](https://doi.org/10.2196/98205) (Yin et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-28-yin-clinical-surveillance-network-meta-analysis.md) |
 | 30 | 2026-09-27 | [Diagnostic Accuracy of AI in Prediction and Assessment of Compromised Free Flaps: Systematic Review and Meta-Analysis](https://doi.org/10.2196/91174) (Huang et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-27-huang-ai-free-flap-monitoring-meta-analysis.md) |
 | 29 | 2026-09-26 | [Effectiveness of ChatGPT and DeepSeek in Urology Medical Education: Randomized Controlled Trial](https://doi.org/10.2196/89315) (Yang et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-26-yang-chatgpt-deepseek-urology-education.md) |
 | 28 | 2026-09-25 | [Real-Time Artificial Intelligence Diagnostic Copilot in Simulated Primary Care Consultations: Randomized Simulation Study](https://doi.org/10.2196/104579) (Cusacovich et al.) | JMIR Formative Research, 2026 | [summary](summaries/2026-09-25-cusacovich-ai-diagnostic-copilot-primary-care.md) |
