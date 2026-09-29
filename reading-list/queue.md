@@ -161,3 +161,15 @@ and the three unreachable recent ones remain blocked on open access. Tomorrow's
 run falls back to scanning unless a PMC copy appears. The JMIR family and BMJ
 Open have been the most reliable sources of same-week decodable papers; Nature,
 Lancet, NEJM, JAMA and Science have never once been reachable here.
+
+Re-checked 2026-09-29: the Nature Medicine EAGLE paper (PMID 42773211), Berger
+(PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) still
+have no PubMed Central copy — days 7, 8 and 9. Today's run scanned the past week
+and decoded Sblendorio et al., an EU AI Act-aligned evaluation of 17 language
+models in nursing (JMIR Medical Informatics, doi 10.2196/90854, PMID 42803770,
+PMC13618209) — graded 3/5.
+
+## Added 2026-09-29 — found while scanning, PMC copy confirmed
+
+- [ ] Little M. Explicit mechanistic causal analyses or interventional trials are required for objective, clinical, voice-based Parkinson disease characterization. Journal of Medical Internet Research, 2026;28:e111711. (PMID 42804162, doi 10.2196/111711, PMC13618403.) A commentary by the researcher who largely founded voice-based Parkinson detection, arguing that ad-hoc observational datasets carry spurious causal associations no purely statistical analysis can remove, and that causal inference plus diagnostic trials are required. Short, and it is a commentary rather than primary research, so it would be a format departure — but it is the cleanest available vehicle for teaching **confounding and causal inference**, which this list has circled (manufactured confounders on 09-13, association versus prediction on 09-23, mathematical coupling on 09-26) but never taught head-on. Best paired with a primary paper on the same day, or used when nothing else is reachable.
+- [ ] Luque-Hernández MJ, et al. trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services. BMJ Open, 2026;16(9):e113242. (PMID 42805668, doi 10.1136/bmjopen-2025-113242. NCT07247669. No PMC copy yet — re-check.) A published protocol rather than results, which would let this list teach how to read a study **before** it has findings: prespecification, the planned shadow-mode pilot, under- and over-triage as paired outcomes, and sex-stratified evaluation planned in advance.
