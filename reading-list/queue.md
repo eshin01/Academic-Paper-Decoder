@@ -171,5 +171,16 @@ PMC13618209) — graded 3/5.
 
 ## Added 2026-09-29 — found while scanning, PMC copy confirmed
 
-- [ ] Little M. Explicit mechanistic causal analyses or interventional trials are required for objective, clinical, voice-based Parkinson disease characterization. Journal of Medical Internet Research, 2026;28:e111711. (PMID 42804162, doi 10.2196/111711, PMC13618403.) A commentary by the researcher who largely founded voice-based Parkinson detection, arguing that ad-hoc observational datasets carry spurious causal associations no purely statistical analysis can remove, and that causal inference plus diagnostic trials are required. Short, and it is a commentary rather than primary research, so it would be a format departure — but it is the cleanest available vehicle for teaching **confounding and causal inference**, which this list has circled (manufactured confounders on 09-13, association versus prediction on 09-23, mathematical coupling on 09-26) but never taught head-on. Best paired with a primary paper on the same day, or used when nothing else is reachable.
+- [x] Little M. Explicit mechanistic causal analyses or interventional trials are required for objective, clinical, voice-based Parkinson disease characterization. Journal of Medical Internet Research, 2026;28:e111711. (PMID 42804162, doi 10.2196/111711, PMC13618403.) A commentary by the researcher who largely founded voice-based Parkinson detection, arguing that ad-hoc observational datasets carry spurious causal associations no purely statistical analysis can remove, and that causal inference plus diagnostic trials are required. Short, and it is a commentary rather than primary research, so it would be a format departure — but it is the cleanest available vehicle for teaching **confounding and causal inference**, which this list has circled (manufactured confounders on 09-13, association versus prediction on 09-23, mathematical coupling on 09-26) but never taught head-on. **Decoded 2026-09-30, paired exactly as hoped** — with the primary paper it responds to, Shukla et al., *Demographic confounding in voice-based Parkinson disease screening* (JMIR 2026;28:e95609, PMID 42623305, PMC13492483), which supplied the numbers the commentary argues about. Graded **5/5**. See summaries/2026-09-30-shukla-demographic-confounding-voice-parkinson.md.
 - [ ] Luque-Hernández MJ, et al. trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services. BMJ Open, 2026;16(9):e113242. (PMID 42805668, doi 10.1136/bmjopen-2025-113242. NCT07247669. No PMC copy yet — re-check.) A published protocol rather than results, which would let this list teach how to read a study **before** it has findings: prespecification, the planned shadow-mode pilot, under- and over-triage as paired outcomes, and sex-stratified evaluation planned in advance.
+
+Re-checked 2026-09-30: the Nature Medicine EAGLE paper (PMID 42773211), Berger
+(PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) still
+have no PubMed Central copy — days 8, 9 and 10.
+
+Lesson recorded from today's run, worth repeating: when a queued entry is a
+commentary or a letter, search for the paper it responds to and decode both
+together. The commentary supplies the argument, the primary paper supplies the
+numbers, and the pair is far stronger than either alone. The Little commentary
+had been queued as a format-departure risk; paired with Shukla it produced the
+list's clearest treatment of confounding.
