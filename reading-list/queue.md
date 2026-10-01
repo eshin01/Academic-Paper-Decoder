@@ -184,3 +184,33 @@ together. The commentary supplies the argument, the primary paper supplies the
 numbers, and the pair is far stronger than either alone. The Little commentary
 had been queued as a format-departure risk; paired with Shukla it produced the
 list's clearest treatment of confounding.
+
+## 2026-10-01 — Scite is now paywalled; retrieval options have narrowed
+
+Checked today in the hope that Scite's monthly MCP allowance had reset (the
+09-14 error said usage resets 2026-10-01). It has not reset — Scite now returns
+"MCP tools require a paid scite plan or an active free trial." So the Scite
+read_fulltext route to paywalled papers is closed for good unless a plan is
+bought. Retrieval in this environment is therefore PubMed Central only, plus
+WebSearch for metadata.
+
+Useful discovery from today's run: PubMed's `pubmed pmc[sb]` filter restricts a
+search to records that actually have a PubMed Central copy. Using it turns the
+daily scan from "find candidates, then check each one's availability" into a
+single query that only returns decodable papers. Use it from now on.
+
+Re-checked 2026-10-01: the Nature Medicine EAGLE paper (PMID 42773211), Berger
+(PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) still
+have no PubMed Central copy — days 9, 10 and 11. Given the Scite closure, these
+four plus the older deferred entries (Topol 2019, Beam and Kohane 2018, Moor
+2023, Wu 2021) are now decodable only if a PDF is supplied.
+
+Today's decode came from a scan: Shimizu et al., a million-person pneumonia risk
+scorecard (Geriatr Gerontol Int, doi 10.1111/ggi.70850, PMID 42781887,
+PMC13602450) — graded 4/5, and the right paper for teaching calibration,
+positive predictive value at low prevalence, and competing risks.
+
+## Added 2026-10-01 — found while scanning, no PMC copy yet, re-check
+
+- [ ] Ye Z, et al. Development of an interpretable triage tool for colorectal polyp risk stratification within a population-based screening program: machine learning approach. JMIR Medical Informatics, 2026;14:e89422. (PMID 42815038, doi 10.2196/89422.) 4108 individuals aged 50-74 in Wenzhou, China. Worth decoding specifically because the reported performance is poor and the paper still proposes clinical deployment: XGBoost reached AUC 0.672 and LightGBM was selected for triage on recall 0.6503. It also used SMOTE on the training set only — a direct contrast with the Shimizu paper decoded today, which deliberately refused to rebalance in order to protect calibration. Pairing the two would make the rebalancing question concrete.
+- [ ] Lu J, et al. Detecting misspelled drug names using transformer-based language models: model development and external validation. JMIR Medical Informatics, 2026;14:e91151. (PMID 42809845, doi 10.2196/91151.) Clean internal-versus-external generalisation gap: F-score 0.859 on the held-out RxNorm test set falling to 0.696 on an external long-term-care database, and domain-specific BERT models beating GPT-4o internally but not externally. A tidy vehicle for teaching why external validation is the only validation that counts.

@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 34 | 2026-10-01 | [A Machine Learning-Derived Risk Scorecard for Pneumonia Hospitalization in Japanese Old-Old Adults](https://doi.org/10.1111/ggi.70850) (Shimizu et al.) | Geriatrics & Gerontology International, 2026 | [summary](summaries/2026-10-01-shimizu-pneumonia-risk-scorecard-calibration.md) |
 | 33 | 2026-09-30 | [Demographic Confounding in Voice-Based Parkinson Disease Screening: Methodological Analysis of the Bridge2AI Voice Dataset](https://doi.org/10.2196/95609) (Shukla et al.) — decoded with its companion commentary [Little, Explicit Mechanistic Causal Analyses or Interventional Trials Are Required](https://doi.org/10.2196/111711) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-30-shukla-demographic-confounding-voice-parkinson.md) |
 | 32 | 2026-09-29 | [Cloud-Based and Locally Deployed Language Models in Nursing and Health Care: An AI Act-Aligned Framework](https://doi.org/10.2196/90854) (Sblendorio et al.) | JMIR Medical Informatics, 2026 | [summary](summaries/2026-09-29-sblendorio-eu-ai-act-language-model-evaluation.md) |
 | 31 | 2026-09-28 | [Clinical Surveillance Technologies in Nonintensive Care Unit Hospital Settings: Systematic Review and Bayesian Network Meta-Analysis of Randomized Trials](https://doi.org/10.2196/98205) (Yin et al.) | Journal of Medical Internet Research, 2026 | [summary](summaries/2026-09-28-yin-clinical-surveillance-network-meta-analysis.md) |
