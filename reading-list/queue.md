@@ -72,7 +72,7 @@ Central copy yet and both publisher domains are blocked here. Re-check these
 rather than abandoning them; the two JMIR entries queued on 09-17 became
 decodable within three days.
 
-- [ ] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes.
+- [x] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes. **Decoded 2026-10-02** — a PubMed Central copy (PMC13624608) appeared on day 11 of waiting, vindicating the re-check habit yet again. Graded 4/5. See summaries/2026-10-02-berger-human-ai-synergy-learning.md.
 - [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught.
 
 ## Added 2026-09-23 — found while scanning, not yet reachable
@@ -212,5 +212,19 @@ positive predictive value at low prevalence, and competing risks.
 
 ## Added 2026-10-01 — found while scanning, no PMC copy yet, re-check
 
-- [ ] Ye Z, et al. Development of an interpretable triage tool for colorectal polyp risk stratification within a population-based screening program: machine learning approach. JMIR Medical Informatics, 2026;14:e89422. (PMID 42815038, doi 10.2196/89422.) 4108 individuals aged 50-74 in Wenzhou, China. Worth decoding specifically because the reported performance is poor and the paper still proposes clinical deployment: XGBoost reached AUC 0.672 and LightGBM was selected for triage on recall 0.6503. It also used SMOTE on the training set only — a direct contrast with the Shimizu paper decoded today, which deliberately refused to rebalance in order to protect calibration. Pairing the two would make the rebalancing question concrete.
+- [ ] Ye Z, et al. Development of an interpretable triage tool for colorectal polyp risk stratification within a population-based screening program: machine learning approach. JMIR Medical Informatics, 2026;14:e89422. (PMID 42815038, doi 10.2196/89422.) 4108 individuals aged 50-74 in Wenzhou, China. Worth decoding specifically because the reported performance is poor and the paper still proposes clinical deployment: XGBoost reached AUC 0.672 and LightGBM was selected for triage on recall 0.6503. It also used SMOTE on the training set only — a direct contrast with the Shimizu paper decoded today, which deliberately refused to rebalance in order to protect calibration. Pairing the two would make the rebalancing question concrete. **PMC copy confirmed 2026-10-02: PMC13626646 — now reachable, and the next queue entry.**
 - [ ] Lu J, et al. Detecting misspelled drug names using transformer-based language models: model development and external validation. JMIR Medical Informatics, 2026;14:e91151. (PMID 42809845, doi 10.2196/91151.) Clean internal-versus-external generalisation gap: F-score 0.859 on the held-out RxNorm test set falling to 0.696 on an external long-term-care database, and domain-specific BERT models beating GPT-4o internally but not externally. A tidy vehicle for teaching why external validation is the only validation that counts.
+
+Re-checked 2026-10-02 — two of the long-blocked entries opened up:
+- **Berger (PNAS, PMID 42766752) gained PMC13624608 after 11 days** and was decoded today.
+- Ye et al. colorectal polyp triage (PMID 42815038) gained PMC13626646 after 2 days and is now
+  decodable; it remains queued below.
+- EAGLE (Nature Medicine, PMID 42773211) and Feng (JMIR cerebral microbleeds, PMID 42767630)
+  still have no PMC copy — days 10 and 11.
+
+Retrieval lesson recorded from today: when a paper arrives in PubMed Central,
+the rendering is not always complete. The Berger full text was served with every
+Hedges' g point estimate and every Bayes factor stripped out of the inline text —
+only study counts, credible-interval bounds and posterior probabilities survived.
+Check for silently missing numbers before writing, and say in the summary exactly
+which magnitudes could not be retrieved rather than working around the gap.
