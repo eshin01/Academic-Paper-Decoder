@@ -73,7 +73,7 @@ rather than abandoning them; the two JMIR entries queued on 09-17 became
 decodable within three days.
 
 - [x] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes. **Decoded 2026-10-02** — a PubMed Central copy (PMC13624608) appeared on day 11 of waiting, vindicating the re-check habit yet again. Graded 4/5. See summaries/2026-10-02-berger-human-ai-synergy-learning.md.
-- [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught.
+- [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught. *Re-checked 2026-10-03: still no PMC copy.*
 
 ## Added 2026-09-23 — found while scanning, not yet reachable
 
@@ -126,7 +126,7 @@ yet and nature.com is blocked here, so it could not be decoded from full text
 today; decoding it abstract-only would have produced a summary whose numbers
 could not be traced to a methods section.
 
-- [ ] Zhou J, et al. Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence. Nature Medicine, 2026. (PMID 42773211, doi 10.1038/s41591-026-04656-4. Trial registration ChiCTR2300074806.) The EAGLE model detects oesophageal precancer and cancer on ordinary chest CT — trained on 6,813 patients from 2 centres, validated across 12 centres in 3 countries on 80,612 patients. Reports 98.5% specificity with 90.0% sensitivity for cancer and 52.5% for precancerous lesions; a real-world calibration cohort (n=35,402) cut false positives 72.7%; prospective hospital validation (n=17,446) reached 42.2% positive predictive value. By far the largest and most consequential medical-AI paper seen in these scans. Would teach screening arithmetic at low prevalence, positive predictive value versus specificity, operating-point selection, and threshold calibration. **Highest-priority retry — check for a PMC copy every day.**
+- [ ] Zhou J, et al. Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence. Nature Medicine, 2026. (PMID 42773211, doi 10.1038/s41591-026-04656-4. Trial registration ChiCTR2300074806.) The EAGLE model detects oesophageal precancer and cancer on ordinary chest CT — trained on 6,813 patients from 2 centres, validated across 12 centres in 3 countries on 80,612 patients. Reports 98.5% specificity with 90.0% sensitivity for cancer and 52.5% for precancerous lesions; a real-world calibration cohort (n=35,402) cut false positives 72.7%; prospective hospital validation (n=17,446) reached 42.2% positive predictive value. By far the largest and most consequential medical-AI paper seen in these scans. Would teach screening arithmetic at low prevalence, positive predictive value versus specificity, operating-point selection, and threshold calibration. **Highest-priority retry — check for a PMC copy every day.** *Re-checked 2026-10-03 (day 12): still no PMC copy.*
 
 Re-checked 2026-09-26: Berger (PNAS, PMID 42766752) and Feng (JMIR cerebral
 microbleeds, PMID 42767630) still have no PubMed Central copy — day 4 and day 5
@@ -172,7 +172,7 @@ PMC13618209) — graded 3/5.
 ## Added 2026-09-29 — found while scanning, PMC copy confirmed
 
 - [x] Little M. Explicit mechanistic causal analyses or interventional trials are required for objective, clinical, voice-based Parkinson disease characterization. Journal of Medical Internet Research, 2026;28:e111711. (PMID 42804162, doi 10.2196/111711, PMC13618403.) A commentary by the researcher who largely founded voice-based Parkinson detection, arguing that ad-hoc observational datasets carry spurious causal associations no purely statistical analysis can remove, and that causal inference plus diagnostic trials are required. Short, and it is a commentary rather than primary research, so it would be a format departure — but it is the cleanest available vehicle for teaching **confounding and causal inference**, which this list has circled (manufactured confounders on 09-13, association versus prediction on 09-23, mathematical coupling on 09-26) but never taught head-on. **Decoded 2026-09-30, paired exactly as hoped** — with the primary paper it responds to, Shukla et al., *Demographic confounding in voice-based Parkinson disease screening* (JMIR 2026;28:e95609, PMID 42623305, PMC13492483), which supplied the numbers the commentary argues about. Graded **5/5**. See summaries/2026-09-30-shukla-demographic-confounding-voice-parkinson.md.
-- [ ] Luque-Hernández MJ, et al. trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services. BMJ Open, 2026;16(9):e113242. (PMID 42805668, doi 10.1136/bmjopen-2025-113242. NCT07247669. No PMC copy yet — re-check.) A published protocol rather than results, which would let this list teach how to read a study **before** it has findings: prespecification, the planned shadow-mode pilot, under- and over-triage as paired outcomes, and sex-stratified evaluation planned in advance.
+- [ ] Luque-Hernández MJ, et al. trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services. BMJ Open, 2026;16(9):e113242. (PMID 42805668, doi 10.1136/bmjopen-2025-113242. NCT07247669. **PMC copy confirmed 2026-10-03: PMC13630096 — now reachable, and the next queue entry.**) A published protocol rather than results, which would let this list teach how to read a study **before** it has findings: prespecification, the planned shadow-mode pilot, under- and over-triage as paired outcomes, and sex-stratified evaluation planned in advance.
 
 Re-checked 2026-09-30: the Nature Medicine EAGLE paper (PMID 42773211), Berger
 (PNAS, PMID 42766752) and Feng (JMIR cerebral microbleeds, PMID 42767630) still
@@ -212,7 +212,7 @@ positive predictive value at low prevalence, and competing risks.
 
 ## Added 2026-10-01 — found while scanning, no PMC copy yet, re-check
 
-- [ ] Ye Z, et al. Development of an interpretable triage tool for colorectal polyp risk stratification within a population-based screening program: machine learning approach. JMIR Medical Informatics, 2026;14:e89422. (PMID 42815038, doi 10.2196/89422.) 4108 individuals aged 50-74 in Wenzhou, China. Worth decoding specifically because the reported performance is poor and the paper still proposes clinical deployment: XGBoost reached AUC 0.672 and LightGBM was selected for triage on recall 0.6503. It also used SMOTE on the training set only — a direct contrast with the Shimizu paper decoded today, which deliberately refused to rebalance in order to protect calibration. Pairing the two would make the rebalancing question concrete. **PMC copy confirmed 2026-10-02: PMC13626646 — now reachable, and the next queue entry.**
+- [x] Ye Z, et al. Development of an interpretable triage tool for colorectal polyp risk stratification within a population-based screening program: machine learning approach. JMIR Medical Informatics, 2026;14:e89422. (PMID 42815038, doi 10.2196/89422.) 4108 individuals aged 50-74 in Wenzhou, China. Worth decoding specifically because the reported performance is poor and the paper still proposes clinical deployment: XGBoost reached AUC 0.672 and LightGBM was selected for triage on recall 0.6503. It also used SMOTE on the training set only — a direct contrast with the Shimizu paper decoded today, which deliberately refused to rebalance in order to protect calibration. Pairing the two would make the rebalancing question concrete. **Decoded 2026-10-03 from PMC13626646 (full text). Graded 2/5.** The Shimizu pairing paid off exactly as hoped: Shimizu refused to rebalance and got near-perfect calibration; Ye used SMOTE (1981 of 2634 training cases synthetic, 75.2%) and its calibration claim is the weakest part of the paper. Also found a selection cliff not discussed by the authors — 93.3% of available polyp cases were excluded against 51.7% of controls, so the 19.9% training prevalence is an artefact. See summaries/2026-10-03-ye-colorectal-polyp-triage-smote.md.
 - [ ] Lu J, et al. Detecting misspelled drug names using transformer-based language models: model development and external validation. JMIR Medical Informatics, 2026;14:e91151. (PMID 42809845, doi 10.2196/91151.) Clean internal-versus-external generalisation gap: F-score 0.859 on the held-out RxNorm test set falling to 0.696 on an external long-term-care database, and domain-specific BERT models beating GPT-4o internally but not externally. A tidy vehicle for teaching why external validation is the only validation that counts.
 
 Re-checked 2026-10-02 — two of the long-blocked entries opened up:
@@ -228,3 +228,46 @@ Hedges' g point estimate and every Bayes factor stripped out of the inline text 
 only study counts, credible-interval bounds and posterior probabilities survived.
 Check for silently missing numbers before writing, and say in the summary exactly
 which magnitudes could not be retrieved rather than working around the gap.
+
+## 2026-10-03 — two reusable appraisal techniques, both proven today
+
+**1. Deliberately pair papers that took opposite turns at the same
+methodological fork.** Yesterday's Shimizu scorecard (entry 34) refused to
+rebalance a rare outcome, explicitly to protect calibration, and its
+calibration came out near-perfect. Today's Ye triage tool (entry 36) applied
+SMOTE, and its calibration claim is the weakest thing in the paper — it
+benchmarks its Brier score against 0.25, the no-information value for a
+*balanced* set, when the no-information value at its real 19.9% prevalence is
+0.159. Decoding the two back-to-back taught the rebalancing/calibration
+trade-off far better than either alone could. **When a queued paper makes a
+choice a recently-decoded paper refused, schedule it next and decode it as a
+pair.** Keep a note of live forks worth pairing: rebalance vs refuse (done);
+internal vs external validation (Lu J, entry pending, is the natural partner
+for anything claiming internal performance); abstract screening vs full-text
+screening in meta-analyses.
+
+**2. Compute the trivial baseline from the paper's own Table 1, every time.**
+For a binary rule, AUC = (sensitivity + specificity) / 2, and a baseline table
+that reports a predictor by outcome group gives you both. Today "refer every
+man" came to sensitivity 0.564, specificity 0.593, AUC 0.578 — against the
+paper's nine-algorithm, twenty-one-predictor 0.672. The model is better, but
+knowing by how much reframes the abstract entirely. This takes under a minute
+and should be done before reading any Discussion section.
+
+**3. Check where the decision threshold came from.** New failure mode seen
+today, and distinct from the familiar feature-selection leak (which this paper
+correctly avoided): Ye et al. state that "the optimal probability cutoffs were
+derived from the validation dataset" — the same hold-out used to report the
+headline recall. The threshold is a fitted parameter; tuning it on the test set
+makes the reported sensitivity an upper bound. Look for the sentence naming the
+threshold's provenance in every prediction-model paper from now on.
+
+Re-checked 2026-10-03: EAGLE (PMID 42773211) still has no PMC copy on day 12,
+and Feng (PMID 42767630) still has none. The trIAje protocol
+(Luque-Hernández, PMID 42805668) **gained PMC13630096 today** — the fifth time
+a "re-check rather than abandon" entry has become reachable within days, and
+the next queue entry. A `pubmed pmc[sb]`-filtered scan of 2026-09-26 to
+2026-10-03 across Nature/Nature Medicine/Lancet/JAMA/NEJM returned no landmark
+primary medical-AI study — only a Nature Medicine commentary on agentic AI
+autonomy (doi 10.1038/s41591-026-04658-2), a JAMA news piece, a Nature news
+item, and an unrelated genetics paper. Nothing displaced the queue order.
