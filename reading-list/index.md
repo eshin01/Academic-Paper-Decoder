@@ -5,6 +5,7 @@ its full plain-English summary in `summaries/`. Newest first.
 
 | # | Date decoded | Paper | Venue / Year | Summary |
 |---|---|---|---|---|
+| 37 | 2026-10-04 | [trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services](https://doi.org/10.1136/bmjopen-2025-113242) (Luque-Hernández et al.) — a **protocol**, decoded to teach how to read a study before it has results | BMJ Open, 2026 | [summary](summaries/2026-10-04-luque-hernandez-triaje-ai-dispatch-protocol.md) |
 | 36 | 2026-10-03 | [Development of an Interpretable Triage Tool for Colorectal Polyp Risk Stratification Within a Population-Based Screening Program: Machine Learning Approach](https://doi.org/10.2196/89422) (Ye et al.) — paired against entry 34 (Shimizu) on the class-rebalancing question | JMIR Medical Informatics, 2026 | [summary](summaries/2026-10-03-ye-colorectal-polyp-triage-smote.md) |
 | 35 | 2026-10-02 | [Human learning is an understudied but promising lever for boosting human-AI synergy](https://doi.org/10.1073/pnas.2536100123) (Berger et al.) | PNAS, 2026 | [summary](summaries/2026-10-02-berger-human-ai-synergy-learning.md) |
 | 34 | 2026-10-01 | [A Machine Learning-Derived Risk Scorecard for Pneumonia Hospitalization in Japanese Old-Old Adults](https://doi.org/10.1111/ggi.70850) (Shimizu et al.) | Geriatrics & Gerontology International, 2026 | [summary](summaries/2026-10-01-shimizu-pneumonia-risk-scorecard-calibration.md) |
