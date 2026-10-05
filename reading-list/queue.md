@@ -274,7 +274,7 @@ item, and an unrelated genetics paper. Nothing displaced the queue order.
 
 ## Added 2026-10-04 — found while scanning, PMC copy confirmed
 
-- [ ] Akbal S, et al. CT radiomics showed no improvement beyond volume dynamics for early lesion-level size response to immunotherapy in metastatic melanoma. Cancer Imaging, 2026;26(1). (PMID 42823717, doi 10.1186/s40644-026-01135-4, PMC13632448 — reachable.) **High-value and the next queue entry.** A rare thing: a well-designed *negative* study that says so in its title. 158 patients, 1626 lesions, internal cohort n=129 with standardised protocols plus an external cohort n=29 with heterogeneous ones; models trained internally with patient-grouped cross-validation and applied **unchanged** to the external cohort. Internal AUC 0.84 (95% CI 0.78-0.88) for volumetrics versus 0.86 (0.81-0.90) for radiomics; externally both fell to 0.68 with CIs of 0.50-0.85 and 0.51-0.88 — on **12 progression events**. Would teach, all new to this list: **equivalence/non-inferiority testing against a prespecified margin** (they used ±0.05 on paired AUC differences), **patient-grouped cross-validation** (why 1626 lesions from 158 patients is not 1626 independent observations — the clustering lesson from Huang 2026-09-27 applied to splitting rather than pooling), **what a 12-event external cohort can and cannot settle**, and the discipline of reporting that an expensive new method adds nothing over a simple one. The median absolute correlation of 0.37 between radiomic features and lesion volume is a tidy worked example of why "independent predictor" claims need checking.
+- [x] Akbal S, et al. CT radiomics showed no improvement beyond volume dynamics for early lesion-level size response to immunotherapy in metastatic melanoma. Cancer Imaging, 2026;26(1). (PMID 42823717, doi 10.1186/s40644-026-01135-4, PMC13632448 — reachable.) **High-value and the next queue entry.** A rare thing: a well-designed *negative* study that says so in its title. 158 patients, 1626 lesions, internal cohort n=129 with standardised protocols plus an external cohort n=29 with heterogeneous ones; models trained internally with patient-grouped cross-validation and applied **unchanged** to the external cohort. Internal AUC 0.84 (95% CI 0.78-0.88) for volumetrics versus 0.86 (0.81-0.90) for radiomics; externally both fell to 0.68 with CIs of 0.50-0.85 and 0.51-0.88 — on **12 progression events**. Would teach, all new to this list: **equivalence/non-inferiority testing against a prespecified margin** (they used ±0.05 on paired AUC differences), **patient-grouped cross-validation** (why 1626 lesions from 158 patients is not 1626 independent observations — the clustering lesson from Huang 2026-09-27 applied to splitting rather than pooling), **what a 12-event external cohort can and cannot settle**, and the discipline of reporting that an expensive new method adds nothing over a simple one. The median absolute correlation of 0.37 between radiomic features and lesion volume is a tidy worked example of why "independent predictor" claims need checking. **Decoded 2026-10-05 from PMC13632448 (full text). Graded 5/5 for conduct and reporting — the most carefully executed paper decoded so far.** It prespecified an equivalence hypothesis with a +/-0.05 margin, handled within-patient clustering three ways (patient-grouped CV, patient-level cluster bootstrap, equal-patient-weight sensitivity), applied the external model once unchanged with no centre indicator, took its threshold from internal out-of-fold predictions, self-scored RQS 18/36 and published it, and systematically tried to overturn its own null (volume residualisation, ComBat, distribution filtering, extended feature sets, alternative learners, IPW for survivor bias) and reported that it could not. Best single finding, buried in the supplement: raw early volume change with no model fitted beat the fitted volumetric model externally — the trivial-baseline check, run by the authors on themselves, and won by the trivial baseline. See summaries/2026-10-05-akbal-radiomics-no-gain-over-volume-melanoma.md.
 
 - [ ] Yu Y, et al. Development and validation of an AI-enhanced prediction model for 3-year visual decline in patients with diabetes using ophthalmic imaging: protocol for a real-world longitudinal cohort study. BMJ Open, 2026;16(9):e123521. (PMID 42816089, doi 10.1136/bmjopen-2026-123521, PMC13630008 — reachable.) A second protocol, and the natural partner to the trIAje decode: this one **does** plan external validation (Ningbo Eye Hospital, independent of the Peking University Third Hospital development cohort), uses a **time-to-event** primary outcome (time to first ≥0.2-logMAR decline within 3 years) rather than a binary label, and prespecifies discrimination, calibration, Brier score and decision curve analysis. Pairing the two would teach what separates a good protocol from a very good one, and would bring survival analysis into the list.
 
@@ -291,3 +291,40 @@ yesterday paid off immediately. Yesterday's paper (Ye, entry 36) chose its
 cutoff on the test set; today's protocol explicitly derives thresholds from
 validation data and then applies them to test predictions. **The check
 distinguished the two papers on its first outing — keep running it.**
+
+## 2026-10-05 — a fourth reusable technique, and a note on reading negative results
+
+**4. Check what the simplest possible rule gets, and check whether the authors
+checked.** This was recorded on 10-03 as a thing to compute yourself from the
+baseline table. Today's paper did it internally and the trivial baseline **won**:
+raw early volume change, with no model fitted, kept most of the Random Forest's
+internal discrimination and exceeded it in the external cohort. A fitted model
+can lose to its own raw input because fitting absorbs centre-specific noise that
+does not travel; a raw number has nothing to overfit. **So the check has two
+parts now: compute the trivial baseline, and look in the supplement for whether
+the authors already did.** When they have and it won, that is the finding.
+
+**On grading negative results.** Three 5/5 grades have now been given, all to
+papers that refused to oversell: Yin (entry 31) for reporting a null honestly,
+Shukla (entry 33) for systematically deflating its own positive finding, and
+Akbal (entry 38) for prespecifying an equivalence margin and then failing to
+overturn its own null across a dozen sensitivity analyses. The pattern worth
+keeping: **the grade tracks whether the conclusion is entitled to the evidence,
+not whether the finding is exciting.** Akbal's external cohort has 12 progression
+events and settles nothing externally — and the authors say so rather than
+citing their matching 0.68s as confirmation. That refusal is why it scores 5.
+
+**New appraisal tool added to the list today:** the Radiomics Quality Score
+(RQS), 36 points. Akbal et al. scored their own study 18/36 and published the
+item-level detail. Worth looking for in any future radiomics paper — and worth
+noting that most papers citing the RQS apply it to other people's work.
+
+Re-checked 2026-10-05: EAGLE (PMID 42773211) still has no PMC copy on **day
+14**, and Feng (PMID 42767630) still has none. Two weeks is long enough that
+EAGLE should probably be treated as unreachable-by-default and checked weekly
+rather than daily, unless the user can supply a PDF.
+
+Next queue entry: Yu Y, et al. (diabetic retinopathy prognostic-model protocol,
+PMC13630008) — the natural partner to entry 37, since it plans genuine external
+validation and uses a time-to-event outcome, which would bring survival analysis
+into the list.
