@@ -276,7 +276,7 @@ item, and an unrelated genetics paper. Nothing displaced the queue order.
 
 - [x] Akbal S, et al. CT radiomics showed no improvement beyond volume dynamics for early lesion-level size response to immunotherapy in metastatic melanoma. Cancer Imaging, 2026;26(1). (PMID 42823717, doi 10.1186/s40644-026-01135-4, PMC13632448 — reachable.) **High-value and the next queue entry.** A rare thing: a well-designed *negative* study that says so in its title. 158 patients, 1626 lesions, internal cohort n=129 with standardised protocols plus an external cohort n=29 with heterogeneous ones; models trained internally with patient-grouped cross-validation and applied **unchanged** to the external cohort. Internal AUC 0.84 (95% CI 0.78-0.88) for volumetrics versus 0.86 (0.81-0.90) for radiomics; externally both fell to 0.68 with CIs of 0.50-0.85 and 0.51-0.88 — on **12 progression events**. Would teach, all new to this list: **equivalence/non-inferiority testing against a prespecified margin** (they used ±0.05 on paired AUC differences), **patient-grouped cross-validation** (why 1626 lesions from 158 patients is not 1626 independent observations — the clustering lesson from Huang 2026-09-27 applied to splitting rather than pooling), **what a 12-event external cohort can and cannot settle**, and the discipline of reporting that an expensive new method adds nothing over a simple one. The median absolute correlation of 0.37 between radiomic features and lesion volume is a tidy worked example of why "independent predictor" claims need checking. **Decoded 2026-10-05 from PMC13632448 (full text). Graded 5/5 for conduct and reporting — the most carefully executed paper decoded so far.** It prespecified an equivalence hypothesis with a +/-0.05 margin, handled within-patient clustering three ways (patient-grouped CV, patient-level cluster bootstrap, equal-patient-weight sensitivity), applied the external model once unchanged with no centre indicator, took its threshold from internal out-of-fold predictions, self-scored RQS 18/36 and published it, and systematically tried to overturn its own null (volume residualisation, ComBat, distribution filtering, extended feature sets, alternative learners, IPW for survivor bias) and reported that it could not. Best single finding, buried in the supplement: raw early volume change with no model fitted beat the fitted volumetric model externally — the trivial-baseline check, run by the authors on themselves, and won by the trivial baseline. See summaries/2026-10-05-akbal-radiomics-no-gain-over-volume-melanoma.md.
 
-- [ ] Yu Y, et al. Development and validation of an AI-enhanced prediction model for 3-year visual decline in patients with diabetes using ophthalmic imaging: protocol for a real-world longitudinal cohort study. BMJ Open, 2026;16(9):e123521. (PMID 42816089, doi 10.1136/bmjopen-2026-123521, PMC13630008 — reachable.) A second protocol, and the natural partner to the trIAje decode: this one **does** plan external validation (Ningbo Eye Hospital, independent of the Peking University Third Hospital development cohort), uses a **time-to-event** primary outcome (time to first ≥0.2-logMAR decline within 3 years) rather than a binary label, and prespecifies discrimination, calibration, Brier score and decision curve analysis. Pairing the two would teach what separates a good protocol from a very good one, and would bring survival analysis into the list.
+- [x] Yu Y, et al. Development and validation of an AI-enhanced prediction model for 3-year visual decline in patients with diabetes using ophthalmic imaging: protocol for a real-world longitudinal cohort study. BMJ Open, 2026;16(9):e123521. (PMID 42816089, doi 10.1136/bmjopen-2026-123521, PMC13630008 — reachable.) A second protocol, and the natural partner to the trIAje decode: this one **does** plan external validation (Ningbo Eye Hospital, independent of the Peking University Third Hospital development cohort), uses a **time-to-event** primary outcome (time to first ≥0.2-logMAR decline within 3 years) rather than a binary label, and prespecifies discrimination, calibration, Brier score and decision curve analysis. Pairing the two would teach what separates a good protocol from a very good one, and would bring survival analysis into the list. **Decoded 2026-10-06 from PMC13630008 (full text). Graded 4/5 for the plan.** The pairing worked exactly as hoped, and in both directions. Where trIAje cited Riley and declined to apply it, this one applies it and the number reproduces to the unit (822.7 against a stated 823 from P=15, S=0.90, R2cs=0.15). Where trIAje registered an observational study voluntarily and added PPI, this one does neither. New weaknesses of its own: two large competing causes of the outcome go unaddressed (incident cataract, which causes exactly this measurement in diabetes, and death, which is informative censoring and is never mentioned); the 9.4% uplift from 823 to 900 eyes covers an inter-eye correlation of only about 0.1 in a bilateral systemic disease; the multimodal comparison has no sample size of its own; and the anticipated R2 of 0.15 is unsourced while halving it would roughly double the requirement. First time-to-event primary outcome in the list. See summaries/2026-10-06-yu-ai-visual-decline-prognostic-protocol.md.
 
 - [ ] Hojeij B, et al. Psoriatic arthritis digital phenotyping and inflammation drivers (PDPID) study: protocol for an international multicentre prospective cohort. BMJ Open, 2026;16(9):e115903. (PMID 42805667, doi 10.1136/bmjopen-2025-115903, PMC13629932 — reachable.) NCT06347237. Smartphone and smartwatch passive sensing plus patient-triggered flare reporting across four countries, 12 months. Would teach intensive longitudinal data, patient-initiated (and therefore non-random) measurement timing, and digital-biomarker validation.
 
@@ -328,3 +328,39 @@ Next queue entry: Yu Y, et al. (diabetic retinopathy prognostic-model protocol,
 PMC13630008) — the natural partner to entry 37, since it plans genuine external
 validation and uses a time-to-event outcome, which would bring survival analysis
 into the list.
+
+## Added 2026-10-06 — found while scanning, worth decoding later
+
+- [ ] Holly L, Raeside R, Morton A, et al. The public health challenges of children's and adolescents' digital media use: applying the digital determinants of health as an interpretive framework. The Lancet, 2026. (PMID 42830095, doi 10.1016/S0140-6736(26)01611-9. No PMC copy yet — re-check.) Second paper in a Lancet Series. Not a medical-AI study, but an unusually good teaching target for a different family of statistics: it states that "illustrative modelling indicates the potential population burden is substantial, even as its causal basis remains uncertain", and criticises the field for having "privileged easily measured proxies, such as screen time". Would teach population attributable fraction, the gap between association and attributable burden, exposure misclassification from proxy measures, and how a modelled burden estimate inherits every assumption in the model — none of which this list has covered. Pairs naturally with the first paper in the Series (Mechael P, et al., Lancet Digital Health 2026, PMID 42833894, doi 10.1016/j.landig.2026.101078), which sets out the framework.
+
+**EAGLE schedule change applied.** Per yesterday's note, EAGLE (PMID 42773211)
+moves to weekly re-checks; it was last checked 2026-10-05 (day 14, no PMC copy),
+so the next check is due around 2026-10-12. Feng (PMID 42767630) likewise. A
+date-filtered scan of 2026-09-29 to 2026-10-06 across Nature, Nature Medicine,
+Lancet, Lancet Digital Health, JAMA, NEJM and NEJM AI returned 14 records and no
+landmark primary medical-AI study — only the two Lancet Series reviews queued
+above, a Nature Medicine commentary, a JAMA news item and an unrelated genetics
+paper.
+
+**Protocol-pairing result, for the record.** Two protocols decoded 48 hours
+apart turned out to be strong and weak in opposite places, which is a better
+lesson than either alone:
+
+- *Sample size.* trIAje cited Riley and skipped the calculation, justifying it by
+  using the whole population (which answers the sampling question, not the
+  overfitting one). Yu computed it correctly and checkably.
+- *Registration.* trIAje registered on ClinicalTrials.gov voluntarily
+  (NCT07247669) despite being observational. Yu states no registration anywhere.
+- *External validation.* trIAje has none and says so. Yu plans an independent
+  site with no refitting of any kind.
+- *Outcome integrity.* trIAje's label is partly caused by the triage decision
+  under study. Yu's outcome has two unaddressed competing causes (cataract,
+  death).
+- *Patient involvement.* trIAje added a committee including patients. Yu had
+  none and says so plainly.
+- *Both* protect the hold-out in writing, both follow TRIPOD+AI, and both state
+  the limits of what they will be able to conclude.
+
+So the general lesson for reading a protocol: **the quantitative plan and the
+governance commitments are independent axes, and a paper can be excellent on one
+and absent on the other.** Check both separately.
