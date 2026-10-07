@@ -364,3 +364,71 @@ lesson than either alone:
 So the general lesson for reading a protocol: **the quantitative plan and the
 governance commitments are independent axes, and a paper can be excellent on one
 and absent on the other.** Check both separately.
+
+## 2026-10-07 — landmark paper took priority; two queue entries found unreachable
+
+Today's decode was **not** from the queue. MedGemma (Sellergren A, et al., "An
+open vision-language model for diverse medical applications," Nature Medicine,
+published 2026-10-06; PMID 42839104, doi 10.1038/s41591-026-04626-w) is the
+week's one genuinely significant medical-AI paper — an open-weights medical
+foundation model family — and the routine's priority rule applies. Decoded as
+entry 40, graded 3/5.
+
+**New retrieval route discovered, and it matters.** The Nature Medicine full
+text is paywalled and nature.com is blocked; arxiv.org is blocked too. But the
+**alphaXiv MCP server indexes arXiv directly and is reachable**, so the MedGemma
+Technical Report (arXiv:2507.05201v4) could be read in full, including its result
+tables. Use `mcp__alphaXiv__answer_pdf_queries` with a paper ID and a batch of
+questions — it returns the most relevant pages, so put every question for a paper
+into one call. **This re-opens a whole class of papers:** any Nature/Nature
+Medicine/Lancet AI paper with an arXiv preprint is now decodable even when the
+publisher is blocked. Worth retrying the four oldest deferred entries (Topol
+2019, Beam and Kohane 2018, Moor 2023, Wu 2021) this way, though commentary and
+review pieces are less likely to have preprints than technical reports are.
+
+**Discipline that this requires.** The preprint and the published paper are
+different documents. Today's summary states that distinction prominently,
+attributes every number to the arXiv report rather than to Nature Medicine, and
+notes one claim that was demonstrably softened between the two: the arXiv
+abstract's "reducing errors in electronic health record information retrieval by
+50%" became "can be more effective than fine-tuning the base Gemma 3 model…
+particularly in the setting of limited training data" in Nature Medicine. That
+is peer review working, and it is visible only because both documents were read.
+**Always state which document a number came from.**
+
+Two queue entries checked and found unreachable today:
+
+- **Lu J, et al.** (misspelled drug names, PMID 42809845, doi 10.2196/91151) —
+  **no PMC copy**; the PubMed record carries no `pmc` field. Previously noted in
+  these notes as "reachable", which was wrong — that was an assumption from JMIR
+  being generally open access, not a verified check. Re-check. Still the natural
+  partner for anything claiming internal performance: internal F-score 0.859
+  falling to 0.696 externally, and domain-specific BERT models beating GPT-4o
+  internally but not externally.
+- **Huang J, et al.** (radial wall strain, PMID 42765400, doi
+  10.4244/EIJ-D-26-00126, PMC13573861) — the PMC record **exists but its
+  full_text field came back empty**; only the abstract rendered, and
+  pmc.ncbi.nlm.nih.gov is blocked so there is no fallback. This is the
+  "incomplete PMC rendering" problem from 2026-10-02 in its most extreme form: a
+  record that exists and carries no body text at all. **Lesson: a confirmed PMC
+  ID is not a confirmed full text.** Re-check; the abstract is unusually rich
+  (adjusted HR 4.82, 95% CI 3.14-7.40; adjusted AUC 0.73, 95% CI 0.69-0.78;
+  prespecified RWSmax cutoff of 13%; 1,384 non-target vessels from 802 of 1,551
+  TARGET All Comers patients) and it would still teach post hoc analysis of a
+  completed randomised trial if the body text appears.
+
+**Checklist amendment, from the two failures above.** Before counting a queue
+entry as reachable, confirm BOTH that `get_article_metadata` returns a `pmc`
+field AND that `get_full_text_article` returns a non-empty `full_text`. Recording
+"PMC copy confirmed" from a metadata field alone has now misfired twice.
+
+A date-filtered scan of 2026-09-30 to 2026-10-07 across Nature, Nature Medicine,
+Lancet, JAMA, NEJM, NEJM AI and JAMA Network Open returned 14 records. Besides
+MedGemma, the only other new item was a Nature Medicine Letter announcing MAGIC,
+an international network for evaluating generative AI in global health (PMID
+42839102, doi 10.1038/s41591-026-04706-x; abstract not available in PubMed) —
+worth watching for its eventual reporting framework, with Gary Collins, Karel
+Moons and Eric Topol among the authors, but there is nothing to decode yet.
+
+EAGLE (PMID 42773211) and Feng (PMID 42767630) remain on weekly re-checks, next
+due around 2026-10-12.
