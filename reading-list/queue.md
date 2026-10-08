@@ -73,7 +73,7 @@ rather than abandoning them; the two JMIR entries queued on 09-17 became
 decodable within three days.
 
 - [x] Berger J, et al. Human learning is an understudied but promising lever for boosting human-AI synergy. PNAS, 2026;123(39):e2536100123. (PMID 42766752, doi 10.1073/pnas.2536100123.) Reanalysis of all 74 studies from an earlier meta-analysis that found human-AI combinations do not on average beat the better agent alone; argues the pessimism comes from designs that give humans no chance to learn. Strongest recent match for this list's themes. **Decoded 2026-10-02** — a PubMed Central copy (PMC13624608) appeared on day 11 of waiting, vindicating the re-check habit yet again. Graded 4/5. See summaries/2026-10-02-berger-human-ai-synergy-learning.md.
-- [ ] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught. *Re-checked 2026-10-03: still no PMC copy.*
+- [x] Feng Y, et al. Accuracy of deep learning in detecting cerebral microbleeds: systematic review and meta-analysis. Journal of Medical Internet Research, 2026;28:e95041. (PMID 42767630, doi 10.2196/95041.) Prospectively registered in PROSPERO, QUADAS-2 appraisal, pooled sensitivity/specificity/likelihood ratios and diagnostic odds ratios — metrics this list has not yet taught. **Decoded 2026-10-08 from PMC13639419 (full text), which appeared overnight after sixteen days of daily checks — the sixth 're-check rather than abandon' entry to pay off. Graded 3/5.** Good process (prospective PROSPERO registration, PRISMA, QUADAS-2 with a well-argued high-risk rating on all 42 studies, screening kappa 0.891, a sensitivity analysis on its own table-reconstruction step, and an honest note that QUADAS-2 misses AI-specific risks). Over-reaching numbers: 33 of 42 studies could not supply extractable data, so the pooled estimates rest on 14 contingency tables and the patient-level claim on 415 patients; a DOR of 1738 with a 100-fold interval; no I-squared anywhere; publication-bias tests on 4-9 studies reported as reassuring. Best contribution is the lesion-level versus patient-level split (specificity 0.98 vs 0.86, a sevenfold false-alarm difference) with a correct mechanistic explanation. See summaries/2026-10-08-feng-deep-learning-cerebral-microbleeds-meta-analysis.md.
 
 ## Added 2026-09-23 — found while scanning, not yet reachable
 
@@ -432,3 +432,56 @@ Moons and Eric Topol among the authors, but there is nothing to decode yet.
 
 EAGLE (PMID 42773211) and Feng (PMID 42767630) remain on weekly re-checks, next
 due around 2026-10-12.
+
+## 2026-10-08 — a fifth reusable technique, and the unit-of-analysis theme consolidating
+
+**5. Check that every ratio's confidence interval is log-symmetric.** For a ratio
+measure — odds ratio, risk ratio, hazard ratio, likelihood ratio, diagnostic odds
+ratio — the point estimate should sit at the GEOMETRIC mean of its interval,
+sqrt(low x high), because these intervals are computed on the log scale. Today
+this caught a real error. Eleven of the twelve ratio intervals in Feng et al.
+pass; the directly extracted positive likelihood ratio is printed as 40.2 (95% CI
+9.3-79.9), where sqrt(9.3 x 79.9) = 27.3, off by 47% — far too much to be
+rounding. Solving 40.2^2 / 79.9 gives 20.2, and sqrt(20.2 x 79.9) = 40.2 exactly,
+so the lower bound is almost certainly 20.2 mis-transcribed as 9.3. (A second
+tell: the printed upper bound 79.9 is identical to the row below it.) The four
+negative-likelihood-ratio intervals appear to fail the same check but only because
+they are printed to two decimals — allow for rounding before calling a mismatch.
+**This takes thirty seconds per interval, needs only a square root, and catches
+transcription errors, unit mix-ups and intervals computed on the wrong scale.**
+
+**6. In a meta-analysis, find the number attached to each pooled estimate, not
+the number in the title.** Feng et al. says "42 studies were incorporated in the
+meta-analysis" in its Results and, several pages later in the risk-of-bias
+section, "33 studies provided only limited outcome data and could not be directly
+included." The pooled numbers come from 14 contingency tables from at most 9
+studies, and the patient-level claim from 415 patients. Look for "k = " in the
+forest plot or count its rows, then ask how many *patients* those studies hold.
+
+**The unit-of-analysis theme has now appeared four days running, in four
+different disguises, and is worth treating as a standing check.**
+- Entry 38 (Akbal, 10-05): 1,626 lesions from 158 patients — a **clustering**
+  problem, fixed with patient-grouped cross-validation and cluster bootstrap.
+- Entry 39 (Yu, 10-06): two eyes per patient — a **sample-size** problem, where
+  cluster-robust standard errors report precision honestly but cannot increase it.
+- Entry 41 (Feng, 10-08): lesion-level versus patient-level — a **task-difficulty**
+  problem, where specificity falls from 0.98 to 0.86 and false alarms rise
+  sevenfold because a whole brain contains hundreds of chances to be wrong once.
+- And entry 40 (MedGemma, 10-07) is the same idea again: per-question accuracy on
+  multiple-choice benchmarks is not per-patient diagnostic accuracy.
+**Standing question for every paper from now on: what is the unit the accuracy is
+measured in, and is it the unit the clinical decision is made in?** It almost
+never is, and the clinical unit is almost always the worse number.
+
+A date-filtered scan of 2026-10-01 to 2026-10-08 across Nature, Nature Medicine,
+Lancet, JAMA, NEJM and NEJM AI returned 11 records. The only new items since
+yesterday were a Nature paper on retrofitting language models to operate over
+bytes (PMID 42844478, doi 10.1038/s41586-026-11111-4) and its accompanying News
+piece — genuinely interesting machine learning, but not medical AI, so no
+priority claim. MedGemma (entry 40) remains the week's landmark.
+
+EAGLE (PMID 42773211) and Feng's companion deferrals remain on weekly re-checks,
+next due around 2026-10-12. **Next queue entry: Huang J, et al.** (radial wall
+strain, PMID 42765400, PMC13573861) — re-check whether its empty full_text field
+has filled in; if not, Lu J (PMID 42809845, no PMC copy yet) then the PDPID
+protocol (PMC13629932, confirmed reachable).
