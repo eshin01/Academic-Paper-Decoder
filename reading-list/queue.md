@@ -488,7 +488,7 @@ protocol (PMC13629932, confirmed reachable).
 
 ## 2026-10-10 TOP PRIORITY — AMIE prospective clinic study, confirmed reachable
 
-- [ ] **Brodeur PG, Koshy JM, Palepu A, Saab K, ... Schaekermann M, Karthikesalingam A, Rodman A. Conversational diagnostic artificial intelligence in ambulatory primary care: a prospective feasibility study. The Lancet, 2026.** (PMID 42849491, doi 10.1016/S0140-6736(26)01535-7. NCT06911398. Funded by Alphabet.) **Decode this next.** This is the first prospective deployment of a conversational diagnostic AI with *real patients in real primary care appointments*, from the Google/DeepMind AMIE programme with Beth Israel Deaconess and Harvard. From the Lancet abstract: 114 patients enrolled April-November 2025, 98 completed both the AMIE interaction and the physician appointment; patients chatted with AMIE up to 5 days before a single-complaint urgent appointment; **physician safety supervisors monitored every interaction in real time** with predefined intervention criteria; **zero safety stops**, one hallucination noted, clinical information added in five interactions; conversations rated favourably in 87-100% of cases on 17 criteria by clinical evaluators but **48-96% on 16 criteria by patients**; patient attitudes to AI improved and stayed elevated; PCPs completed post-surveys in 60 of 98 cases and found AMIE helpful for visit preparation in 33 of 44 reviewed cases, with possible behaviour change in 25 of 44.
+- [x] **Brodeur PG, Koshy JM, Palepu A, Saab K, ... Schaekermann M, Karthikesalingam A, Rodman A. Conversational diagnostic artificial intelligence in ambulatory primary care: a prospective feasibility study. The Lancet, 2026.** (PMID 42849491, doi 10.1016/S0140-6736(26)01535-7. NCT06911398. Funded by Alphabet.) **Decode this next.** This is the first prospective deployment of a conversational diagnostic AI with *real patients in real primary care appointments*, from the Google/DeepMind AMIE programme with Beth Israel Deaconess and Harvard. From the Lancet abstract: 114 patients enrolled April-November 2025, 98 completed both the AMIE interaction and the physician appointment; patients chatted with AMIE up to 5 days before a single-complaint urgent appointment; **physician safety supervisors monitored every interaction in real time** with predefined intervention criteria; **zero safety stops**, one hallucination noted, clinical information added in five interactions; conversations rated favourably in 87-100% of cases on 17 criteria by clinical evaluators but **48-96% on 16 criteria by patients**; patient attitudes to AI improved and stayed elevated; PCPs completed post-surveys in 60 of 98 cases and found AMIE helpful for visit preparation in 33 of 44 reviewed cases, with possible behaviour change in 25 of 44.
 
   **Retrieval plan, already checked today:** The Lancet full text is paywalled and there is no PMC copy, BUT an arXiv preprint exists and is reachable through the alphaXiv route discovered on 2026-10-07 — **arXiv:2603.08448** ("A prospective clinical feasibility study of a conversational diagnostic AI in an ambulatory primary care clinic"), with versions v1 and v3 indexed. So this can be decoded from full text, as a two-document analysis like MedGemma (entry 40).
 
@@ -504,3 +504,89 @@ Re-checks completed 2026-10-09, all still unreachable:
 - **Huang J** (radial wall strain, PMID 42765400, PMC13573861): PMC record exists, `full_text` field **empty for the second consecutive day**. doi.org is also unreachable from this environment (ENOTFOUND), so there is no publisher fallback. EuroIntervention has no arXiv preprint. Park this one and check weekly rather than daily — the pattern looks like a PMC deposit that carries metadata without body text, which may never fill in.
 - **Lu J** (misspelled drug names, PMID 42809845): still no `pmc` field. Re-check weekly.
 - EAGLE (PMID 42773211) and the four oldest deferred entries remain on weekly re-checks, next due around 2026-10-12.
+
+## 2026-10-10 — AMIE decoded, and a correction to yesterday's note
+
+Decoded as entry 43 from the Lancet abstract plus arXiv:2603.08448v3 in full,
+graded **4/5** — on conduct the most carefully run AI deployment study in this
+list.
+
+**Correction to yesterday's queue note.** I recorded a "discrepancy already
+spotted" between the preprint's 100 participants and the Lancet abstract's 114
+enrolled / 98 completing. That was wrong: they are three different milestones of
+one funnel — 114 initiated an AMIE encounter, 100 completed it (87.7%), and 98
+completed both the AMIE encounter and the physician appointment. No conflict.
+**There is a real between-document difference, but it is a different one:** the
+Lancet abstract says supervisors "noted one hallucination and added clinical
+information in five interactions," while the preprint says "on three occasions,
+the AI supervisor made remarks to the patient." Three versus five. The
+two-document discipline still paid off — it just caught a different thing than I
+predicted, which is a reason to check rather than to assume.
+
+**Techniques added to the toolkit from this decode:**
+
+**7. With zero events, apply the rule of three before believing a safety claim.**
+Zero events in n observations bounds the rate at roughly 3/n. Here zero safety
+stops in 100 interactions bounds the true rate at 2.95%, i.e. up to about 3 in
+100 — and ~3,000 supervised conversations would be needed to bound it below 1 in
+1,000. Notably this paper computed binomial confidence intervals for its
+diagnostic accuracy and its blinding check but **not** for its headline safety
+result, which is the one everyone will quote.
+
+**8. Check whether the blinding was verified, not just claimed.** The best method
+in this paper: evaluators were asked to guess which output was AMIE's and which
+the physician's. They were right 58 of 98 times, 59.18% (95% CI 49.45%-68.91%) —
+an interval that contains 50%, so they were guessing and the blind held. Note the
+inverted logic: a HIGH correct-identification rate would have been the bad
+result. First paper in 43 to do this. From now on, for any "blinded assessment",
+ask whether the assessors were asked to guess and what the interval was.
+
+**9. Ask what k is in any top-k accuracy figure.** The abstract's "included the
+final diagnosis in 90% of cases" is **top-seven**, unlabelled. Top-3 is 75% and
+is labelled. Top-1 — the single best guess, which is what a patient would be
+handed — is 55/98 = 56%, and appears in neither abstract.
+
+**10. Watch for ceiling effects in rating rubrics.** "Seeking and addressing
+concerns" scored very favourable in 98 of 98 cases; five more criteria sat within
+three cases of the top. A saturated measure cannot discriminate and cannot detect
+future regression. The informative criterion was the one that was NOT at the
+ceiling: family history, where 43 of 98 were marked not applicable, leaving a real
+denominator of 55 with 4 unfavourable (7.3%).
+
+**11. Follow the denominator downhill in survey findings.** 98 encounters -> 60
+physician surveys returned (61.2%) -> 44 who had actually read the transcript ->
+33 who found it helpful. "75% found it helpful" is 33/44; across all encounters
+it is 33/98 = 34%. Compare response rates within the same study: patients ~90%,
+AI supervisors 100%, physicians 61.2%.
+
+**A reference-standard contamination pathway worth watching for generally.** In
+52 of 98 cases the "final diagnosis" was the physician's presumptive impression
+with no confirmatory test — and that physician had read AMIE's transcript *and its
+list of candidate diagnoses* before the visit. So in the majority of cases AMIE
+may have shaped the standard it was scored against, which is the most
+parsimonious explanation for the paper's own observation that accuracy trended
+higher in exactly that subgroup. The authors flag the weaker standard and run the
+subgroup analysis but do not name the pathway. **Generalised check: when a
+reference standard is a human judgement, ask whether that human saw the model's
+output first.** This is the fourth distinct flavour of reference-standard problem
+in the list, after entry 37 (outcome partly caused by the decision under study),
+entry 38 (gold standard only for transported patients) and entry 42 (gold
+standard only when the patient attends).
+
+**Next queue entry:** the two Lancet Series papers on the digital determinants of
+health (Holly L, et al., PMID 42830095; Mechael P, et al., PMID 42833894) — check
+for PMC copies, neither had one as of 2026-10-06. They would bring population
+attributable fraction and proxy-exposure misclassification into the list. Failing
+that, re-check Huang J (PMID 42765400, PMC13573861 with an empty full_text for
+two consecutive days) and Lu J (PMID 42809845, no PMC copy). EAGLE (PMID
+42773211) and the four oldest deferred entries are due their weekly re-check
+around 2026-10-12.
+
+**Also worth queueing when retrievable:** the accompanying Lancet commentary on
+the AMIE study — Omar M, Nadkarni GN, "Conversational diagnostic AI in primary
+care: what happens after it speaks?" (PMID 42849492, doi
+10.1016/S0140-6736(26)01763-0). No abstract in PubMed and the full text is
+paywalled, so it could not be paired with the study today. These two authors have
+now appeared three times in these scans (this commentary, the Nature Medicine
+agentic-autonomy piece from the 10-03 scan, and the MAGIC network letter), so
+they are a useful tracker for where this field's critical commentary is going.
