@@ -590,3 +590,112 @@ paywalled, so it could not be paired with the study today. These two authors hav
 now appeared three times in these scans (this commentary, the Nature Medicine
 agentic-autonomy piece from the 10-03 scan, and the MAGIC network letter), so
 they are a useful tracker for where this field's critical commentary is going.
+
+---
+
+## 2026-10-11 run — Rauschenberg et al., AI4U micro-randomized trial
+
+**Where today's paper came from.** The curated queue is exhausted of reachable
+entries, so today's paper came from a scan rather than the backlog. Route used:
+`pubmed pmc[sb]` on the standing medical-AI query (93 hits) narrowed by
+`randomized controlled trial[PT]` (10 hits), then screened three by hand. This is
+now the fallback whenever the queue has nothing retrievable — record it so the
+provenance of each entry stays auditable.
+
+**Reachability re-check (fourth consecutive day of the same three failures).**
+Holly L (PMID 42830095), Mechael P (PMID 42833894) and Lu J (PMID 42809845) still
+have no `pmc` field. Huang J (PMC13573861) still returns an **empty `full_text`**
+despite a valid PMC identifier — third consecutive day, now on weekly checks only.
+`convert_article_ids` returned RATE_LIMIT_EXCEEDED; `get_article_metadata`
+returns the same `pmc` field and is not on that limit, so prefer it for
+reachability checks.
+
+**12. Back out an unreported sample size from a reported test statistic.** The
+paper never says how many decision points entered the primary analysis — the
+most consequential omission in it, because that is the effective sample size of
+the headline result. But it reports a Wilcoxon rank-sum test on the
+intervention-to-outcome interval: W = 114,075, p = 0.518. R's W is the U
+statistic, with expectation n1*n2/2 under the null, and p = 0.518 puts W almost
+exactly at that expectation. So n1*n2 ~= 228,150; with 1:1 randomisation each arm
+is ~478 and the total is **~955 analysed intervals across 42 participants, ~23
+per person** — against a per-person maximum of 210, so about 11%. The estimate is
+robust to the split (40/60 gives ~975). "Up to 210 decision points each" and "~23
+analysed decision points each" are very different studies. **Generalised check:
+reported test statistics carry information about the n they were computed on;
+when an author omits an effective sample size, try to recover it and label the
+recovery clearly as your own.**
+
+**13. The unit-of-analysis question in its newest costume.** The standing question
+— "what is the unit the accuracy is measured in, and is it the unit the clinical
+decision is made in?" — has a sibling for within-person designs: **what is the
+unit the effect is measured in, and is it the unit the uncertainty is driven
+by?** Here the effect is measured in decision points (hundreds) but the
+uncertainty is driven by participants (42), because observations within a person
+are correlated. That is why hundreds of randomisations still leave the study
+under-powered. `wcls()` exists precisely to handle this.
+
+**14. Recompute realised power when a study under-recruits.** Planned: 60
+participants, ~87% power for a standardised proximal effect of 0.10 at one-sided
+alpha 0.025. Work backwards: z_crit = 1.96, z_power = 1.126, so planned
+non-centrality = 3.086. Non-centrality scales with sqrt(n), so at 42 analysed it
+is 3.086 * sqrt(42/60) = 2.582 and power = Phi(2.582 - 1.96) ~= **73%** (80% at
+49). Not catastrophic, but it means the two null findings are weak evidence of
+absence. Caveat: MRT power also depends on the availability rate, which this
+paper does not state, so treat the figure as an approximation.
+
+**15. Forecasting performance is not policy value.** The authors' own phrase, and
+the sharpest idea in the paper. The model was trained and tuned to minimise EMA
+*prediction* error, then deployed to *choose* among eight interventions. Those
+objectives come apart: predicting your mood well says nothing about correctly
+ranking counterfactual interventions. The authors write that the prediction
+objective "was used as a pragmatic proxy for model selection; it does not
+establish that the forecasting objective is optimally aligned with the causal
+effect of the assignment policy." So the MRT validated **the policy, not the
+model** — the right thing to test, but a positive result does not validate the
+forecasting and a null would not have invalidated it. **Generalised check: when
+an AI system is trained on one objective and deployed to make a decision, ask
+which one was actually measured.** This is the cleanest statement of the
+discrimination-vs-decision gap the list has collected so far, and it came from
+the authors, not from a critic.
+
+**16. Check the CI against the p-value, and prefer the version with more decimal
+places.** B = 0.147, CI 0.004-0.290. Midpoint = 0.147 (symmetric, as a normal
+interval should be), half-width 0.143, SE = 0.143/1.96 = 0.0730, z = 2.015,
+two-sided p = 0.0439 — reproduces the stated 0.044 exactly, so estimate, interval
+and p all come from one calculation with nothing mistyped. The paper then gives
+the interval two ways: abstract 0.004-0.290, body text 0.01-0.29. But 0.004 to
+two decimals is 0.00, not 0.01, so the body version makes the lower bound read as
+a real small positive rather than essentially zero. **When two parts of a paper
+disagree on a number, read the one with more decimal places.**
+
+**Funnel arithmetic that does not close.** The distal analysis reports 44 of 49
+with 4 excluded for incomplete baseline, but 49 - 4 = 45. It reconciles only by
+routing through the 48 who completed the post-assessment (48 - 4 = 44), which the
+text does not spell out. All other funnel steps check out exactly (58 - 9 = 49;
+49 - 6 - 1 = 42; 42/49 = 86%, 44/49 = 90%, 48/49 = 98%, 7/49 = 14%). Also: the
+abstract gives distress d = -0.23, the body d = -0.24; and 38 female + 10 male =
+48 of 49, leaving one participant unaccounted for in the retrieved text.
+
+**An exemplar worth keeping for contrast.** Graded 3/5 — sound design, thin
+result — but the limitations section pre-empts nearly every criticism I would
+have made, in the authors' own words: forecasting vs policy value; the resilience
+effect "cannot be unambiguously attributed to accurate personalization" with four
+named alternatives; the uncontrolled distal changes "should not be interpreted as
+causal"; the exclusion comparisons "exploratory and underpowered and should not be
+interpreted as evidence of equivalence"; and an explicit statement that the model
+should not be assumed to detect "deterioration trajectories, or crisis contexts
+that were absent from the training data." **Keep this one as the reference example
+of what honest reporting of a modest result looks like** — it is the calibration
+point for noticing when a paper claiming far more has done far less. Note also
+what the honesty does not cover: no multiplicity correction and no mention of
+multiplicity, no designated primary outcome, no registration number anywhere in
+the retrieved text, no a priori feasibility thresholds ("no formal a priori
+pass/fail thresholds were specified"), and the unreported decision-point count.
+Candour in the discussion is not a substitute for prespecification.
+
+**Next queue entry:** Li W et al., LLM-adapted music therapy pilot RCT (PMID
+42853827, PMC13652252) — a confounded three-arm design that the authors report
+honestly; screened and held over from today's scan. Then re-check Huang J
+(weekly), EAGLE (PMID 42773211) and the four oldest deferred entries (Topol 2019,
+Beam & Kohane 2018, Moor 2023, Wu 2021), all due their weekly re-check now and
+worth retrying via the alphaXiv route. Holly/Mechael/Lu move to weekly checks too.
