@@ -693,9 +693,110 @@ the retrieved text, no a priori feasibility thresholds ("no formal a priori
 pass/fail thresholds were specified"), and the unreported decision-point count.
 Candour in the discussion is not a substitute for prespecification.
 
-**Next queue entry:** Li W et al., LLM-adapted music therapy pilot RCT (PMID
-42853827, PMC13652252) — a confounded three-arm design that the authors report
+**Next queue entry:** ~~Li W et al., LLM-adapted music therapy pilot RCT (PMID
+42853827, PMC13652252)~~ **— decoded 2026-10-12, entry 45** — a confounded three-arm design that the authors report
 honestly; screened and held over from today's scan. Then re-check Huang J
 (weekly), EAGLE (PMID 42773211) and the four oldest deferred entries (Topol 2019,
 Beam & Kohane 2018, Moor 2023, Wu 2021), all due their weekly re-check now and
 worth retrying via the alphaXiv route. Holly/Mechael/Lu move to weekly checks too.
+
+---
+
+## 2026-10-12 run — Li W et al., LLM-adapted music therapy pilot RCT
+
+**Source:** the queue entry held over from the 10-11 scan. PLoS One 2026;21(10):e0360478,
+PMID 42853827, PMC13652252, full text retrieved intact. Graded **2/5**.
+
+**Reachability re-check (weekly).** EAGLE (PMID 42773211) — still **no `pmc` field**;
+day 21 of daily checks, the single biggest loss in this list. Lu J (42809845), Holly
+(42830095) and Mechael (42833894) — still no PMC copy. Huang J (PMC13573861) — **empty
+`full_text` for the fourth time**. The four oldest deferred entries (Topol 2019, Beam &
+Kohane 2018, Moor 2023, Wu 2021) remain unreachable by the same route; the alphaXiv
+retry is still worth trying for any of these that have arXiv preprints, though all four
+are journal commentaries unlikely to be on arXiv.
+
+**17. OPEN THE REGISTRATION RECORD. This is the highest-yield check in the whole list.**
+The paper carries an NCT number, so I pulled the ClinicalTrials.gov record (NCT07359950,
+"EAST-MUSIC") with the Clinical_Trials MCP tool and compared it line by line against the
+paper. Six mismatches, one of them decisive:
+- The registry names **a single primary outcome: change in state anxiety (STAI-S)**. In
+  the paper that outcome is **null** (F(2,109)=0.68, p=.511). The abstract's one positive
+  sentence is about **negative affect — a registered secondary outcome** — and the paper
+  never tells the reader which outcome was registered as primary. Textbook outcome-
+  reporting shift, visible only from the registry.
+- Registry enrolment **123**; paper analyses **113**. The number 123 appears nowhere in
+  the paper.
+- Registry defines every outcome as a **change score**; the paper analysed **baseline-
+  adjusted post scores (ANCOVA)**. That is a statistical *upgrade*, but it is an
+  undeclared deviation from the registered plan.
+- Registry exclusions (diagnosed psychiatric disorders, psychotropic medication,
+  participation in another study within 30 days) are **broader than the paper's stated
+  exclusions** (severe hearing impairment, cardiovascular disease).
+- Registry study start **2025-10-01** vs the paper's recruitment window **23–25 January
+  2026**. (The registration *posting* date is not in the retrieved record, so whether
+  registration was prospective could not be determined — not guessed.)
+- Registry title: "A Randomized Controlled Trial." Paper: "a pilot randomized exploratory
+  study." The softening arrives after a null primary outcome.
+**Make this a standing step: whenever a paper gives a registration number, fetch the
+record and compare the primary outcome, the enrolment, the analysis definition and the
+eligibility criteria.** It needs no statistics, takes one tool call, and here it changed
+the reading of the paper entirely. Note the inverse too: the 10-11 paper (Rauschenberg)
+had *no* registration number at all, so this check was unavailable — which is itself why
+its "one of three outcomes" could not be audited.
+
+**18. Confounded multi-component arms: ask what single thing differs.** The three arms
+differed in music (Tan Dun's *Hero* / a clinical therapy recording / Hisaishi's
+*Kikujiro*), in narration (AI Eastern-imagery / conventional / none) **and** in duration
+(26m19s / 29m56s / 25m35s — the longest 17% longer than the shortest). Nothing isolates
+the LLM script the title is about. **Randomisation makes the *people* comparable; only
+design makes the *treatments* comparable.** The fix is factorial: hold the music fixed,
+vary only the words. The authors name the flaw and recommend exactly that — acknowledgement
+does not create the missing arm. This is the same family as the AMIE/MedGemma "what is the
+comparison actually isolating?" question and it is now the most common defect seen in these
+scans.
+
+**19. Check whether the outcomes point the same way.** Negative affect favoured the AI-script
+arm; heart rate favoured the *standard therapy* arm, with the AI arm statistically
+indistinguishable from silent piano music. When one supposed mechanism produces opposite
+rankings on two outcomes, the simplest explanation is that different ingredients of a
+confounded bundle are driving different outcomes.
+
+**20. A null is a claim about your own sensitivity.** With N=113, 3 arms, 1 covariate, the
+design had ~80% power to detect ηp² ≈ .081 (roughly medium). Achieved power for the observed
+state-anxiety effect (ηp²=.012) was **~16%**. So the two nulls rule out medium-or-larger
+differences only. Always restate a null as "we could rule out effects larger than X."
+Computed with a noncentral-F power calculation; λ = f²N with f² = ηp²/(1−ηp²).
+
+**21. Partial eta squared reproduces from F, and Holm's monotonicity step explains repeated
+p-values.** ηp² = df1·F/(df1·F + df2) — all four of the paper's values and the sensitivity
+analysis reproduce exactly. Separately, both significant negative-affect contrasts report
+p = .026, which looks like a typo and is not: raw p's recovered from the CIs are .0084,
+.0094, .895; Holm gives .0251, then .0188 — but **Holm enforces monotonicity**, so the
+second is raised to .0251 and both round to .026. All six Holm adjustments across both
+outcomes reproduce. **Note which family was corrected:** Holm was applied to the three
+pairwise contrasts *within* each outcome, not across the four outcomes.
+
+**22. ANCOVA beats change scores in a randomised trial — and check the slopes.** Two reasons:
+fairness (a group starting worse has more room to improve) and, less obviously, **precision**
+(a change score carries the noise of two measurements; ANCOVA uses baseline as a predictor
+without importing its full error). The assumption to verify is **homogeneity of regression
+slopes** (the group × baseline interaction). These authors tested it — non-significant in the
+main models (p = .113–.709), but **significant (p = .010) in the state-anxiety sensitivity
+analysis**, which they correctly flag. Watch out: ANCOVA is safe here *because of*
+randomisation; in observational data "adjusting for baseline" can reverse or manufacture an
+effect (Lord's paradox).
+
+**Credit where due.** The statistical execution is better than average: complete data with no
+dropout, every Cronbach's α ≥ 0.84 reported, homogeneity-of-slopes tested, Levene and
+Shapiro–Wilk run, HC3 robust SEs as a cross-check, a pre-stated outlier rule with sensitivity
+analysis, and Holm applied correctly. The authors also state the confound, decline to claim
+efficacy, refuse to call the one-arm cultural-resonance rating a manipulation check, and
+recommend the right follow-up design. The 2/5 is for the design and the registry shift, not
+for sloppiness.
+
+**Next queue entry:** nothing reachable remains in the curated backlog, so expect another
+`pubmed pmc[sb]` scan tomorrow. Standing candidates on weekly re-check: EAGLE (42773211,
+highest priority), Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894),
+and the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only
+entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied, and retrofit summary #1
+(Vishwanath) with a Statistics Spotlight.
