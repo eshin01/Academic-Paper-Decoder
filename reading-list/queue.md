@@ -800,3 +800,113 @@ highest priority), Huang J (42765400), Lu J (42809845), Holly (42830095) / Mecha
 and the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only
 entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied, and retrofit summary #1
 (Vishwanath) with a Statistics Spotlight.
+
+---
+
+## 2026-10-13 run — Liu & Li, Vision Transformer synovitis grading
+
+**Source:** a `pubmed pmc[sb]` scan, because the curated queue has nothing reachable left.
+Query: medical-AI terms in title/abstract AND (diagnosis OR screening OR prognosis OR
+clinical decision) AND PMC AND a 1–13 October 2026 date window — 479 hits, top 40 pulled,
+8 screened by metadata, 2 full texts retrieved. Annals of Medicine 2026;58(1):2738281,
+PMID 42820939, PMC13637757. Graded **3/5**.
+
+**Daily reachability re-check.** EAGLE (PMID 42773211) — **still no `pmc` field on day 22**.
+Lu J (42809845), Holly (42830095) and Mechael (42833894) unchanged. Huang J (PMC13573861)
+remains an empty `full_text`.
+
+**Rejected in screening, with reasons** (keeping these so the screen is auditable):
+polyphenol quorum-sensing GNN (42828729) and a TNFSF10 bioinformatics study (42834715) —
+not clinical medical AI; FTIR proteinuria ML (42857332) — n=51 total across four groups,
+too thin to carry a decode; paediatric UTI random forest (42841462) — no external set;
+gallstone body-composition ML (42841700) and COPD rapid-decline CatBoost (42817919) —
+both decent, held as spares.
+
+**HELD FOR TOMORROW, and it is the stronger paper of the two finalists:** Tong M, et al.,
+"Artificial intelligence-powered renal pathology for glomerular disease classification: a
+systematic review and meta-analysis," Renal Failure 2026;48(1):2729643 (PMID 42838512,
+PMC13644454, full text retrieved and confirmed non-empty). Why it is worth a decode:
+(a) it pools **accuracy and precision** across studies, and both are prevalence-dependent,
+so pooling them is a genuine methodological error that the bivariate/HSROC literature exists
+to avoid; (b) it reports a **pooled AUC of 1.00** for minimal change disease, which is a red
+flag on its face; (c) its own abstract says "AI also showed higher accuracy than senior
+pathologists" and then concludes "current head-to-head evidence is insufficient to establish
+superiority over pathologists" — a self-contradiction inside one abstract, and exactly the
+kind of sentence that gets cited loosely; (d) it describes its sample as "39,536 validation
+sample units, not necessarily unique patients," the unit-of-analysis problem stated by the
+authors themselves. Deferred only because the list already decoded a diagnostic meta-analysis
+on 10-08 (Feng, cerebral microbleeds) and today's paper brought three concepts that were new.
+
+**23. Weighted kappa, and always ask which weighting.** New to the list, and the right metric
+for any ordered scale (cancer stage, NYHA class, biopsy grade, 0–3 synovitis). Plain kappa
+corrects accuracy for chance agreement but treats all disagreements alike; **quadratic**
+weighting penalises by the square of the distance (off by 1 → 1, by 2 → 4, by 3 → 9), so a
+0-vs-3 blunder dominates a 1-vs-2 quibble. Two watch-outs: quadratic weights are **generous**,
+so frequent off-by-one errors still score well (linear weights score the same predictions
+lower) — a paper that says "weighted kappa" without naming the weighting is uncomparable; and
+kappa's chance term depends on the **grade distribution**, so kappas from different populations
+are not directly comparable.
+
+**24. "The AI beat expert agreement" is usually two different measurements.** The sharpest
+finding in this paper, and the paper does not notice it. Humans: quadratic-weighted kappa
+**0.81**, raw pairwise, reader A vs reader B each working alone. Model: **0.842**, against the
+**third-expert-adjudicated consensus** — a label with much of the individual noise removed,
+i.e. an easier and more stable target. Like comparing two gymnastics judges to each other, then
+comparing a fourth observer to the panel's agreed score. The fair comparison (model vs reader A,
+alongside reader B vs reader A) was computable from data the authors already had and was not
+reported. **Standing question: when a paper says the model matched or beat experts, ask what it
+was compared against — one human, or a cleaned-up consensus of several?**
+
+**25. The shared-labeller circularity, and the six-rung external-validation ladder.** The same
+two sonographers labelled *every* image, the "external" set included, so the model was trained
+to reproduce their habits and then scored against their habits. The rungs, weakest to strongest:
+(1) random split; (2) temporal split; (3) different operators; (4) different devices;
+(5) different institution; (6) **different labellers** — the only rung that breaks the
+circularity. This paper's title claims rung 5 and delivers rung 2 plus parts of 3 and 4. Verify
+it from the baseline table without reading the methods: **Overall 312 = Development 218 +
+Internal 47 + External 47**, one consecutive cohort sliced three ways. **Tell: if the "external"
+set is a neat fraction of the total cohort, it is a split, not an independent collection.** Note
+also that a small internal→external drop (0.809 → 0.771) measured between two slices of one
+hospital says little about the drop at a second hospital — the literature is full of models that
+survived temporal splits and collapsed on geographic ones.
+
+**26. Recompute one reported number from another.** Internal test: 152 correct + 30 off-by-one +
+6 off-by-more = 188 ✓, and 152/188 = 0.8085 = the reported 0.809 ✓. Those same counts give
+MAE = (30×1 + 6×2)/188 = **0.2234**, matching the reported 0.223 exactly — which independently
+confirms the breakdown *and* pins every large error at exactly two grades. But within-one-grade
+accuracy from those counts is 182/188 = **0.968**, while the paper reports **0.957** (= 180/188).
+Those cannot both describe one confusion matrix; since the MAE matches, 0.957 looks like the slip.
+Consequence-free here, but the habit is the point: a paper whose numbers reconcile has probably
+been handled carefully.
+
+**27. Credit the leakage precaution when you see it.** Splitting **at the patient level** so all
+of one person's images stay in one subset is the most commonly botched step in imaging AI — two
+views of the same knee landing on opposite sides lets the model recognise the knee rather than
+the disease. These authors did it and said why. Worth noting as a positive marker, alongside
+their reporting of inter-reader reliability (most papers omit it), their deliberate refusal to
+harmonise across vendors, and their plain statement that no sample-size calculation was done.
+
+**28. The missing analysis in every reader-assistance study: automation bias.** Juniors improved
+(accuracy 0.702 → 0.782, weighted kappa 0.692 → 0.801) and read faster (21.4 → 15.8 s). Neither
+answers the safety question: **how often did a reader who would have been right get pulled to the
+model's wrong answer?** The data to answer it exist in the study (each reader's unassisted and
+assisted grade per case, crossed with whether the model was right) and one table would settle it.
+Also note faster reading with the answer displayed is partly anchoring, not comprehension. And
+the reader study never reports **how many cases were read**, names no test, and gives only
+"p < 0.05" — with 3 readers, whether the unit of analysis is readers or image-level readings
+changes the p-value by orders of magnitude.
+
+**Also unreconciled in this paper, worth remembering as a pattern:** the methods say "a senior
+sonographer provided the reference standard" while the results score a "senior reference reader"
+at accuracy 0.809 — a reader scored against their own labels would be 1.000, so these cannot be
+the same person. And 27.6% of patients had grey-scale only with no Doppler, yet a Doppler-only
+model is scored and a fused model is the headline, with no statement of how those ~30% were
+handled.
+
+**Next queue entry:** the Tong et al. renal-pathology meta-analysis above (PMC13644454), already
+retrieved. Spares if needed: gallstone body composition (PMC13647361), COPD rapid decline
+(PMC13637773). Standing daily/weekly re-checks unchanged: EAGLE highest priority, then Huang J,
+Lu J, Holly/Mechael, and the four oldest deferred reviews (Topol 2019, Beam & Kohane 2018,
+Moor 2023, Wu 2021). Standing offers never taken up: upgrade the abstract-only entries
+(Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath)
+with a Statistics Spotlight.
