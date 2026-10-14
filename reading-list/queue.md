@@ -903,10 +903,128 @@ the same person. And 27.6% of patients had grey-scale only with no Doppler, yet 
 model is scored and a fused model is the headline, with no statement of how those ~30% were
 handled.
 
-**Next queue entry:** the Tong et al. renal-pathology meta-analysis above (PMC13644454), already
-retrieved. Spares if needed: gallstone body composition (PMC13647361), COPD rapid decline
+**Next queue entry:** ~~the Tong et al. renal-pathology meta-analysis above (PMC13644454)~~
+**— decoded 2026-10-14, entry 47.** Spares if needed: gallstone body composition (PMC13647361), COPD rapid decline
 (PMC13637773). Standing daily/weekly re-checks unchanged: EAGLE highest priority, then Huang J,
 Lu J, Holly/Mechael, and the four oldest deferred reviews (Topol 2019, Beam & Kohane 2018,
 Moor 2023, Wu 2021). Standing offers never taken up: upgrade the abstract-only entries
 (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath)
 with a Statistics Spotlight.
+
+---
+
+## 2026-10-14 run — Tong et al., AI renal pathology meta-analysis
+
+**Source:** the entry held over from the 10-13 screen. Renal Failure 2026;48(1):2729643,
+PMID 42838512, PMC13644454. Full text retrieved; figures and all supplementary tables
+unretrievable. Graded **3/5** — and the grade undersells the conduct: this is close to
+4/5 reviewing of an evidence base that cannot support more than 3.
+
+**Daily reachability re-check.** EAGLE (PMID 42773211) — **still no `pmc` field on day 23**.
+
+**29. Accuracy for an uncommon disease starts high before anyone does any work. THE cleanest
+published example this list has found.** The paper's own table: MsPGN pooled accuracy **0.96**
+with pooled sensitivity **0.61**. Computed MsPGN prevalence from the validation sets the paper
+itself lists for the largest included study (311/5330, 70/1226, 48/875, 48/933, 51/962,
+52/1024 → 580/10,350 = **5.6%**). A model that says "not MsPGN" every single time scores
+accuracy **0.944**. The reported 0.96 beats doing nothing by **1.6 percentage points** while
+missing two in five real cases. Decompose with **accuracy = p·Se + (1−p)·Sp**: solving gives
+implied specificity ≈ 0.98, so the number reflects what the models are good at (ruling out)
+because 94% of slides need ruling out. **The structural tell needed no arithmetic: accuracy was
+the highest of the four main metrics for ALL EIGHT diseases** (MN .96/.96, LN .79/.97,
+DN .78/.96, MsPGN .61/.96, MPGN .60/.91 as Se/Acc). When one metric is the most flattering in
+every single condition, it is measuring how the number is built, not how good the model is.
+**Standing step: for any accuracy figure, get the prevalence and compute 1−p first.** This is
+technique #4 (the trivial baseline) in its most quotable form yet.
+
+**30. Confidence interval vs prediction interval — new to the list, and the single most useful
+column in any meta-analysis.** CI = where the *average of past studies* sits. PI = what *the
+next study* should expect. They diverge when heterogeneity is high, because the CI shrinks with
+more studies while the PI must keep carrying the real between-study spread. Worked examples from
+this paper: IgAN accuracy CI (0.92, 0.97) vs PI **(0.82, 1.00)** — 3.6× wider; IgAN precision CI
+(0.84, 0.95) vs PI (0.62, 1.00); LN precision CI (0.78, 0.97) vs PI **(0.50, 1.00)**; MsPGN
+sensitivity CI (0.45, 0.76) vs PI (0.19, 0.95); and MPGN precision 0.58 with CI **(0.00, 1.00)**
+— two datasets, no information at all, and the most honest number in the paper. Context: median
+I² across the 38 pooled estimates = **92.8%**, with 28/38 ≥ 75% and 24/38 ≥ 90%. **If a review
+reports high I² and no prediction interval, you are being shown a precise-looking average of
+things that disagree.** Note also what I² is not: not a measure of test quality, and not evidence
+of bias — it means the estimate is *not transferable*. These authors say that in their methods.
+
+**31. A pooled AUC of 1.00 is a red flag, and check whether each metric in a row shares a k.**
+MCD AUC = **1.00 (95% CI 0.99–1.00) with I² = 0.0%** — perfect discrimination replicated
+identically across six datasets, which real diagnostic tests do not do; it is the fingerprint of
+small curated datasets. It also sits oddly beside MCD's own sensitivity of 0.92: AUC 1.00 means a
+threshold existed catching every case with no false alarms, yet 8% were missed at the threshold
+used. **The resolution is the k:** MCD sensitivity rests on 11 datasets, MCD AUC on **6**. Same
+pattern elsewhere — MN sensitivity k=22 but AUC k=10; IgAN k=14 vs k=11; FSGS and MPGN have no
+AUC row at all. Studies reporting AUC are a non-random subset (they need probability outputs and
+a threshold sweep, which tracks with better-resourced work). **Reading across a row invites the
+assumption that the metrics describe one body of evidence; verify the k on each.**
+
+**32. Datasets are not studies, and "units" are not patients — a three-layer version of the
+standing question.** (a) 15 studies produced ~26 validation datasets (16 'IV' + 10 'EV' tokens
+in Table 1); MN alone appears in **22**. One study (Ma et al.) contributes six on its own —
+IV + EV1..EV5 — all sharing one model, one training set, one architecture, one group. The authors
+*did* guard against patient overlap and took only the main model where several were tested on one
+cohort, which is better than most reviews; but non-overlapping patients ≠ independent evidence.
+(b) 39,536 validation "units" decomposes to **16,223 patient-based + 9,505 image-based +
+9,988 glomerulus-based + 3,820 lesion-based** (sums exactly), so **only 41% are patients**. (c)
+The authors entered unit of analysis as a meta-regression covariate and **found it mattered** —
+for IgAN, precision p=0.002, F1 p=0.001, AUC p=0.02 — then still reported one pooled estimate
+across units. **Ask for a second column, "number of contributing studies," next to every k.**
+
+**33. "Higher accuracy than senior pathologists" rested on ONE study.** Comparative data existed
+in only 4 of 15 studies: one reporting junior pathologists, one senior, two unspecified. The
+abstract says "AI also showed higher accuracy than senior pathologists for IgAN, MN, and MCD" —
+three diseases, one study's senior readers, compared by **Z-test between pooled estimates from
+different studies on different slides**, i.e. an indirect comparison, not an experiment. The body
+text calls it exploratory, descriptive, hypothesis-generating and explicitly "not head-to-head"
+— three hedges the abstract sentence will outrun. Pairs with technique #24 (the AI-beat-experts
+comparison is usually two different measurements) and adds a new variant: **the comparison may
+also be two different sets of patients.**
+
+**34. When a paper's conclusion is more cautious than its abstract, believe the conclusion.**
+Almost every criticism in this decode is one the authors made first: that the totals are analysis
+units not patients; that **"a bivariate or HSROC model could not be applied"** and the pooled
+metrics are "complementary reported performance measures rather than a complete paired
+sensitivity-specificity diagnostic accuracy model"; that **specificity was not pooled and they
+refused to impute it** because that "could introduce bias"; that 7/15 studies are at high risk of
+bias on model evaluation; that GRADE certainty is moderate at best and "substantially lower" for
+five of eight diseases; that all 15 studies are retrospective. Their conclusion — "current
+head-to-head evidence is insufficient to establish superiority over pathologists" — is the
+correct reading of their own data and the sentence to quote. **The gap between a conscientious
+methods section and one quotable abstract sentence is where most misleading citations are born.**
+
+**Also worth keeping as positive markers of a careful review:** prediction intervals for *every*
+estimate; REML random effects with the Hartung-Knapp-Sidik-Jonkman adjustment (widens intervals
+appropriately with few studies); a **prespecified 0.80 relevance threshold** with the summary
+figure colour-coded by whether each CI excludes it; leave-one-out and Egger's restricted to k≥10
+with the reason stated ("would be unstable and difficult to interpret"); duplicate screening with
+agreement reported (kappa 0.87 / 0.89 / 0.91); PRISMA-DTA, PROBAST+AI and GRADE all applied and
+their uncomfortable results printed.
+
+**35. Registration numbers can be malformed — check the format, and say what you could not
+verify.** The paper gives PROSPERO **CRD420261278316**, which has 12 digits. PROSPERO identifiers
+follow CRD + '4' + YYYY + 6 digits = 11 digits (e.g. CRD42026123456); this reads as
+4 + 2026 + 1278316, a seven-digit final group. One digit too many, and it defeats the entire
+point of registering. **Recorded as a formatting discrepancy, NOT as a claim that the
+registration does not exist** — the record could not be verified with the tools available, and no
+link to it was published in the summary. Contrast 10-12 (Li et al.), where the registry *was*
+reachable and changed the reading of the paper entirely: the lesson from #17 holds, but it
+depends on the identifier being correct.
+
+**Also noted in this paper:** the reference standard is not uniform — the inclusion criteria say
+pathology confirmation, while the study table records roughly half the entries as "expert
+consensus," which raises the same circularity question as #25 when the comparison is AI vs
+humans. And the study table carries at least one stray full-width character ("EV：171"),
+suggesting it was assembled by hand.
+
+**Next queue entry:** nothing reachable left in the curated backlog, so expect another
+`pubmed pmc[sb]` scan. Spares already screened and held from 10-13: gallstone body-composition ML
+(PMID 42841700, PMC13647361) and COPD rapid-decline CatBoost (PMID 42817919, PMC13637773) — both
+retrievable, neither decoded. Standing re-checks unchanged: EAGLE highest priority (day 23),
+then Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) / Mechael
+(42833894), and the four oldest deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023,
+Wu 2021). Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2,
+Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
+Statistics Spotlight.
