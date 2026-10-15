@@ -1028,3 +1028,107 @@ then Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) 
 Wu 2021). Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2,
 Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
 Statistics Spotlight.
+
+---
+
+## 2026-10-15 run — Jerjes et al., elastic scattering spectroscopy for nodal metastasis
+
+**Source:** a fresh `pubmed pmc[sb]` scan (medical-AI terms AND randomized/prospective/multicenter/
+external validation/trial, 8–15 October window, 57 hits, top 30 pulled, 6 screened). This beat both
+spares held from 10-13. JMIR Cancer 2026;12:e103960, PMID 42868592, PMC13661036. Graded **4/5**.
+
+**Daily reachability re-check.** EAGLE (PMID 42773211) — **still no `pmc` field on day 24**, though
+the record now carries full pagination (Nat Med 2026;32(10):3748–3759) and MeSH terms, so it is
+being indexed; a PMC deposit may yet follow.
+
+**Screened and rejected / deferred today:** AI air-quality implementation qualitative study
+(42868279) — no statistics to teach; measles vaccination-defaulting TabNet ensembles (42867502,
+PMC13660459) — decent SMOTE-NC/SHAP material, held as a spare; Mössbauer-spectroscopy ML
+transferability (42866681) — **not medical**, so out of scope for this list, but worth recording
+because it quantifies technique #25's ladder in another field: median R² fell from 0.670 under
+random splitting to 0.322 holding out publications and 0.287 holding out experimental-provenance
+groups. **HELD FOR TOMORROW:** Park YS et al., smartphone ECG app (ECG Buddy) for left-ventricular
+dysfunction in sepsis, 425 patients across 3 hospitals, AUROC 0.901, beating NT-proBNP 0.911 vs
+0.637 (PMID 42865282, PMC13659111, J Korean Med Sci). Two angles the list has never covered:
+**author affiliations include the company that makes the device (ARPI Inc.)**, so conflicts of
+interest become teachable; and the threshold (37.35) is described as "optimized," which is the
+tuned-on-test-data question again.
+
+**36. Nested cross-validation, and the leak it does NOT close.** Ordinary CV used for both tuning
+and reporting is optimistic — you are quoting the maximum of many noisy numbers. Nested CV puts an
+**inner** loop in charge of every choice (hyperparameters, components, calibration, threshold) and
+touches the **outer** test fold once, so the estimate describes the *whole procedure*. This paper
+did 10 repetitions × 5 outer folds = 50 splits with a 4-fold inner loop, and fitted smoothing,
+scaling, SNV, PCA, component count, regularisation, class weighting, calibration **and** the
+threshold inside the training folds. **But nested CV protects tuning within a family, not the
+choice between families.** Five families were compared and the hybrid was carried forward "because
+it had the highest pooled patient-grouped out-of-fold AUROC" — chosen on the same predictions then
+reported. The authors say it in the abstract: the estimate "does not represent independent
+validation of a prospectively fixed final model." **Tell to watch for: "we compared N models and
+the best achieved X." X is the maximum of N noisy estimates; the bias is upward and unquantified.**
+
+**37. THE LEAKAGE PENALTY, MEASURED INSIDE ONE PAPER. Keep this as the canonical number.** Same
+model, same 274 nodes, two ways of splitting:
+  - patient-grouped (correct): **AUROC 0.966**, TP 90 / **FN 6** / TN 170 / FP 8, Se 93.8 Sp 95.5 Acc 94.9
+  - node-grouped only (the usual shortcut): **AUROC 0.989**, TP 93 / **FN 3** / TN 172 / FP 6, Se 96.9 Sp 96.6 Acc 96.7
+**The shortcut buys +0.023 AUROC, +1.8 points of accuracy, and halves the missed cancers from 6 to
+3.** Nothing about the model changed; only the bookkeeping. Every operating characteristic in both
+rows reproduces exactly from the confusion matrices. This is the quantified version of technique
+#27 (credit the patient-level split) and the sharpest answer yet to "does grouping really matter?"
+Structure here was three deep: **45 patients → 280 nodes → 840 spectra**, median 6 nodes/patient.
+Note also the aggregation gain for contrast: patient-grouped at *spectrum* level AUROC 0.944 →
+node level 0.966, i.e. **+0.022 from legitimately averaging 3 readings — almost exactly the same
+size as the +0.023 from cheating.** A real improvement and a bookkeeping error can move a number
+identically; only one is earned.
+
+**38. Clustering shows up in the ERRORS, not just the splits.** All **8 false positives came from
+just 2 pathology-negative patients**, both with florid reactive change (follicular hyperplasia,
+sinus histiocytosis). Treating nodes as independent would score that as 8 independent errors in
+178 chances; really it is ~2 errors repeated across two people's nodes. Which is why this paper
+also used **patient-clustered bootstrap** (2,000 resamples, whole patients with all their nodes)
+and **within-patient permutation** (10,000 permutations preserving each patient's own positive/
+negative mix). **Getting the splits right and then bootstrapping over observations undoes half the
+work** — most papers that group their folds still compute intervals as if every node were a person.
+
+**39. Calibration slope and calibration-in-the-large** (new to the list; Brier was covered 10-03).
+Brier 0.063 against its prevalence reference p(1−p) = 0.350 × 0.650 = **0.228**, so ~72% reduction
+in squared error — *a Brier score means nothing without that reference*. **Calibration-in-the-large
+−0.03**: is the average predicted risk right? (0 = yes.) **Calibration slope 0.94**: is the spread
+right? (1 = ideal; **<1 = predictions too extreme**, the signature of mild overfitting — and the
+paper's own "modest overprediction at the highest probabilities" matches). Discrimination says the
+ranking is good; calibration says the displayed numbers mean something. Calibration is also the
+first property to break when a model moves hospital.
+
+**40. Report the no-result rate.** 6 of 280 nodes (**2.1%**) produced no analysable reading and were
+excluded from the denominator. STARD requires this and almost nobody reports it: a test that fails
+to answer 2% of the time is a different proposition from one that always answers. Note the knock-on
+— all 6 were pathology-negative, so removing them nudges prevalence from 34.3% to 35.0%.
+
+**41. Keep this paper as the reference example of GOOD methodology**, the counterpart to 10-12
+(registry-checking) and 10-14 (believe the conclusion over the abstract). Markers worth recognising:
+QC rules prespecified and applied **blind to the label**; pathologists blinded to the spectra; nodes
+selected for the index test **before** final pathology was known; 8 optical features prespecified;
+robustness as real tests not decoration (leave-one-patient-out 0.961, leave-one-batch-out 0.952,
+drop worst 10% 0.969, 2-spectra 0.951, 3-spectra-only 0.964, area-normalised 0.895, shape-focused
+0.912 — the two that strip amplitude lose most, and the authors use that to flag amplitude as
+handling-sensitive rather than burying it); error analysis naming *which* cases failed (4 of 6
+misses were micrometastases 0.3–1.6 mm); TRIPOD+AI and STARD-AI followed; and plain statements that
+no sample-size calculation was done, that the comparison was exploratory and unregistered, and that
+the binary operating characteristics are "secondary descriptive" because the threshold was applied
+after validation. **Here there is no gap between the methods and the abstract — the caution is in
+both.** What still caps it at 4/5: no external validation, 45 patients, ex vivo only, acknowledged
+selection optimism, and the hardest category (micrometastases) is where it fails.
+
+**Still worth asking of this paper:** sensitivity split by deposit size (micro vs macro) is not
+reported though the counts exist; one operator per node prevents any interoperator reproducibility
+estimate, on a handheld probe where contact angle and pressure were not measured; funding and
+competing interests do not appear in the retrieved text; and the median excision-to-reading
+interval of 18 min (IQR 13–26) could be tested against signal drift from the recorded timestamps.
+
+**Next queue entry:** the smartphone-ECG sepsis study above (PMID 42865282, PMC13659111) — COI and
+the "optimized threshold". Spares: measles TabNet (PMC13660459), gallstone body composition
+(PMC13647361), COPD rapid decline (PMC13637773). Standing re-checks unchanged: EAGLE daily, then
+Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) / Mechael (42833894), and
+the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
+(Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
+Statistics Spotlight.
