@@ -1125,10 +1125,105 @@ estimate, on a handheld probe where contact angle and pressure were not measured
 competing interests do not appear in the retrieved text; and the median excision-to-reading
 interval of 18 min (IQR 13–26) could be tested against signal drift from the recorded timestamps.
 
-**Next queue entry:** the smartphone-ECG sepsis study above (PMID 42865282, PMC13659111) — COI and
-the "optimized threshold". Spares: measles TabNet (PMC13660459), gallstone body composition
+**Next queue entry:** ~~the smartphone-ECG sepsis study above (PMID 42865282, PMC13659111)~~
+**— decoded 2026-10-16, entry 49.** Spares: measles TabNet (PMC13660459), gallstone body composition
 (PMC13647361), COPD rapid decline (PMC13637773). Standing re-checks unchanged: EAGLE daily, then
 Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) / Mechael (42833894), and
 the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
 (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
 Statistics Spotlight.
+
+---
+
+## 2026-10-16 run — Park et al., smartphone ECG app for LV dysfunction in sepsis
+
+**Source:** the entry held over from the 10-15 screen. J Korean Med Sci 2026;41(39):e217,
+PMID 42865282, PMC13659111. Full text retrieved; figures and supplementary tables not.
+Graded **3/5**. Sits directly opposite yesterday's Jerjes paper as a matched pair on
+threshold discipline — same statistic, opposite practice, one day apart.
+
+**Daily reachability re-check.** EAGLE (PMID 42773211) — **still no `pmc` field on day 25.**
+
+**42. Sensitivity and specificity belong to the TEST; PPV and NPV belong to the POPULATION.**
+Reconstructed the confusion matrix from the reported percentages: **TP 60, FN 7, TN 269, FP 89**
+(sums to 425; every reported figure reproduces — Se 89.55%, Sp 75.14%, PPV 40.27%, NPV 97.46%,
+accuracy 77.41%). Then held Se and Sp fixed and varied prevalence:
+  30% → PPV 60.7 / NPV 94.4 · **15.8% (this study) → PPV 40.3 / NPV 97.5** · 10% → 28.6 / 98.5 ·
+  5% → 15.9 / 99.3 · 2% → 6.8 / 99.7
+Same test every time. **The abstract reports sensitivity, specificity and NPV, and omits PPV** —
+the one unflattering operating characteristic, and the one saying 89 of 149 alarms were false.
+Note which direction the selection bias runs: the cohort is 7.2% of the registry, selected for
+having had an echo, so it is *enriched*; in a broader population NPV improves and PPV gets worse.
+That happens to favour the authors' own framing (a rule-out screen), which is the defensible one.
+
+**43. F1 computed for the opposite class — a clean, exactly reproducible table error.** Using the
+paper's own printed precision (40.3%) and recall (89.6%), F1 = 2·p·r/(p+r) = **55.6%**. The table
+prints **84.9%**. Substituting NPV (97.5%) and specificity (75.1%) — i.e. treating "no dysfunction"
+as the positive class — gives **84.8%**. The same substitution reproduces the other two rows to the
+decimal: SNUBH **86.8%** and NT-proBNP **79.4%**. So three F1 values describe detecting *healthy*
+hearts while precision and recall in the same rows describe detecting *sick* ones; the real F1 for
+the actual task is ~29 points lower. **Generalised check: F1 is only defined relative to a chosen
+positive class — recompute it from the row's own precision and recall and see if it lands.** Two
+smaller inconsistencies in the same table: PPV 40.4 vs Precision 40.3 (identical quantities), and
+Sensitivity 89.6 (82.1–97.0) vs Recall 89.6 (82.1–95.5) (identical quantities, different upper CI).
+
+**44. A threshold quoted to two decimals is usually a threshold tuned on the test set.** "Using the
+threshold that maximized its Youden index" → **37.35** (whole cohort), 37.25 (SNUBH), 10,237.05
+(NT-proBNP), all chosen on the same patients they are scored on, with no split and no
+cross-validation. Youden = Se + Sp − 1 = 0.896 + 0.751 − 1 = 0.647 at the chosen point. **The AUC
+is threshold-free and unaffected; everything downstream — Se, Sp, PPV, NPV, accuracy, F1 — is the
+best case on this dataset.** The tell is precision beyond what the measurement deserves: 37.35 on
+a 0–100 score is not a clinically reasoned boundary, it is where this dataset's curve peaked.
+**Direct contrast with technique #36 (10-15):** Jerjes et al. chose thresholds inside inner
+training folds, applied the median training-derived threshold once, and still demoted the
+resulting figures to "secondary descriptive operating characteristics."
+
+**45. DeLong's test is right for two markers on the same patients — then ask whether the
+comparator got a fair run.** DeLong accounts for the correlation between two AUCs measured in the
+same people; an unpaired test would overstate uncertainty. Used correctly here (0.911 vs 0.637,
+p < 0.001, n = 234). But: (a) **NT-proBNP underperformed its own literature** — 0.637 against the
+0.69–0.75 the authors themselves cite from prior sepsis studies; (b) it was **not adjusted for age
+or renal function** (their limitation 3) while CKD was 20.9% vs 7.8% between groups (p = 0.002),
+and CKD raises NT-proBNP regardless of the heart; (c) the comparison covered **1 of 3 sites**, the
+others using a different assay. **Standing check: when a paper beats a comparator, look up how the
+comparator did against its own published range. If it underperformed, the margin belongs partly to
+the comparison, not to the new test.**
+
+**46. Conflicts of interest: read the affiliation lines, not just the disclosure box.** Two of eight
+authors list **ARPI Inc.**, the maker of ECG Buddy — one of them first. **No funding or
+competing-interests statement appears in the retrieved text.** Not disqualifying (device studies
+are nearly always done with the device's makers) but it is a reason to recompute rather than trust
+adjectives — which is how the F1 error surfaced. New to the list; worth a standing glance at every
+device or software paper.
+
+**47. "Per unit" odds ratios are meaningless until you know how wide the variable runs.** Adjusted
+OR **1.015 per unit** of a 0–100 score sounds negligible. The median gap between groups was ~59
+points: 1.015^58.8 = **2.40** (CI across the same gap, 1.34 to 4.27). Always compound a per-unit
+effect across the observed range before judging it.
+
+**Also found and worth keeping as patterns:** the denominator cascade is extreme — **5,940 → 2,311
+excluded (no echo) → 3,204 excluded (no ECG) → 425 included = 7.2% of the registry**, and the
+authors honestly report that the included were older, more often in septic shock and heart failure,
+yet had *better* survival ("selectively enriched... sufficiently stable to receive echocardiographic
+evaluation"). The patients a bedside tool is *for* are the ones excluded. **46 patients are missing
+qSOFA and nobody says so**: quartile counts sum to 99/94/96/90 against sizes 107/106/107/105, and
+Table 1 agrees at 379 of 425 — so the qSOFA null and the qSOFA-adjusted mortality model both ran on
+379. And this was **not a field test**: ECGs were cropped from the EMR, shown on a 24-inch monitor
+under controlled lighting, photographed by **one** specialist at 30–40 cm with an iPhone 15 Pro,
+with reproducibility never assessed — yet the discussion claims "anyone can use this technology
+anywhere from emergency scenes to hospital wards." Gap between what was tested and what is claimed.
+
+**Credit where due:** three sites, 425 patients, prespecified comparator, correct paired test,
+subgroup AUCs stable at 0.865–0.925, proper trend tests (Jonckheere–Terpstra, Cochran–Armitage) on
+a clean dose-response (LVEF 63.0→60.0→55.9→40.0; mortality 8.4→16.0→19.6→25.7%), exploratory
+adjustment for confounders, scores blinded to the echocardiographers, and a limitations section
+that names the selection bias, the 72-hour ECG-to-echo gap ("a significant limitation"), the
+absence of sepsis-specific training, and the missing reproducibility analysis.
+
+**Next queue entry:** nothing reachable left, so expect another `pubmed pmc[sb]` scan. Spares
+already screened: measles TabNet (PMID 42867502, PMC13660459), gallstone body composition
+(PMC13647361), COPD rapid decline (PMC13637773). Standing re-checks unchanged: EAGLE daily (day 25),
+then Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) / Mechael (42833894),
+and the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only
+entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
+(Vishwanath) with a Statistics Spotlight.
