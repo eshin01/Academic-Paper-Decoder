@@ -126,7 +126,7 @@ yet and nature.com is blocked here, so it could not be decoded from full text
 today; decoding it abstract-only would have produced a summary whose numbers
 could not be traced to a methods section.
 
-- [ ] Zhou J, et al. Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence. Nature Medicine, 2026. (PMID 42773211, doi 10.1038/s41591-026-04656-4. Trial registration ChiCTR2300074806.) The EAGLE model detects oesophageal precancer and cancer on ordinary chest CT — trained on 6,813 patients from 2 centres, validated across 12 centres in 3 countries on 80,612 patients. Reports 98.5% specificity with 90.0% sensitivity for cancer and 52.5% for precancerous lesions; a real-world calibration cohort (n=35,402) cut false positives 72.7%; prospective hospital validation (n=17,446) reached 42.2% positive predictive value. By far the largest and most consequential medical-AI paper seen in these scans. Would teach screening arithmetic at low prevalence, positive predictive value versus specificity, operating-point selection, and threshold calibration. **Highest-priority retry — check for a PMC copy every day.** *Re-checked 2026-10-03 (day 12): still no PMC copy.*
+- [x] **DECODED 2026-10-17 (entry 50, ABSTRACT ONLY)** ~~Zhou J, et al. Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence. Nature Medicine, 2026. (PMID 42773211, doi 10.1038/s41591-026-04656-4. Trial registration ChiCTR2300074806.) The EAGLE model detects oesophageal precancer and cancer on ordinary chest CT — trained on 6,813 patients from 2 centres, validated across 12 centres in 3 countries on 80,612 patients. Reports 98.5% specificity with 90.0% sensitivity for cancer and 52.5% for precancerous lesions; a real-world calibration cohort (n=35,402) cut false positives 72.7%; prospective hospital validation (n=17,446) reached 42.2% positive predictive value. By far the largest and most consequential medical-AI paper seen in these scans. Would teach screening arithmetic at low prevalence, positive predictive value versus specificity, operating-point selection, and threshold calibration. **Highest-priority retry — check for a PMC copy every day.** *Re-checked 2026-10-03 (day 12): still no PMC copy.*~~
 
 Re-checked 2026-09-26: Berger (PNAS, PMID 42766752) and Feng (JMIR cerebral
 microbleeds, PMID 42767630) still have no PubMed Central copy — day 4 and day 5
@@ -1227,3 +1227,93 @@ then Huang J (42765400, empty full text ×4), Lu J (42809845), Holly (42830095) 
 and the four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only
 entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
 (Vishwanath) with a Statistics Spotlight.
+
+---
+
+## 2026-10-17 run — EAGLE, decoded ABSTRACT ONLY after 26 days
+
+**The 26-day wait ended, and did not end well.** On day 26 a PMC identifier finally appeared for
+EAGLE (PMID 42773211) — **PMC13668756** — so the daily re-check paid off to that extent. But the
+record serves **no body text**. Every route failed:
+  - PubMed MCP `get_full_text_article` on PMC13668756: resolves, returns `count: 0`
+  - `pmc.ncbi.nlm.nih.gov` via WebFetch: `ENOTFOUND` (DNS blocked by network policy)
+  - `www.nature.com` via WebFetch: `ENOTFOUND`
+  - Scite `read_fulltext` on the DOI: **requires a paid plan**, not available to this session
+  - alphaXiv `discover_papers`: searched on EAGLE / esophageal / noncontrast CT / DAMO — **no arXiv
+    preprint of this paper exists**, so the route that rescued MedGemma and AMIE does not apply here
+
+**Decision, and the reasoning, because it is a judgement call worth recording.** Deferring a 27th
+time was the alternative. Against it: the PMC-indexed-but-empty state has persisted for Huang J for
+9+ days with no sign of resolving, so "wait one more day" has no end date; three reachable spares
+were available but none is remotely as consequential; and the abstract is unusually dense — six
+named cohorts with sizes, three operating points, a calibration delta and a prospective PPV, which
+is enough to do real screening arithmetic. For it: an abstract-only decode of the list's flagship
+paper is thin, and this list exists to argue against thin readings. **Resolved by decoding it with a
+prominent warning block at the top listing every failed route, marking the grade provisional
+(4/5), marking every unavailable item as such, and committing to upgrade when the full text
+becomes readable.** The amended reachability checklist (10-08) stands and is now doubly confirmed:
+**a confirmed PMC identifier is not a confirmed full text — both the `pmc` field AND a non-empty
+`full_text` must be verified.**
+
+**48. Screening arithmetic at low prevalence — the canonical worked example.** Specificity, not
+sensitivity, decides whether a screening programme can exist. At EAGLE's headline point
+(Se 90.0%, Sp 98.5%), per 10,000 screened at 0.33% prevalence: 33 cancers, **30 caught, 3 missed,
+150 false alarms, PPV 16.6%, 5.0 false alarms per cancer.** Holding the test fixed and varying
+prevalence: 1% → PPV 37.7% (1.7 false alarms each) · 0.5% → 23.2% (3.3) · 0.2% → 10.7% (8.3) ·
+0.1% → 5.7% (16.7) · 0.05% → 2.9% (**33 false alarms per cancer**). **Improving specificity from
+98.5% to 99.6% is worth far more than improving sensitivity from 90% to 95%**, and that is exactly
+what the team did.
+
+**49. Reconstructing a calibration from a percentage — and checking it against the paper.** The
+abstract says calibration "reduced false positives by 72.7% while preserving sensitivity." Work it:
+false-positive rate 1.5% × (1 − 0.727) = **0.41%**, so specificity 98.5% → **99.59%**. Redo the
+10,000-person screen: false alarms **150 → 41**, PPV **16.6% → 42.1%**, false alarms per cancer
+**5.0 → 1.4**. The paper independently reports **42.2% PPV** in its prospective cohort (n=17,446).
+Predicted 42.1 vs reported 42.2 — agreement to a tenth of a point, which supports reading the
+prospective cohort as using the calibrated operating point at ~0.33% prevalence. **Labelled in the
+summary as an inference from the abstract's numbers, not a value the abstract states.** A reminder
+that a reported *delta* plus one reported *level* often reconstructs an unreported operating point.
+
+**50. In screening, read the hardest disease category, not the headline one.** Sensitivity 90.0% for
+**cancer** versus **52.5% for precancerous lesions** (65.0% at the higher-sensitivity point; 78.4%
+for stage I). Screening's whole purpose is catching disease *before* it is cancer, so 52.5% is the
+result and 90.0% is the easier task. Same pattern as 10-14 (pooled metrics excellent for common
+glomerular subtypes, sensitivity 0.61 for the rare one). **Standing check: when a paper reports
+performance by stage or severity, the headline will be the easiest category.**
+
+**51. Count the operating points before combining any two numbers.** This abstract reports at least
+three: 98.5% specificity (opportunistic external test), 99.94% specificity (real-world low-dose),
+a "higher-sensitivity operating point" (paired CT-endoscopy), and an unstated one behind the 42.2%
+PPV. **"90% sensitivity and 99.94% specificity" is a sentence whose every number appears in the
+abstract and which describes a configuration never measured.** Sensitivity and specificity are a
+pair from one point on one curve; they travel together or not at all. To the authors' credit, the
+phrase "higher-sensitivity operating point" tells the reader the threshold moved — the dangerous
+papers are the ones that move it silently. Pairs with #44 (a threshold quoted to two decimals).
+
+**Also noted:** the six named validation cohorts sum to **77,582** against the abstract's stated
+**80,612**, leaving **3,030** unaccounted for — probably an unnamed internal set, resolvable in one
+sentence of the full text. No confidence intervals appear anywhere in the abstract. The reference
+standard is not stated for any cohort, and for the 11,466-patient opportunistic cohort it cannot
+have been endoscopy — **that is the single thing most worth reading when the full text opens.** No
+interval-cancer rate. No radiologist comparison. Roughly a quarter of the 43 authors are at DAMO
+Academy / Alibaba Group and Hupan Lab, who built the model; the competing-interests statement is
+not in the abstract.
+
+**STANDING TASK — upgrade this entry.** Re-check PMC13668756 for body text **weekly**, and retry
+Scite if a subscription ever becomes available. When the full text opens, rewrite summary 50 from it
+and revise the provisional grade. The questions to answer first: the reference standard in each
+cohort; the participant funnel; whether the prospective cohort was enriched; confidence intervals;
+and the competing-interests statement.
+
+**Next queue entry:** nothing reachable left. Three spares already screened and in hand: measles
+TabNet (PMID 42867502, PMC13660459), gallstone body composition (PMC13647361), COPD rapid decline
+(PMC13637773). Fresh candidate from today's scan, not yet screened in depth: **CheXNeXt open-source
+chest-infection AI on after-hours ED radiographs in Singapore** (PMID 42869615, PMC13663711, BMJ
+Health Care Inform) — 1,006 radiographs, and its abstract is a gift for the threshold lesson:
+sensitivity 0.234 for consolidation and 0.176 for pneumonia at the published default thresholds,
+rising to 0.894 and 0.681 after Youden optimisation on the same data. That is techniques #44 and
+#51 in one paper, plus the question of what a "published threshold" is worth off its home dataset.
+Standing re-checks: Huang J (42765400, empty full text ×5), Lu J (42809845), Holly (42830095) /
+Mechael (42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade
+the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit
+summary #1 (Vishwanath) with a Statistics Spotlight.
