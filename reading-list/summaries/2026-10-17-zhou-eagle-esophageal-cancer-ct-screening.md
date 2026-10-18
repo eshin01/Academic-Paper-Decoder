@@ -1,280 +1,304 @@
 # Large-scale esophageal cancer screening through noncontrast computed tomography and artificial intelligence
 
-**Authors:** Zhou J, Guo G, Yao J, Yu Q, Zheng C, Feng X, Ye X, Zhou Y, Yang P, Lambert L, … Zhang D, Ji J, Li N, Xie C, Cao K, Zhao Y, Zhang L, Wang Q (43 authors; DAMO Academy / Alibaba Group, Hupan Lab, Sun Yat-sen University Cancer Center and 12 further centres in China, the Czech Republic and the USA)
+**Authors:** Zhou J, Guo G, Yao J, Yu Q, Zheng C, Feng X, Ye X, Zhou Y, Yang P, Lambert L, … Zhang D, Ji J, Li N, Xie C, Cao K, Zhao Y, Zhang L, Wang Q (43 authors; DAMO Academy / Alibaba Group, Hupan Lab, Sun Yat-sen University Cancer Center, and twelve further centres in China, the Czech Republic and Australia)
 **Journal:** Nature Medicine, 2026; 32(10): 3748–3759 (published 22 September 2026)
-**Decoded:** 2026-10-17
+**Decoded:** 2026-10-17 (abstract only) · **REWRITTEN FROM FULL TEXT 2026-10-18**
+**Analysis basis:** **FULL TEXT** (retrieved from PubMed Central, PMC13668756). Figures, Extended Data and all Supplementary material were not viewable, so anything living only there is marked as not retrieved.
 
-> ## ⚠ ABSTRACT ONLY — and this one needs explaining
->
-> **This analysis is based on the abstract, not the full text.** This paper has been the highest-priority entry in the reading list's backlog since 2026-09-21 and has been re-checked every single day for 26 days. Today a PubMed Central identifier finally appeared (PMC13668756) — but the record serves no body text. Every retrieval route was tried and failed:
-> - PubMed Central full-text tool: the PMC identifier resolves, but returns no article
-> - Direct fetch of `pmc.ncbi.nlm.nih.gov`: blocked at DNS by this environment's network policy
-> - Direct fetch of the publisher page at `nature.com`: blocked the same way
-> - A third-party full-text service: requires a paid subscription this session does not have
-> - arXiv / alphaXiv: searched; **no preprint of this paper exists**
->
-> So after 26 deferrals I am decoding the abstract, clearly labelled, rather than deferring a 27th time. **Everything below comes from the abstract or is arithmetic I did on the abstract's own numbers.** I could not check the participant funnel, the reference standard, the inclusion criteria, confidence intervals (the abstract gives none), the comparison with radiologists, the funding, or the conflicts of interest. **The grade is provisional and may move in either direction.** I will upgrade this summary if the full text becomes readable.
+> **Note on this summary's history.** This paper was the reading list's highest-priority backlog entry for 26 days. On 2026-10-17 a PMC identifier existed but served no body text, and five retrieval routes failed, so it was decoded from the abstract with a provisional grade and an explicit commitment to rewrite. On 2026-10-18 the full text became available and this summary was rewritten from it. **Section 3 records where yesterday's abstract-only reading was right and where it was wrong**, because that comparison is itself instructive.
 
-**Source links (verified against the live PubMed record):**
+**Source links (all verified):**
 - DOI: https://doi.org/10.1038/s41591-026-04656-4
 - PubMed: https://pubmed.ncbi.nlm.nih.gov/42773211/
-- Full text (PMC): https://pmc.ncbi.nlm.nih.gov/articles/PMC13668756/ — **identifier verified in the PubMed record; the body text could not be retrieved, see above**
-- Trial registration as stated in the abstract: Chinese Clinical Trial Registry, **ChiCTR2300074806**. This registry was not reachable from this session, so the registration **could not be independently verified**.
+- Full text (PMC): https://pmc.ncbi.nlm.nih.gov/articles/PMC13668756/
+- Trial registration: stated as Chinese Clinical Trial Registry **ChiCTR2300074806** (the identifier is stripped from the PMC rendering of the Methods but appears in the abstract). The registry was not reachable from this session, so the record itself **could not be independently verified**.
+- **Funding and competing interests: not retrievable.** Nature Medicine places these in the online-only end matter, which the PMC rendering does not include. Note that a substantial share of the authorship is employed by DAMO Academy / Alibaba Group and Hupan Lab, who built the model.
 
 ---
 
 ## 1. The Gist
 
-Oesophageal cancer kills most of the people who get it, for one reason: by the time it causes symptoms, it is usually too late. Caught early it is often curable. There is no practical way to find it early. The only reliable test is endoscopy — a camera down the throat — which is invasive, needs sedation and a trained operator, and nobody is going to do it on a whole population.
+Oesophageal cancer kills most of the people who get it, because by the time it causes symptoms it is usually too late. Caught early it is often curable. There has been no practical way to catch it early: the reliable test is endoscopy, a camera down the throat, which is invasive and which nobody will do on a whole population.
 
-Meanwhile, millions of people get an ordinary chest CT scan every year, for all sorts of unrelated reasons. The oesophagus sits right there in every one of those scans. Nobody looks at it, because it is a floppy, collapsed tube that moves when you swallow and breathe, and an early tumour in it is essentially invisible to the human eye on a plain CT. Radiologists do not even try.
+Meanwhile, millions of people get an ordinary chest CT every year for unrelated reasons. The oesophagus is in every one of those scans. Nobody looks at it, because it is a floppy, collapsed tube that moves with the heartbeat and an early tumour in it is essentially invisible. Radiologists do not even try.
 
-This group built an AI to try anyway. They trained it on 6,813 patients from two hospitals, then tested it across twelve centres in three countries on 80,612 people.
+This group built an AI to try anyway, and then — unusually — spent most of the paper stress-testing it rather than celebrating it.
 
-It works better than it has any right to. On ordinary chest CTs already sitting in hospital archives, it correctly cleared 98.5% of healthy people while catching 90.0% of cancers. It worked on low-dose CT too — which matters enormously, because low-dose CT is what millions of people already get for lung cancer screening, so this could ride along on a programme that already exists.
+The headline is that on chest CTs from eight hospitals in China, the Czech Republic and Australia, it cleared 98.5% of people without cancer while catching 90.0% of cancers. But the most valuable number in the paper is a different one. When they ran the same model on 20,758 consecutive real patients — people coming through outpatients, emergency and inpatient wards rather than a curated research cohort — **specificity fell from 98.5% to 95.5%.** They report that drop, explain it, then go away and fix it: they retrained on the hard cases, cut false positives by 72.7%, and ran the improved model prospectively on 17,446 people. In that prospective deployment, 90 people were flagged, 38 genuinely had disease, and one cancer was found that the hospital's normal process had missed.
 
-Three things deserve emphasis, and two of them are warnings.
+Three things to carry away, two of them warnings.
 
-The impressive part is that this team clearly understood the hardest problem in screening. When a disease is rare, even a very accurate test generates mostly false alarms. So they went back and recalibrated, cutting false positives by 72.7% without losing sensitivity, and then ran it prospectively on 17,446 people, where 42.2% of the people it flagged genuinely had something. For a screening test, that is a remarkable number.
+The threshold discipline is exemplary. The cut-off was fixed in cross-validation *before* any test cohort was touched, using a stated rule — 99% specificity for hospital screening, 98% sensitivity for population screening. Having spent this week on two papers that tuned thresholds on the data they then reported, the contrast is stark.
 
-The first warning: **it catches cancer much better than it catches pre-cancer.** 90.0% for cancer, but only 52.5% for precancerous lesions. Screening exists to find disease *before* it becomes cancer. At the headline operating point, this misses nearly half of exactly what you would most want to find.
+**First warning: it still misses about half of pre-cancer.** 90.0% for cancer, 52.5% for high-grade dysplasia. Screening exists to catch disease *before* it becomes cancer. That gap is the paper's real limitation and it survives full-text reading.
 
-The second: the numbers quoted above come from **different settings of the same system**, tested in different places. A reader could easily staple together "90% sensitivity" from one cohort and "99.94% specificity" from another and produce a figure that describes nothing that was ever measured.
+**Second warning: the most quotable claim in the paper — that triaging people to endoscopy by AI would triple the detection rate — comes from a simulation.** The prospective screening cohort of 530 people contained six precancerous lesions and **zero invasive cancers**. To do the analysis, the authors added three cancers by resampling from a different, retrospective cohort. They say so plainly in the Methods. The abstract does not.
 
 ## 2. Study Snapshot
 
-**Everything in this section is from the abstract. Anything a Study Snapshot would normally contain and that the abstract does not state is marked as such — and that is a great deal.**
+**Design:** development and multi-cohort validation of a two-stage deep learning model, EAGLE, detecting oesophageal malignancy — high-grade intraepithelial neoplasia (HGIN) and oesophageal cancer (EC) — on non-contrast chest CT. Retrospective internal and external testing, real-world calibration, prospective hospital deployment, a reader study, and a prospective endoscopic-screening cohort.
 
-**Design:** development and multi-centre validation of a deep learning model, named EAGLE (Esophageal AI-Guided malignant Lesion Evaluation), to detect precancerous lesions and cancer from non-contrast chest CT. The abstract describes both retrospective and prospective components. **The detailed design, inclusion and exclusion criteria, and participant flow are not available in the abstract.**
+**Ethics:** individual institutional review board approval obtained from twelve named institutions. Registered at ChiCTR.
 
-**Where:** 12 validation centres across three countries. Author affiliations span China (Guangzhou, Shantou, Shanghai, Hangzhou, Lishui, Changsha, Chengdu, Suining, Urumqi, Fuzhou, Beijing, Chongqing, Hefei), the Czech Republic (Charles University, Prague) and the USA. Model development is credited to DAMO Academy, Alibaba Group, and Hupan Lab.
+**Reference standard — the question I could not answer yesterday, now answered.** Positive cases were confirmed by **surgical or biopsy histopathology** and staged by the AJCC 8th edition. Negative controls were defined as **free of malignant oesophageal lesions by at least 2 years of clinical follow-up, or a negative endoscopy within 1 year.** The authors add, unprompted: "It remains possible that a minor fraction of indolent lesions remained undetected during the follow-up period, thereby introducing potential label noise."
 
-**Training:** 6,813 patients from two centres.
+**Training:** 6,813 scans from two centres — 264 HGIN, 548 stage I, 2,932 stages II–IV, and 3,069 negative controls. Lesions were annotated on paired **contrast-enhanced** CT (where boundaries are visible) by two radiologists with ≥3 years' oesophageal experience, agreement measured by Dice coefficient, masks with Dice >0.6 merged and lower-agreement cases adjudicated by a radiologist with >8 years' experience; annotations were then transferred to the non-contrast scan by image registration. Cases that could not be confidently delineated were excluded from training.
 
-**Validation:** 12 centres, three countries, **80,612 patients**, across opportunistic and population-based screening settings.
+**All validation cohorts, and the arithmetic now closes.** The abstract named six cohorts summing to 77,582 against a stated 80,612 — a gap of 3,030 I flagged yesterday. The full text supplies both missing pieces: an **internal test cohort of 2,500** never mentioned in the abstract, and the **530-patient prospective endoscopic cohort**. 77,582 + 2,500 + 530 = 80,612 exactly.
 
-**The named validation cohorts, with what each reported:**
-- **Opportunistic screening on existing CT scans** — eight centres, n = 11,466. **98.5% specificity, with 90.0% sensitivity for cancer and 52.5% for precancerous lesions.**
-- **Low-dose CT validation** — two centres, n = 1,607. Described as "comparable performance"; no figures given in the abstract.
-- **Calibration in a real-world cohort** — three centres, n = 35,402. **Reduced false positives by 72.7% while preserving sensitivity.**
-- **Prospective hospital validation** — n = 17,446. **42.2% positive predictive value.**
-- **Real-world low-dose screening** — n = 10,959. **99.94% specificity.**
-- **Paired CT-endoscopy cohorts** — two centres, n = 702. **65.0% sensitivity for precancerous lesions and 78.4% for stage I cancer, at a higher-sensitivity operating point.**
+- **Internal test** — 2,500 patients (18 HGIN, 181 stage I, 948 stages II–IV, 134 positives without staging, 1,219 negatives). AUC 0.991 (0.989–0.994), sensitivity 89.4% (87.7–91.1), specificity 99.3% (98.8–99.8).
+- **External multicentre test** — eight centres in China, the Czech Republic and Australia; 11,466 patients (40 HGIN, 363 stage I, 2,404 stages II–IV, 8,654 negatives). AUC 0.976 (0.972–0.980), sensitivity 89.5% (88.3–90.6), specificity 98.5% (98.2–98.8). Czech cohort sensitivity 94.4%, Australian 90.2%.
+- **LDCT test** — 147 malignant and 1,460 negative, 1,607 total. With low-dose simulation training, sensitivity 88.4% versus 83.0% without (p = 0.024) at the 99% specificity threshold.
+- **Real-world calibration and validation** — 35,402 patients across three centres, split into two continuous series: **RW1 (20,758)** for calibration and **RW2 (14,644)** for testing.
+- **Prospective hospital validation** — 17,446 patients, enrolled January–April 2025, follow-up to 31 July 2026.
+- **Real-world LDCT screening** — 10,959 consecutive participants aged 45–75, July–December 2024.
+- **Endoscopic-screening external test** — 702 patients (552 malignant, 150 negative) who had both CT and endoscopy; 68.6% of the malignancies were HGIN or stage I–II.
+- **Prospective endoscopic-screening cohort** — 530 participants enrolled over 20 days in July 2023.
 
-**A number that does not quite close.** Those six cohorts sum to 77,582. The abstract states 80,612 validation patients. That leaves **3,030 unaccounted for** — plausibly an internal validation set not named in the abstract, or overlap handled differently, but the abstract does not say.
+**Subgroup sensitivity, which is where the real story is:** HGIN 50.0% internal, 52.5% external, 42.9% on LDCT, 65.0% in the endoscopic-screening cohort. Stage I EC 65.7% internal, 60.1% external, 78.4% in the endoscopic-screening cohort. Sensitivity rose with stage; it was higher in the middle oesophagus than at the gastro-oesophageal junction, higher in men than women, and higher at body mass index ≤22. At a matched specificity of 91.0% — chosen to match a liquid-biopsy comparator — stage I sensitivity rose to 73.4%.
 
-**Exploratory analysis:** the abstract states that analyses of a prospectively enrolled cohort "suggest that referring high-risk individuals for endoscopy could improve screening efficiency." No figures are given.
+**Threshold selection — prespecified and fixed.** "Thresholds were determined during fivefold cross-validation and were fixed after training… the final threshold was fixed as the mean value across the five folds." The rule was declared in advance: **99% specificity** for opportunistic screening, **98% sensitivity** for population screening. Final fixed values: 0.93 for EAGLE, 0.88 for EAGLE-Plus.
 
-**Reference standard: not stated in the abstract.** For the paired cohorts it is presumably endoscopy; for the others it is not described.
+**What happened in the real world.** In RW1 (20,758 consecutive patients, 285 malignancies, prevalence 1.37%), sensitivity held at 89.6% but **specificity fell from 98.5% to 95.5%**, which the authors attribute to including outpatient, inpatient and emergency populations "whose clinical profiles differed substantially from the curated cohorts used for model development." EAGLE also found three cancers the standard pathway had missed, one of them 21 months before clinical diagnosis.
 
-**Confidence intervals: none are given anywhere in the abstract**, for any figure.
+**The fix.** Hard cases from RW1 — all false positives, all false negatives, plus borderline true positives to keep a roughly 1:1 ratio — were re-annotated and merged into training for 200 further epochs, producing EAGLE-Plus. On RW2 (14,644 patients, 163 malignancies), false positives fell **from 432 to 118 (−72.7%)**, PPV rose **from 25.3% to 55.0%** (p < 0.001), and sensitivity was essentially unchanged (89.8% → 88.3%, p = 0.62).
 
-**Comparison with radiologists: not mentioned in the abstract.**
+**Prospective deployment.** 17,446 patients; 47 malignancies confirmed (41 EC, 6 HGIN); 90 AI-positive predictions (a 0.52% positive rate); 38 true positives. **PPV 42.2% (31.8–52.1), sensitivity 80.9% (69.2–91.3) for malignancy and 87.8% for EC.** Of the 90 flagged, 48 were already being managed by the normal pathway; of the remaining 42, the multidisciplinary team referred 16 for endoscopy (an AI-triggered referral rate of 0.09%), **3 actually attended**, and one T3N0M0 cancer was found and treated. The primary endpoint was prespecified as PPV. Among patients negative on both AI and standard care, about **1%** were randomly audited.
 
-**Registration:** the abstract cites Chinese Clinical Trial Registry identifier **ChiCTR2300074806**. Not independently verifiable from this session.
+**Real-world LDCT.** 10,959 participants, **8 positive predictions** (0.07%), specificity 99.94% (99.88–99.97), **PPV 12.5%** — which on 8 predictions means exactly one confirmed cancer. Five of the eight did not attend the recommended endoscopy.
 
-**Funding and competing interests: not available in the abstract.** Note that a substantial share of the authorship is employed by DAMO Academy / Alibaba Group and Hupan Lab, who built the model.
+**Reader study — not mentioned in the abstract at all.** 300 scans (200 malignant, 100 negative) from four centres, read by **17 radiologists** (3 oesophageal subspecialists, 6 general radiologists, 8 residents; mean 7.6 years' experience), twice, with a **≥3-month washout** and randomised order. EAGLE beat the reader average by 19.1 points of sensitivity and 18.4 of specificity (p < 0.001). With AI assistance, reader sensitivity rose 71.9% → 85.7% and specificity 79.6% → 91.7% (both p < 0.001), with HGIN sensitivity up 16.6 points and stage I up 22.7.
 
-## 3. How Strong Is This Evidence? (Grade 4/5 — provisional, abstract only)
+**The triage claim.** The 530-person prospective cohort yielded **six HGIN and no invasive cancers**. The authors constructed a hybrid cohort by resampling three EC cases from a separate retrospective cohort, repeated 1,000 times, giving 9 malignancies in 533. In that simulated cohort, triaging only AI-positive people to endoscopy raised the detection rate from 1.7% to 5.2%, cut the number needed to screen from 59.2 to 19.2, and avoided a stated 67.6% of endoscopies.
 
-Four out of five, and the asterisk is doing real work. **This grade describes a design as described, not a design I was able to inspect.** Normally the things that decide a grade here are the participant funnel, the reference standard, whether the operating point was chosen honestly, and whether the confidence intervals support the claims. I could check none of those. What follows is an assessment of the scale and shape of the validation programme, plus arithmetic on the reported numbers.
+**Statistics:** bootstrap resampling with 1,000 iterations for all 95% confidence intervals; DeLong's test for paired AUCs; permutation tests (≥1,000) for sensitivity, specificity and balanced accuracy; McNemar's test for paired binary outcomes. Fixed random seed. **"No adjustment was made for multiple comparisons"** — stated openly.
 
-**Why the described design is, on its face, the strongest in this reading list.**
+## 3. How Strong Is This Evidence? (Grade 4/5)
 
-Twelve validation centres in three countries is genuinely external validation — rung five on the ladder this list has been building, the one almost nothing reaches. Compare the last few weeks: a study whose "external" cohort was 47 patients from the same hospital; a review where fifteen studies supplied 26 validation datasets, one study contributing six. Here the validation set is twelve times larger than the training set, which is the reverse of the usual ratio and the right way round.
+Four out of five. The grade is the same as yesterday's provisional one, but the basis is entirely different: yesterday I was grading a design as described, and said so. Now it is graded on verification, and it holds up.
 
-There is a **prospective** component (n = 17,446). Almost everything decoded in this list has been retrospective, and the authors of those papers said prospective work was the missing piece. This has it.
+**Where yesterday's abstract-only reading was right, and where it was wrong.** This comparison is worth recording, because it is a measurement of how much an abstract can and cannot tell you.
 
-There is a **paired CT-endoscopy cohort** (n = 702), which is the only design that can tell you what the model missed, because every person got both tests. Without a paired design, sensitivity estimates in screening are guesses based on who later turned up with disease.
+*Right:* that the validation programme was exceptionally broad; that precancer sensitivity was the real limitation; that the cohort arithmetic left 3,030 patients unexplained (it was an unnamed internal test cohort plus the prospective endoscopic cohort, exactly as guessed); and that different operating points were in play.
 
-Most tellingly, the team **calibrated for the false-positive problem and then re-tested**. Cutting false positives by 72.7% while preserving sensitivity, and reporting the resulting PPV from a prospective cohort, shows an understanding of screening that many AI papers lack entirely. Most would have published the 98.5% specificity and stopped.
+*Wrong, or half-wrong:* I suspected the multiple operating points might invite cherry-picking. They do invite misquotation, but they were **prespecified in cross-validation and fixed before testing** — the opposite of cherry-picking, and the single best thing about the paper's method. I could not see that from the abstract.
 
-And they report **low-dose CT performance separately**. That is the deployment question that matters: millions already get low-dose CT for lung cancer screening, so an oesophageal model that works on those scans costs nothing extra in radiation, time or money.
+*Right answer, wrong road:* I reconstructed the calibration as taking specificity to 99.59% at a prevalence of 0.33%, predicting a PPV of 42.1% against the paper's reported 42.2%. The full text shows the prospective cohort had prevalence 0.269% and sensitivity 80.9%, not the 90% I assumed, with implied specificity 99.70%. Two errors cancelled. The method was sound; the agreement was partly luck. I would not have known that without the full text, which is the point.
 
-**What holds it at 4, and what I simply could not check.**
+**What the full text shows that earns the grade.**
 
-**The precancer sensitivity is the real result, and it is 52.5%.** The point of screening is to catch disease before it is cancer. At the headline operating point this model misses almost half of precancerous lesions. At the higher-sensitivity point in the paired cohort it reaches 65.0% — better, and still a third missed. The abstract leads with 90.0% for cancer, which is the easier and less valuable task. Finding a cancer early is good; finding the lesion before it becomes cancer is the whole purpose.
+**The threshold discipline.** Fixed in cross-validation, averaged across five folds, locked before testing, with the operating criterion stated in advance and differing by clinical use. This is the practice two of this week's other papers lacked.
 
-**Three different operating points are reported across cohorts** — 98.5% specificity in one, 99.94% in another, a "higher-sensitivity operating point" in a third, and an unstated one in the prospective cohort. Each is legitimate on its own. Together they are an invitation to misquote, and I expect this paper to be cited with figures that were never measured in the same configuration.
+**They ran it against reality and published the damage.** The drop from 98.5% to 95.5% specificity when the model met consecutive unselected patients is the most useful number in the paper, and most teams would have buried it. Instead it became the motivation for the next experiment.
 
-**No confidence intervals appear anywhere in the abstract.** On 80,612 patients the intervals will be tight, so this is a reporting rather than a precision problem, but it means no figure here can be read with its uncertainty.
+**The calibration is a real engineering cycle, not a reanalysis.** Hard cases were identified in one continuous series, re-annotated, merged into training, and the improved model tested on a *different* continuous series from the same centres. Every number checks: 432 → 118 false positives is a 72.7% reduction; the implied true positives reproduce the reported PPVs of 25.3% and 55.0% exactly.
 
-**I could not verify a single number, the reference standard, the funnel, or the conflicts.** For a paper where roughly a quarter of the authors work for the company that built the model, the competing-interests statement is not a formality, and I have not seen it.
+**Prospective deployment with a prespecified primary endpoint**, integrated into a live system, with the standard-of-care radiologists blinded to AI output and no feedback loop. One cancer was found that would otherwise have been missed.
 
-**The cohort arithmetic leaves 3,030 patients unexplained**, which is almost certainly innocent and is exactly the sort of thing the full text would resolve in a sentence.
+**A proper reader study** — 17 readers, two rounds, three-month washout, randomised order — that the abstract never mentions. And the authors report the uncomfortable result: AI alone (an implied 91.0% sensitivity in that cohort) **outperformed AI-assisted humans (85.7%)**, and they discuss why rather than hiding it.
 
-**Where 4/5 sits, provisionally.** If the full text supports the abstract, this is the most consequential medical-AI paper decoded in this list — a genuinely multinational validation of a task that was considered impossible, on scans that already exist. The grade could rise. It could also fall, if the reference standard turns out to be weak, if the prospective cohort is enriched, or if the funnel excludes most of the people the test is for — all failure modes seen repeatedly in the last fortnight. I am not going to pretend to know.
+**Honest limitations**, including follow-up shorter than two years, poor compliance with recommended endoscopy, label noise in the negative controls, sex imbalance in training, and the simulation-based nature of the triage evidence.
+
+**What holds it at 4 rather than 5.**
+
+**The headline cohort is not a screening population.** The external test cohort is 2,812 malignant against 8,654 negative — **24.5% prevalence**. That is a case-control-like design. Real screening populations in this paper run 0.27% to 1.37%. The 98.5% specificity was measured where a quarter of patients had cancer, and the authors' own RW1 result shows what happens when it meets 1.37% prevalence. Not a flaw so much as a reason the headline figures should never be quoted as screening performance.
+
+**The triage headline rests on synthetic cancers.** Six HGIN, zero invasive cancers, three cancers injected by resampling from a different cohort. The Methods are transparent; the abstract's "exploratory analyses of a prospectively enrolled cohort" is not. And I could not reconcile the stated 67.6% of endoscopies avoided with the 75.5% implied by the numbers in the text — the difference may sit in an Extended Data figure I could not view.
+
+**The real-world LDCT result rests on one confirmed cancer.** Eight positive predictions, PPV 12.5%, so exactly one true positive — and five of the eight never had the recommended endoscopy. Worse, the reported 95% interval for that PPV is **7.1–25.0%**, which cannot be right: an exact binomial interval for 1 of 8 runs from roughly 0.3% to 52.7%, and a bootstrap over eight observations can only produce PPVs at multiples of 1/8. The point estimate is what it is; the interval is an artefact of applying a bootstrap below the sample size where it works.
+
+**An unexplained count.** The LDCT test cohort is stated as 147 malignant. The Methods describe 4 malignant from one centre and 85 additionally retrieved from another — 89. Fifty-eight positives are unaccounted for in the retrieved text.
+
+**A small internal inconsistency in the reader study:** readers are described as having interpreted "an average of 1,141 esophageal CT scans (range = 100–1,000)". A mean cannot lie outside its own range.
+
+**Model selection used the external cohort.** The ResEnc backbone was chosen partly because "in the eight-center external validation cohort… it achieved the highest sensitivity (89.5%) and specificity (98.5%), outperforming other models." That is selecting on the test set — a milder version of the problem, since the differences were small and the AUC actually favoured another backbone, but it means the external figures carry some selection optimism.
+
+**No multiplicity adjustment**, stated openly, across a paper with a great many comparisons.
+
+**Precancer sensitivity is still about half.** 52.5% externally, 42.9% on low-dose CT. The authors show the trade-off honestly — at 91% specificity, stage I sensitivity rises to 73.4% — but at the operating point they propose for hospital screening, half of precancer is missed.
+
+**Where 4/5 sits.** This is the most thoroughly validated medical-AI paper decoded in this list: twelve centres, three countries, a validation set twelve times the training set, a real-world failure honestly reported and then engineered against, a prospective deployment, and a reader study. It falls short of 5/5 because the screening case it most wants to make — that this should triage people to endoscopy — rests on a simulation with synthetic cancers, and because the thing screening most needs, precancer detection, is where it is weakest.
 
 ## 4. The Editor's Concerns
 
-Most of what I would normally write here requires the methods section. These are the concerns the abstract alone raises.
+**Say in the abstract that the triage analysis used simulated cancers.** My main request. "Exploratory analyses of a prospectively enrolled cohort suggest that referring high-risk individuals for endoscopy could improve screening efficiency" is the sentence that will be cited, and it describes an analysis in which the cancers were resampled from a different cohort because the prospective one contained none. The Methods are scrupulous about this. The abstract should be too.
 
-**Lead with the precancer number, not the cancer number.** The abstract's structure puts "98.5% specificity, with 90.0% sensitivity for cancer" first and "52.5% for precancerous lesions" in the same breath, where it reads as a secondary detail. It is the primary result for a screening tool. A reader skimming will take away 90%.
+**Report the real-world specificity in the abstract alongside the 98.5%.** The drop to 95.5% in consecutive unselected patients is the paper's most transferable finding and appears nowhere in the summary.
 
-**State which operating point produced each figure.** Three thresholds appear across six cohorts. The prospective cohort's PPV of 42.2% is quoted without saying which setting generated it. My own reconstruction suggests the calibrated one — the arithmetic is in the Statistics Spotlight and lands within a tenth of a percentage point — but a reader should not have to derive that.
+**Give the external cohort's prevalence where the 98.5% is quoted.** A reader cannot otherwise know that the headline figures come from a cohort that is 24.5% cancer.
 
-**Reconcile 77,582 with 80,612.** One sentence.
+**Withdraw or recompute the LDCT PPV interval.** A 95% CI of 7.1–25.0% on one true positive out of eight is not attainable by any valid method. An exact binomial interval would be roughly 0.3–52.7%, which is honest and tells the reader the result is a single case.
 
-**Give confidence intervals.** None appear in the abstract. With 702 patients in the paired cohort, the interval on "65.0% sensitivity for precancerous lesions" is not narrow, and that is the figure the field will argue about.
+**Reconcile 147 with 89 in the LDCT test cohort**, and reconcile the 67.6% of endoscopies avoided with the 75.5% the stated numbers imply.
 
-**Say what the reference standard was in each cohort.** In the paired cohorts it is presumably endoscopy. In the 11,466-patient opportunistic cohort it cannot have been — nobody endoscopes 11,466 people to validate a CT model. So sensitivity there rests on something else: later clinical diagnosis, registry linkage, or chart review. Which one it is determines how much the sensitivity figure is worth, and it is not in the abstract. This is the single thing I would most want to read.
+**Fix the reader-experience range.** A mean of 1,141 cannot sit inside a range of 100–1,000.
 
-**Report the interval-cancer rate.** In any screening programme, the number that matters is how many cancers appear *between* screens after a negative result. Without it, sensitivity measured against a same-day reference standard will overstate what the programme achieves.
+**Put funding and competing interests where readers see them.** They are in Nature's online-only end matter, which means they are absent from the PMC rendering most readers will reach. With roughly a quarter of the authorship at the model's developer, this matters.
 
-**Report the downstream harms.** A positive result leads to endoscopy. At the calibrated operating point my arithmetic puts that at roughly 1.4 unnecessary endoscopies per cancer found — good for a screening test, but it is a real procedure with real risks, and the abstract frames false positives purely as a number to be reduced rather than as procedures done to people.
+**Audit more than 1% of the double negatives.** Sensitivity in the prospective and LDCT cohorts depends on who later presented plus a 1% sample. The authors acknowledge the follow-up is under two years; a larger audit would firm up the one number a screening programme cannot do without.
 
-**Make the competing-interests statement prominent.** A large share of the authorship is at DAMO Academy / Alibaba Group and Hupan Lab, the developers. That is normal and not disqualifying; it should be stated where readers see it.
+**Report the interval-cancer rate when follow-up matures.** It is the real measure of what a screening programme missed, and it is the obvious next publication.
 
-**One note on my own position.** Several of these concerns may already be addressed in the full text. I am flagging them as open questions raised by the abstract, not as failures of the paper.
+**Note the backbone selection.** Choosing ResEnc partly on external-cohort sensitivity and specificity should be flagged, since the external figures are then not entirely out-of-sample.
+
+**One thing I would not change.** The decision to report RW1's specificity collapse, investigate it, fix it, and test the fix on a separate series. That sequence is what the rest of the field should copy.
 
 ## 5. Statistics Spotlight
 
-### Concept 1: Why screening is brutally hard, and why specificity is the number that decides it
+### Concept 1: Why the headline cohort flatters, and what happened when the model met reality
 
-This is the central idea in all of screening, and this paper is the best illustration of it this reading list has produced.
+Yesterday, working from the abstract, I taught the screening arithmetic in the abstract: how 98.5% specificity turns into five false alarms per cancer at low prevalence. The full text contains something better — **the authors ran that experiment themselves.**
 
-**The problem.** When a disease is rare, almost everyone you test is healthy. So even a tiny false-positive rate, applied to an enormous number of healthy people, produces more false alarms than true findings.
+**The setup.** The external test cohort has 2,812 cancers among 11,466 patients: **24.5% prevalence**. That is not a screening population; it is closer to a case-control study, assembled by taking known cancers and known non-cancers. Nothing wrong with it for measuring whether a model can tell the two apart — but it is not where the model will be used.
 
-**Work it with EAGLE's own figures.** Take the headline operating point: sensitivity 90.0%, specificity 98.5%. That specificity sounds excellent — it gets 98.5% of healthy people right. Now screen 10,000 people where 0.33% have the disease:
+**What happened next.** They ran the same model on **20,758 consecutive patients** from outpatients, emergency and inpatient wards — prevalence **1.37%**. The result:
 
-- 33 people have cancer. The model catches 90% of them: **30 found, 3 missed.**
-- 9,967 people are healthy. The model wrongly flags 1.5% of them: **150 false alarms.**
-- So of 180 people flagged, 30 have cancer. **Positive predictive value 16.6%** — five false alarms for every cancer found.
+- sensitivity held: 89.5% → 89.6%
+- **specificity fell: 98.5% → 95.5%**
 
-Five unnecessary endoscopies per cancer. That might be tolerable; it might not. But notice what happened: a test that is "98.5% specific" produced a result that is wrong five times out of six when it says yes.
+Sensitivity is a property of the diseased; it travels. Specificity is measured on the well, and the "well" in a curated cohort are not the "well" of a real hospital. A real hospital's negatives include pneumonias, hiatus hernias, oesophagitis, post-radiation change and a hundred other things that look abnormal. The authors say exactly this: the drop came from patients "whose clinical profiles differed substantially from the curated cohorts used for model development."
 
-**It gets worse as the disease gets rarer.** Holding sensitivity and specificity fixed:
+**Why three percentage points is a lot.** At 1.37% prevalence in 20,758 people, roughly 285 have cancer and 20,473 do not.
 
-- at 1% prevalence → PPV 37.7%, 1.7 false alarms per cancer
-- at 0.5% → PPV 23.2%, 3.3 false alarms
-- at 0.2% → PPV 10.7%, 8.3 false alarms
-- at 0.1% → PPV 5.7%, 16.7 false alarms
-- at 0.05% → PPV 2.9%, **33 false alarms per cancer found**
+- At 98.5% specificity: about 307 false positives.
+- At 95.5% specificity: about 921 false positives.
 
-Same test every time. Only the population changed.
+Three points of specificity tripled the false-alarm workload. That is the difference between a tool a radiology department will tolerate and one it will switch off.
 
-**An everyday analogy.** Imagine a security scanner that is 98.5% accurate at clearing innocent travellers. In a queue of 10,000 people containing 33 genuine threats, it stops 180 people. It is working exactly as designed, and 150 of those people did nothing. The scanner is not broken; rarity is doing the damage.
+**An analogy.** A spell-checker tested on a textbook looks superb. Run it over real correspondence — names, jargon, addresses, abbreviations — and it underlines everything. The checker did not get worse. The "normal" text got more varied.
 
-**Now watch what the authors did about it, because this is the good part.** They report calibrating in a real-world cohort of 35,402 people, which "reduced false positives by 72.7% while preserving sensitivity."
+**Watch out.** When a diagnostic AI paper reports a test-cohort prevalence anywhere near the prevalence of its positives, check whether that cohort was assembled by *collecting cases and controls* rather than by *taking consecutive patients*. If so, the specificity is an upper bound. The tell is a prevalence far above the disease's real frequency: 24.5% for a cancer that affects well under 1% of a hospital population.
 
-Run that through the arithmetic. A false-positive rate of 1.5%, cut by 72.7%, becomes 0.41% — so specificity rises from 98.5% to about **99.59%**. Redo the 10,000-person screen:
+### Concept 2: What a calibration cycle looks like, and how to check one
 
-- still 33 cancers, still 30 caught, 3 missed
-- but false alarms fall from 150 to **41**
-- **PPV rises from 16.6% to 42.1%**, and false alarms per cancer fall from 5.0 to 1.4
+The second half of this paper is an engineering loop, and it is worth understanding as a template.
 
-And here is the check that makes me confident this reconstruction is right: the paper reports **42.2%** PPV in its prospective validation of 17,446 people. My reconstruction, built only from the abstract's other numbers, predicts 42.1% at a prevalence of about 0.33%. Those agree to a tenth of a percentage point — which strongly suggests the prospective cohort used the calibrated operating point in a population with roughly that prevalence. *(That is my inference from the abstract's numbers, not something the abstract states.)*
+**The problem.** After RW1, the model was generating 432 false positives per 14,644-ish patients. Too many.
 
-**The lesson in one line: in screening, improving specificity from 98.5% to 99.6% is worth far more than improving sensitivity from 90% to 95%.** Cutting false alarms by two-thirds is what turns an unusable test into a usable one, and it is why the team's decision to calibrate and re-test is the most impressive thing in the abstract.
+**The loop.** They took the hard cases from RW1 — every false positive, every false negative, plus borderline true positives to keep hard negatives and hard positives at roughly 1:1 — had them re-annotated by the same expert radiologist, merged them into the training data, and fine-tuned for 200 more epochs. They then tested the result on **RW2, a different continuous series from the same centres**.
 
-**Watch out.** Whenever you see a screening test described by its sensitivity and specificity alone, do this arithmetic. The number that decides whether a screening programme is feasible is the PPV in the population actually screened, and it is often an order of magnitude worse than the specificity suggests. Also note the direction of the trap here: 99.94% specificity, reported in the real-world low-dose cohort, means a false-positive rate of 0.06% — about 1 healthy person in 1,667. At 0.1% prevalence that yields a PPV around 60%. Specificity in the fourth decimal place is not pedantry in screening; it is the whole game.
+That last detail is what makes it legitimate. Calibrating on one slice and testing on another slice collected at a different time is a weak form of external validation, but it is a genuine out-of-sample test. Calibrating and reporting on the same data would have been worthless.
 
-### Concept 2: Detecting the disease versus detecting it in time
+**The result, and how to verify it.** RW2 had 14,644 patients with 163 malignancies.
 
-The two sensitivity figures in this abstract are 90.0% and 52.5%, and almost everyone will quote the first.
+- EAGLE: sensitivity 89.8% → about 146 true positives; 432 false positives; PPV = 146/(146+432) = **25.3%** ✓ matches the reported figure.
+- EAGLE-Plus: sensitivity 88.3% → about 144 true positives; 118 false positives; PPV = 144/(144+118) = **55.0%** ✓ matches.
+- False-positive reduction: (432−118)/432 = **72.7%** ✓ matches.
 
-**What they mean.** 90.0% is sensitivity for **cancer** — tumours that already exist. 52.5% is sensitivity for **precancerous lesions** — abnormal tissue that may become cancer if left, and which can usually be removed with a simple endoscopic procedure.
+Everything reconciles, which is reassuring about the rest.
 
-**Why the second number is the one that matters.** The entire economic and human case for screening rests on catching disease before it becomes dangerous. A screening programme that finds cancers slightly earlier helps some people. A screening programme that finds precancer and removes it prevents the cancer from ever existing. That is the difference between a treatment programme and a prevention programme.
+**The thing to notice.** Sensitivity went from 89.8% to 88.3% — a drop of 1.5 points, and the paper reports the comparison as non-significant (p = 0.62). Cutting false positives almost always costs sensitivity. Here it cost very little, which is the achievement. **Whenever a paper reports a reduction in false positives, look immediately for what happened to sensitivity.** If it is not reported, assume it fell.
 
-At the headline operating point, this model misses **47.5% of precancerous lesions** — nearly half. At the higher-sensitivity operating point used in the paired CT-endoscopy cohort, it reaches 65.0%, missing about a third, and finds 78.4% of stage I cancers.
+**Watch out.** "We reduced false positives by X%" is meaningless without three things: the sensitivity before and after, the cohort it was measured on, and whether that cohort is the one used to do the reducing. This paper supplies all three. Most do not.
 
-**An analogy.** A smoke detector that reliably alerts you once the furniture is burning is useful. A smoke detector that catches smouldering is what saves the house. Selling the first as the second is the mistake to avoid.
+### Concept 3: When a confidence interval is an artefact — and when a result is one case
 
-**Why the gap exists, and why it is not a criticism of the model.** A precancerous lesion is a thin patch of abnormal cells on the lining of a collapsed tube. On a non-contrast CT it may displace almost no tissue. That the model finds half of them at all is, frankly, astonishing — the paper describes this as "a task historically considered impossible," and for precancer that framing is justified. The criticism is about emphasis, not performance: the abstract foregrounds the easier number.
+Two related failures of small numbers, both visible in this paper's real-world LDCT cohort.
 
-**Watch out, and this generalises well beyond oesophageal cancer.** Whenever a screening paper reports performance for more than one stage or severity of disease, the headline will be the stage that is easiest to detect, and the clinically valuable number will be the one buried in the same sentence. Read for the hardest category, not the best one. The same pattern appeared in a paper decoded three days ago, where the pooled accuracy was excellent for the common disease subtypes and the model caught only 61% of the rare one.
+**The result.** 10,959 participants. Eight positive predictions. PPV 12.5%.
 
-### Concept 3: One system, several operating points — and why you cannot mix them
+A PPV of 12.5% from eight predictions means exactly **one true positive**. The entire real-world low-dose screening result — the one that produced the striking 99.94% specificity — rests on a single confirmed cancer. Five of the eight flagged people never had the recommended endoscopy.
 
-Every model of this kind produces a score, and a threshold turns that score into a yes or no. Move the threshold and you trade sensitivity against specificity: catch more disease at the cost of more false alarms, or the reverse. The same model can therefore produce many different pairs of numbers, all of them honest.
+**Now the interval.** The paper reports that PPV as 12.5% with a 95% confidence interval of **7.1–25.0%**.
 
-**This abstract reports at least three different settings:**
+That interval cannot be right, and you can see why without any software. The study used bootstrap resampling: repeatedly draw 8 observations with replacement and recompute. But with eight predictions of which one is a true positive, a resampled PPV can only ever be 0/8, 1/8, 2/8 and so on — a handful of discrete values. The bootstrap distribution is lumpy and does not approximate anything.
 
-- the opportunistic external test cohort, at **98.5% specificity**
-- the real-world low-dose screening cohort, at **99.94% specificity**
-- the paired CT-endoscopy cohort, at an explicitly **"higher-sensitivity operating point"**
-- and the prospective cohort, reporting **42.2% PPV** with the operating point not stated in the abstract
+The right tool is an exact binomial (Clopper–Pearson) interval, and for 1 out of 8 it runs from roughly **0.3% to 52.7%**. That is the honest statement: with one case, you know almost nothing about the true PPV.
 
-Each of these is a legitimate report of the same system doing a different job. The danger is purely in how they get quoted.
+**A worked intuition.** You flip an unfamiliar coin eight times and get one head. What is the chance of heads? Your best guess is 1 in 8. But would you bet that the truth lies between 7% and 25%? Of course not — eight flips is consistent with almost any coin that is not two-tailed. The data permit a huge range, and a method that returns a narrow one is not measuring uncertainty, it is hiding it.
 
-**The failure mode, concretely.** Someone writes: "EAGLE detects oesophageal cancer with 90% sensitivity and 99.94% specificity." Every number in that sentence appears in the abstract. The sentence describes a configuration that was never measured — 90.0% sensitivity came from the cohort at 98.5% specificity, and 99.94% specificity came from a different cohort in a different setting, where the sensitivity is not reported in the abstract at all.
+**Why this matters beyond this paper.** Bootstrapping is the default in modern medical AI because it is easy and assumption-free. It is excellent with hundreds of events — and this paper uses it entirely appropriately for its large cohorts, where the intervals are credible. It fails silently when events are few, which is precisely the situation in rare-disease screening. **The signal to watch for: a suspiciously tight interval around a proportion with a tiny denominator.** When you see one, count the events. If there are fewer than about ten, the interval should be wide, and if it is not, it is an artefact.
 
-**A worked intuition.** A camera has a shutter speed and an aperture, and they trade off. Reporting "this photo was taken at 1/1000th of a second" and "this lens opens to f/1.4" is fine. Saying "this photo was taken at 1/1000th at f/1.4" when one came from a different shot is a claim about an exposure nobody made. Sensitivity and specificity are a pair in exactly the same way: they come from one point on one curve, and they travel together or not at all.
-
-**Watch out.** Whenever a paper reports performance in several cohorts, check whether the threshold was the same in each before combining any two numbers. The signal to look for is a phrase like "at a higher-sensitivity operating point," which this paper uses honestly — it tells you the threshold moved. The harder cases are the papers that move it silently. And when the operating point is not stated at all, as with the 42.2% here, the figure cannot be combined with anything.
+**And the broader point about one-case results.** Even with a correct interval, "one cancer found among 10,959 people" is a demonstration that the pipeline runs end-to-end, not a measurement of how well it works. The authors are reasonably careful about this in the Discussion, listing limited positive cases in the real-world LDCT cohort among their limitations. The abstract's "99.94% specificity" is the part that will travel, and it is the figure from the same eight-prediction cohort.
 
 ## 6. Jargon Translator
 
-**Oesophageal cancer** — Cancer of the food pipe. One of the deadliest common cancers, largely because it is usually found late.
+**Oesophageal cancer (EC)** — Cancer of the food pipe. Deadly largely because it is found late. **ESCC** (squamous cell carcinoma) and **EAC** (adenocarcinoma) are the two main types.
 
-**Precancerous lesion** — Abnormal tissue that is not yet cancer but may become it. Usually removable by a minor endoscopic procedure, which is why finding it is the main prize in screening.
+**HGIN (high-grade intraepithelial neoplasia)** — Precancerous change: abnormal cells confined to the lining, not yet invasive. Usually removable endoscopically. The prize of screening.
 
-**Stage I cancer** — Cancer caught at its earliest stage, still confined and usually treatable.
+**LGIN** — The lower-grade version; not malignant, but needs watching.
 
-**Non-contrast CT** — A standard CT scan with no injected dye. Quick, cheap, done constantly for unrelated reasons.
+**Stage I / stages II–IV** — How far a cancer has spread. Stage I is confined and usually curable.
 
-**Low-dose CT (LDCT)** — A CT using much less radiation, already used for lung cancer screening in many countries. The reason this matters: scans that already happen could be reused.
+**Non-contrast CT (NC CT)** — A standard CT with no injected dye. Done constantly for unrelated reasons.
 
-**Endoscopy** — A camera passed down the throat to look at the oesophagus directly. The accurate test, and the invasive one.
+**Low-dose CT (LDCT)** — A CT using much less radiation, already used for lung cancer screening.
 
-**Opportunistic screening** — Looking for one disease in scans that were done for something else. No new scan, no extra radiation, no extra cost.
+**Endoscopy / Lugol's chromoendoscopy** — Camera down the throat; the iodine stain makes abnormal areas stand out.
 
-**Population-based screening** — Deliberately inviting a defined population to be tested.
+**Opportunistic screening** — Looking for one disease in scans done for something else.
 
-**Sensitivity** — Of the people who have the disease, the share the test catches.
+**Standard of care (SOC)** — What the hospital does normally, here double reading by radiologists blinded to the AI.
 
-**Specificity** — Of the people who do not, the share the test correctly clears. In screening this is the number that decides feasibility.
+**Sensitivity** — Of those with the disease, the share caught. **Specificity** — of those without, the share correctly cleared.
 
-**False positive** — A healthy person the test flags. Here, someone sent for an unnecessary endoscopy.
+**Positive predictive value (PPV)** — Of those flagged, the share who really have it. Depends heavily on prevalence.
 
-**Positive predictive value (PPV)** — Of the people the test flags, the share who really have the disease. Depends heavily on how common the disease is.
+**Prevalence** — How common the disease is in the group tested.
 
-**Prevalence** — How common the disease is in the group being tested. The hidden variable that governs PPV.
+**Operating point / threshold** — The score above which the model says positive. Here fixed in advance at 0.93 and 0.88.
 
-**Operating point / threshold** — The score above which the model says "positive." Moving it trades sensitivity against specificity.
+**Calibration (as used here)** — Retraining on hard cases to cut false positives, then testing on fresh data.
 
-**Calibration** — Here, adjusting the model or its threshold so its outputs behave better in the real world. In this paper, specifically to cut false positives.
+**Hard-case mining** — Feeding a model its own mistakes as extra training data.
 
-**Paired cohort** — A group where everyone received both the test under study and the reference test, so you can see exactly what was missed.
+**nnU-Net / ResEnc / Swin-UNETR / Mamba** — Standard architectures for medical image segmentation. ResEnc is a conventional convolutional design; the others are newer transformer- and state-space-based alternatives.
 
-**Prospective** — Enrolling people and then testing them, rather than analysing records of things that already happened. Harder, slower and much more convincing.
+**Dice similarity coefficient (DSC)** — Overlap between two outlines, 0 to 1. Used here both to measure agreement between annotators and to score the model's lesion outlines.
 
-**External validation** — Testing on data from institutions that had nothing to do with building the model.
+**Class activation mapping** — A heatmap showing which image regions drove the decision.
 
-**Interval cancer** — A cancer that appears between screening rounds after a negative result. The real measure of what a screening programme missed; not reported in this abstract.
+**Bootstrap resampling** — Estimating uncertainty by repeatedly resampling the data. Reliable with many events; unreliable with few.
+
+**Clopper–Pearson (exact binomial) interval** — The conservative, always-valid interval for a proportion. The right tool when events are few.
+
+**DeLong's test** — For comparing two AUCs measured on the same patients.
+
+**Permutation test** — Shuffling labels many times to see how often chance reproduces the result.
+
+**McNemar's test** — For comparing paired yes/no outcomes, such as two pathways applied to the same people.
+
+**Multidisciplinary team (MDT)** — Radiologists, endoscopists and surgeons reviewing cases together.
+
+**Washout period** — Time between a reader's two sessions so they cannot remember their earlier answers. Three months here.
+
+**Interval cancer** — A cancer appearing between screening rounds after a negative result. Not yet reported.
 
 ## 7. What You Can (and Can't) Say
 
 **You CAN say:**
-- "An AI model detected oesophageal cancer on ordinary non-contrast chest CT, a task previously considered impossible, and was validated across twelve centres in three countries on more than 80,000 patients."
-- "On existing CT scans at eight external centres, it cleared 98.5% of healthy people while catching 90.0% of cancers."
-- "It also worked on low-dose CT, the kind already used for lung cancer screening."
-- "After recalibration cut false positives by 72.7%, a prospective study of 17,446 people found that 42.2% of those flagged genuinely had disease."
-- "In cohorts where everyone also had an endoscopy, it found 65.0% of precancerous lesions and 78.4% of stage I cancers at a higher-sensitivity setting."
-- "The validation set was twelve times larger than the training set and spanned three countries, which is unusually strong external validation."
+- "An AI model detected oesophageal cancer and precancer on ordinary non-contrast chest CT, validated across twelve centres in three countries on more than 80,000 patients."
+- "At eight external centres it achieved 89.5% sensitivity and 98.5% specificity, with an AUC of 0.976."
+- "When run on 20,758 consecutive real patients, sensitivity held but specificity fell from 98.5% to 95.5% — and the team reported that, retrained on the hard cases, and cut false positives by 72.7% without losing sensitivity."
+- "In a prospective deployment on 17,446 patients, 42.2% of those it flagged had confirmed disease, and it found one cancer the hospital's normal pathway had missed."
+- "In a reader study with 17 radiologists, AI assistance raised sensitivity from 71.9% to 85.7% and specificity from 79.6% to 91.7%."
+- "Decision thresholds were fixed in cross-validation before any test cohort was examined, using rules stated in advance."
+- "Sensitivity for precancerous lesions was 52.5% externally — about half."
 
 **You CAN'T say:**
-- ❌ "It detects oesophageal cancer with 90% sensitivity and 99.94% specificity." Those two figures come from different cohorts at different operating points. That combination was never measured.
-- ❌ "It catches oesophageal cancer early." It catches 90.0% of cancers but only 52.5% of precancerous lesions at the headline setting — and precancer is what "early" means in screening.
-- ❌ "42.2% PPV means the test is 42% accurate." PPV is the share of flagged people who have disease, and it depends on how common disease is in the group screened. In a lower-prevalence population the same test would have a much lower PPV.
-- ❌ "This is ready for population screening." The abstract reports no interval-cancer rate, no comparison against radiologists, no cost or harm analysis, and no evidence that using it changes outcomes.
-- ❌ "98.5% specificity means few false alarms." At the prevalences involved it means roughly five false alarms per cancer found — which is precisely why the team recalibrated.
-- ❌ "The results are verified." **I could not read the full text.** Everything here rests on an abstract. The reference standard, the participant flow, the confidence intervals and the competing interests are all unexamined.
-- ❌ Any claim about what the full paper's methods show. I have not seen them.
+- ❌ "It detects oesophageal cancer with 90% sensitivity and 99.94% specificity." Those come from different cohorts at different operating points. The 99.94% is from a cohort that produced eight positive predictions.
+- ❌ "98.5% specificity is what you would see in practice." It was measured where 24.5% of patients had cancer. In consecutive real patients it was 95.5%.
+- ❌ "AI triage would triple endoscopic detection rates." That comes from a simulation in which three cancers were resampled from a different cohort, because the prospective cohort contained none.
+- ❌ "It catches oesophageal cancer early." It catches 90.0% of cancers and 52.5% of precancerous lesions at the hospital-screening threshold.
+- ❌ "The low-dose screening result shows it works at population scale." That result is one confirmed cancer among eight predictions, with five flagged people never examined, and its reported confidence interval is not attainable by any valid method.
+- ❌ "AI assistance makes radiologists as good as the AI." In this study the model alone (about 91% sensitivity in that cohort) outperformed AI-assisted readers (85.7%), and the authors say so.
+- ❌ "This is ready for population screening." No interval-cancer rate, follow-up under two years, poor compliance with recommended endoscopy, and the triage case unproven on real cancers.
 
 ## 8. Bottom Line for Your Life
 
-If you have been told you are at risk of oesophageal cancer — long-standing reflux, Barrett's oesophagus, a family history, or you live somewhere this cancer is common — nothing changes today. The accurate test is still endoscopy, and if your doctor has recommended one, this does not replace it. What this paper suggests is that within a few years, a chest CT you have for some entirely different reason might also quietly get checked for this. That would be a genuinely good thing, and it is not available yet.
+If you are at raised risk of oesophageal cancer — long-standing reflux, Barrett's oesophagus, a family history, or you live somewhere this cancer is common — nothing changes today. The accurate test is still endoscopy. What this paper makes plausible is that within a few years a chest CT you have for some entirely different reason might also get checked for this, at no extra scan, radiation or cost. On the evidence here that is a reasonable thing to hope for and not yet a thing to rely on.
 
-If you work in radiology, gastroenterology or screening policy: the reason to take this seriously is the shape of the validation rather than the headline accuracy. Twelve centres in three countries, a validation set twelve times the training set, a prospective arm, a paired CT-endoscopy cohort, and — most unusually — a team that recognised the false-positive problem, went back and recalibrated for it, and then re-tested prospectively. That sequence is rare. The number to interrogate is the 52.5% precancer sensitivity, because the case for screening stands or falls on precancer, and the number to ask for is the interval-cancer rate, which is not in the abstract.
+If you work in radiology, gastroenterology or screening policy: the number to take seriously is not 98.5%. It is 95.5% — what the specificity became when the model met consecutive unselected patients — and then 72.7%, the false-positive reduction the team achieved by retraining on its own mistakes and testing on a fresh series. That loop is the transferable contribution. The open questions are the interval-cancer rate, precancer sensitivity, and whether the triage case survives contact with real cancers rather than resampled ones.
 
-For your paper-reading, take two things from today, one about the subject and one about the process.
+For your paper-reading, take two things.
 
-**On the subject: do the screening arithmetic yourself, every time.** It takes a minute and it is the difference between understanding a screening paper and being impressed by one. A test that is "98.5% specific" generates five false alarms for every cancer found when the disease affects 1 in 300 people. The same test, recalibrated to 99.6% specific, generates 1.4. That one change matters more than any plausible improvement in sensitivity, and it is invisible unless you work it out. Sensitivity sells papers; specificity decides whether a screening programme can exist.
+**First: check the prevalence of the cohort that produced the headline.** A specificity measured where a quarter of patients have the disease is an upper bound, and this paper is unusually useful because the authors went and measured the real number themselves. Three points of specificity — 98.5% to 95.5% — tripled the false alarms. When a diagnostic AI paper reports a test cohort whose prevalence is wildly above the disease's real frequency, you are reading a laboratory result, not a deployment result.
 
-**On the process: say plainly what you could not check.** This decode is based on an abstract, after twenty-six days of trying to get the full text and failing through five different routes. I can do real arithmetic on the numbers the abstract reports, and I have. I cannot tell you what the reference standard was in the largest cohort, which is the single most important thing about a sensitivity figure. Those are different kinds of statement, and a summary that blurs them is worse than useless. The habit this whole reading list is trying to build is noticing the difference — in what you read, and in what you write.
+**Second: count the events behind any proportion before you trust its confidence interval.** A PPV of 12.5% with an interval of 7.1–25.0% looks precise. It came from eight predictions and one true positive, where the honest interval runs from under 1% to over 50%. Bootstrapping is the default in this field and it is silently wrong when events are few — which is exactly the situation in rare-disease screening. Counting events takes a second, and it is the difference between a result and an artefact.
+
+A last note on how this summary came to exist. Yesterday I published an analysis of this paper's abstract, clearly labelled, after twenty-six days of failed retrieval, with a provisional grade and a promise to rewrite. Today the full text opened and I rewrote it. The grade did not move. But I was wrong about one substantive thing — I suspected the multiple operating points might be opportunistic, and they turn out to have been prespecified and locked, which is the best feature of the paper's method. And I was right about the headline numbers by a route that contained two cancelling errors. Both of those are arguments for reading the methods, and neither would have been visible from a summary that did not say what it was based on.
 
 ---
 
-*This is an educational analysis of the published abstract of a scientific paper, not medical advice. Nothing here is guidance about cancer screening or your own risk. If you are worried about oesophageal cancer, talk to your doctor.*
+*This is an educational analysis of a published scientific paper, not medical advice. Nothing here is guidance about cancer screening or your own risk. If you are worried about oesophageal cancer, talk to your doctor.*

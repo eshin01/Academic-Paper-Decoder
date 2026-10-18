@@ -1317,3 +1317,114 @@ Standing re-checks: Huang J (42765400, empty full text ×5), Lu J (42809845), Ho
 Mechael (42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade
 the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit
 summary #1 (Vishwanath) with a Statistics Spotlight.
+
+## 2026-10-18 run — EAGLE full text finally opened; summary 50 rewritten
+
+**The standing task from yesterday is closed.** PMC13668756 served no body text on 2026-10-17
+after five failed routes, and the summary carried a written commitment to rewrite when it opened.
+On day 27 the same identifier returned **61,804 characters** of full text. The commitment outranked
+decoding a new paper, so today's run rewrote entry 50 from the full text rather than adding entry
+51. The grade did not move (4/5). The basis for it did: yesterday was grading a design as
+described, today is grading it on verification.
+
+**What the full text settled, question by question from yesterday's list.**
+
+- **The 3,030-patient gap resolves exactly.** Six named cohorts 77,582 + an unnamed internal test
+  cohort of 2,500 (never mentioned in the abstract) + the 530-patient prospective endoscopic cohort
+  = **80,612**. Yesterday's guess — an unnamed internal set — was right.
+- **The reference standard** (yesterday's single most important question): positives by surgical or
+  biopsy histopathology, AJCC 8th edition; negatives by ≥2 years of clinical follow-up **or** a
+  negative endoscopy within 1 year. The authors volunteer the label-noise risk this creates. So the
+  11,466-patient opportunistic cohort was not endoscopy-verified throughout, as suspected.
+- **Thresholds were prespecified**, averaged over fivefold cross-validation and **locked before any
+  test cohort was touched** — 99% specificity for opportunistic screening, 98% sensitivity for
+  population screening, fixed at 0.93 and 0.88. This **overturns** yesterday's suspicion that the
+  multiple operating points invited cherry-picking. They invite misquotation, which is a different
+  fault, and the discipline here is the best feature of the method.
+- **Confidence intervals** are present throughout the full text; their absence was an abstract
+  artefact.
+- **Competing interests** are in Nature's online-only end matter, absent from the PMC rendering —
+  still not retrievable. Roughly a quarter of the 43 authors are at DAMO Academy / Alibaba Group
+  and Hupan Lab, who built the model.
+
+**My own error, corrected in Section 3 of the summary.** Yesterday I reconstructed the calibrated
+operating point as specificity 99.59% at prevalence 0.33%, predicting PPV 42.1% against the paper's
+reported 42.2%. The full text gives the prospective cohort as prevalence **0.269%** and sensitivity
+**80.9%** — not the 90% I assumed — with implied specificity **99.70%**. Two errors cancelled. The
+method (technique #49) was sound; the tenth-of-a-point agreement was partly luck. **Recorded
+because a right answer reached by a wrong road is the most dangerous kind, and the only thing that
+exposed it was the full text.**
+
+**52. A curated test cohort inflates specificity, and prevalence is how you spot it.** EAGLE's
+headline 98.5% specificity comes from a cohort of 2,812 malignant against 8,654 negative —
+**24.5% prevalence**, case-control-like, not screening. Real screening populations in the same
+paper run **0.27% to 1.37%**. When the model met 20,758 *consecutive* patients, specificity fell
+**98.5% → 95.5%** while sensitivity held. **The check: divide cases by total in every test cohort
+before quoting any figure from it.** A double-digit prevalence in a screening paper means the
+cohort was assembled, not encountered, and the specificity measured on it is an upper bound.
+Specificity is not supposed to depend on prevalence — the mechanism here is case mix, not Bayes:
+a consecutive series contains the pneumonias, hiatus hernias and motion artefacts a curated
+negative set quietly omits. Pairs with #42 (predictive values depend on prevalence) as its mirror
+image: PPV moves because of arithmetic, specificity moves because of who is in the room.
+
+**53. The calibration-cycle template — what an honest engineering response to failure looks like.**
+EAGLE's middle section is the model to copy: (1) deploy on an unselected consecutive series, (2)
+report the degradation rather than bury it, (3) identify the hard cases and re-annotate them,
+(4) merge them into training, (5) test the improved model on a **different** consecutive series
+from the same centres, (6) report the improvement with the arithmetic shown. Every number
+reproduces: RW2 n=14,644 with 163 cases; EAGLE 146 TP / 432 FP → PPV 25.3%; EAGLE-Plus 144 TP /
+118 FP → PPV 55.0%; false-positive reduction (432 − 118)/432 = **72.7%**. **The tell of a
+reanalysis masquerading as a fix is step 5** — if the improved model is tested on the same series
+that generated the hard cases, there is no evidence, only a fitted curve.
+
+**54. Bootstrap confidence intervals break down at tiny event counts.** EAGLE's real-world low-dose
+CT result is **8 positive predictions, PPV 12.5%** — one true positive — with a reported 95%
+interval of **7.1–25.0%**. No valid method produces that. An exact (Clopper–Pearson) interval for
+1 of 8 runs roughly **0.3% to 52.7%**, and a bootstrap resampling eight observations can only ever
+produce PPVs at multiples of 1/8, so its percentiles are an artefact of the grid, not an estimate
+of uncertainty. **Check: whenever an interval looks implausibly tight, back out the denominator.
+Below roughly 20–30 events, demand an exact binomial interval.** A suspiciously narrow interval on
+a small count is evidence the pipeline applied a default method outside its range — the point
+estimate may still be fine, the interval is not.
+
+**55. "Prospectively enrolled" does not mean the events were real.** EAGLE's most quotable claim —
+AI triage would roughly triple endoscopic detection — rests on a cohort of 530 prospectively
+enrolled people containing **six HGIN and zero invasive cancers**. To run the analysis the authors
+**resampled three cancers from a different, retrospective cohort**. They say so plainly in the
+Methods; the abstract says only "exploratory analyses of a prospectively enrolled cohort."
+**Check: find the event count, not the enrolment count.** A prospective design with too few events
+to analyse is a pilot, however it is described, and any number derived from injected events is a
+simulation.
+
+**56. Reader studies get buried when the AI wins.** The abstract never mentions the reader study:
+17 readers, two rounds, three-month washout, randomised order — a proper design. And the result is
+uncomfortable in the other direction: **AI alone (implied 91.0% sensitivity) outperformed
+AI-assisted humans (85.7%)**, which the authors report and discuss rather than hide. **Check: when
+a paper runs a reader study, go find it even if the abstract is silent, and read which arm won.**
+A buried reader study is usually buried because the headline would have to be qualified.
+
+**57. Selecting the architecture on the external cohort is still selecting on the test set.** The
+ResEnc backbone was chosen partly because "in the eight-center external validation cohort… it
+achieved the highest sensitivity (89.5%) and specificity (98.5%), outperforming other models."
+Milder than threshold tuning on test data — the candidates were few, the differences small, and
+the AUC actually favoured a different backbone — but it means the external figures carry some
+selection optimism. Pairs with #36 (nested CV and the leak it does not close): the leak moves up a
+level when the thing being chosen is the architecture rather than a hyperparameter.
+
+**Carried into tomorrow.** **CheXNeXt open-source chest-infection AI on after-hours ED radiographs
+in Singapore** (PMID 42869615, PMC13663711, BMJ Health Care Inform) — **full text already retrieved
+and saved today**, so retrieval is not a risk. 1,006 radiographs; sensitivity 0.234 for
+consolidation and 0.176 for pneumonia at the published default thresholds, rising to 0.894 and
+0.681 after Youden optimisation **on the same data**. That is techniques #44 and #51 in one paper,
+plus the question of what a "published threshold" is worth off its home dataset — and it pairs
+directly against EAGLE, which locked its thresholds before testing. Spares behind it: measles
+TabNet (PMID 42867502, PMC13660459), gallstone body composition (PMC13647361), COPD rapid decline
+(PMC13637773). Standing re-checks: Huang J (42765400, empty full text ×5), Lu J (42809845), Holly
+(42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers never taken
+up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
+retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+
+**And the general lesson from the 26-day wait.** A PMC identifier that serves no body text is not a
+permanent verdict. EAGLE opened on day 27, with no warning and no change in how it was requested.
+**Keep the weekly re-check running on every abstract-only entry**, and keep writing the explicit
+upgrade commitment into the summary — it is what made today's rewrite non-negotiable.
