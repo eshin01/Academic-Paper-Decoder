@@ -1428,3 +1428,117 @@ retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
 permanent verdict. EAGLE opened on day 27, with no warning and no change in how it was requested.
 **Keep the weekly re-check running on every abstract-only entry**, and keep writing the explicit
 upgrade commitment into the summary — it is what made today's rewrite non-negotiable.
+
+## 2026-10-19 run — Toh et al., CheXNeXt open-source AI on after-hours ED chest radiographs
+
+Decoded from **full text** (PMC13663711, retrieved 2026-10-18 and read today). Graded **2/5**.
+Checked the week's new literature first for anything landmark: the only candidate was the PM Heart
+trial of an EHR-integrated AI prognostic tool for ischaemic heart disease (PMID 42893738, Am Heart
+J), and it is a **protocol and rationale paper with no results**, so it does not displace the queue
+entry. Noted for later — if PM Heart's results publish, they are worth decoding, since randomised
+trials of AI tools embedded in live clinical workflow are rare.
+
+**Why this paper earned its slot.** It is the exact counterpart to yesterday's EAGLE, which fixed
+its thresholds in cross-validation before touching any test data. Toh et al. did the opposite in
+both directions at once, and that is what makes it instructive: Table 1 uses thresholds chosen by
+somebody else on somebody else's data (methodologically clean, and the sensitivity is terrible),
+while Tables 2 and 3 use thresholds swept across the same 1,006 films they are then scored on
+(the attractive numbers, never validated). **The clean table is the one with the bad result.**
+
+**Everything reconciles.** All three tables are internally consistent — F1 matches 2·PPV·Se/(PPV+Se)
+and Youden matches Se+Sp−1 everywhere, to the last decimal. Working backwards from Se, Sp, PPV and
+NPV on n=1,006 recovers counts the paper never prints: **consolidation ~191 positives (19.0%), 45
+TP / 8 FP / 146 FN; pneumonia ~183 (18.2%), 32 TP / 4 FP / 151 FN; pleural effusion ~136 (13.5%),
+85 TP / 44 FP / 51 FN.**
+
+**58. A high AUC with a useless sensitivity is a threshold problem, not a model problem — and the
+two can be told apart.** AUC 0.900 for consolidation alongside sensitivity 0.234, same films, same
+model. AUC measures ranking and is threshold-free; sensitivity and specificity are properties of
+one point on the curve. The diagnostic: **if AUC is high and sensitivity is low, the model is fine
+and the dial is wrong; if AUC is low, no dial setting will save it.** The proof in this paper is
+that AUC is byte-identical across all three tables (0.900 / 0.856 / 0.916) while sensitivity moves
+from 0.234 to 0.894 — moving a cut-off cannot change a ranking. **Standing check: when a paper
+leads with AUC, find the sensitivity and specificity at the threshold the authors propose to use;
+if no threshold is named, you have not been told how the tool behaves.**
+
+**59. Thresholds do not travel — but not uniformly, which is why you must check each one.** Stanford's
+published F1-maximised cut-offs against Sengkang's locally optimal ones: consolidation **0.744 →
+0.22 (F1) / 0.11 (Youden)**, roughly 3× to 7× lower; pneumonia **0.831 → 0.31**, nearly 3× lower;
+pleural effusion **0.731 → 0.73**, essentially identical, with "optimisation" buying an F1 gain of
+**0.003**. One of three transferred perfectly. The mechanism is **discrimination surviving while
+calibration drifts**: ranking is robust to a change of scanner, population and processing pipeline,
+but the numeric scale is not, so scores get systematically squashed and a fixed cut-off lands in
+the wrong place. **"We used the published threshold" sounds like the non-cherry-picking choice, and
+in one sense it is — but it is an untested assumption that the new population's score distribution
+matches the developer's.** Pairs with #44 (a threshold quoted to two decimals) and against yesterday's
+EAGLE, which prespecified and locked its thresholds in cross-validation.
+
+**60. Quantify the in-sample threshold-selection optimism instead of dismissing the result.** The
+reflex "they tuned on the test set, so the number is worthless" is as wrong as ignoring the problem.
+Simulated it: a model with AUC 0.900, a sample shaped like this one (191 positives / 815 negatives),
+pick the Youden-maximising threshold on one draw and apply it to a fresh draw, 2,000 repetitions →
+**mean Youden 0.651 in-sample vs 0.630 out-of-sample, optimism ≈ 0.021.** Sanity check: the paper's
+own optimised Youden for consolidation is 0.659, close to the simulated in-sample mean, so the model
+of the situation is about right. **Two points of Youden — real, modest, and driven almost entirely by
+sample size.** At 30 positives instead of 191 it would be several times larger. **The bigger problem
+is not the bias but that every CI in the optimised tables is conditional on a threshold estimated
+from the same data, so they answer "how uncertain is performance at 0.11?" rather than "how uncertain
+is performance at a threshold chosen the way we chose ours?"** Keep the simulation script;
+`verify_chexnext2.py` generalises to any (AUC, n_pos, n_neg).
+
+**61. Do not carry yesterday's suspicion into today's paper — check it.** Technique #54 (bootstrap
+CIs break down at tiny event counts) was earned on EAGLE's 1-of-8 PPV. It would have been easy to
+apply it here by reflex. It does not hold: this paper's bootstrap intervals match exact
+Clopper–Pearson intervals closely (consolidation PPV reported 0.744–0.941 vs exact 0.724–0.933;
+pneumonia sensitivity reported 0.124–0.233 vs exact 0.123–0.238). With dozens to hundreds of events
+the bootstrap works as advertised. **The machinery was fine; what it was pointed at was the problem.**
+Recorded because a technique applied without its precondition is just a prejudice.
+
+**62. When an IRB waiver strips the demographics, generalisability becomes untestable, not merely
+uncertain.** This paper reports **no patient characteristics whatsoever** — no age, no sex, no
+indication, no comorbidity — because the waiver's terms forbade extracting them. You cannot assess
+transportability to another population when the study population is undescribed, and you cannot
+check representativeness even within the same hospital. **Check: look for the baseline-characteristics
+paragraph before reading any accuracy figure; if it is absent, the numbers describe an unidentified
+group of people.** Compounded here by one month of collection (October 2024) in a tropical climate —
+one season of infection prevalence.
+
+**63. Count whether the "multiple conditions" are actually multiple.** Consolidation labelled on
+19.0% of films and pneumonia on 18.2% of the same 1,006 films. Either more than a third of
+after-hours ED chest X-rays at this hospital showed one or the other, or — far more likely — these
+are largely the same radiographs labelled twice because the report read "consolidation, likely
+pneumonia". **The overlap is never reported.** It decides whether the paper validated the model on
+three conditions or on roughly two, and whether the three sets of confidence intervals are
+independent of one another. **One line of text would settle it; its absence is a reporting gap, not
+a trivial one.** Related to #51 (count the operating points before combining numbers) — here, count
+the outcomes before counting them as independent.
+
+**Also noted.** The reference standard is report text, not disease: no microbiology, no pathology,
+no follow-up — so the study measures agreement with local reporting style, which the authors state
+plainly and justify as realistic. A **single** senior trainee extracted every label from 1,006 free-text
+reports with no second reader and no kappa. No external validation. No funding, competing-interests
+or data-availability statement in the PMC rendering, and the analysis ran on a commercial platform
+(CARPL.AI) whose terms are unstated. On the credit side: 20 board-certified radiologists wrote the
+reference reports blinded to the AI, STARD was followed, the optimised thresholds are labelled as
+optimised rather than disguised, both F1- and Youden-based versions are given so the trade-off is
+visible, and the abstract itself names the surrogate reference standard as a limitation. The
+abstract's one real sin is reporting that sensitivity rose "while maintaining acceptable specificity"
+without mentioning that **PPV fell from 0.846 to 0.467 (consolidation) and 0.656 to 0.466 (effusion)** —
+more than half of all flags wrong, which is the operationally decisive number for a triage tool.
+
+**Next queue entry.** Spares in hand, none decoded: measles TabNet (PMID 42867502, PMC13660459),
+gallstone body composition (PMC13647361), COPD rapid decline (PMC13637773). New watch item: **PM Heart
+trial results** (protocol PMID 42893738, Am Heart J; enrolment began September 2023, follow-up expected
+to finish in 2026) — a multicentre randomised open-label trial in Denmark randomising patients 1:1 to
+show or hide an AI-calculated one-year prognosis in the EHR, with a composite primary outcome of
+30-day readmission and one-year survival. **Check quarterly.** Standing re-checks: Huang J (42765400,
+empty full text ×5), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest
+deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023, Wu 2021). Standing offers never taken up:
+upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit
+summary #1 (Vishwanath) with a Statistics Spotlight.
+
+**The pairing to keep.** 10-17/18 (EAGLE: thresholds prespecified in cross-validation and locked
+before testing) against 10-19 (CheXNeXt: thresholds swept on the reporting data) and 10-16 (Park:
+threshold tuned on the test set). Three consecutive papers, three positions on the same axis, and
+the one that handled it best is also the one whose headline numbers are most trustworthy. That is
+the single most transferable lesson of the week.
