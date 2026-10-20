@@ -1542,3 +1542,129 @@ before testing) against 10-19 (CheXNeXt: thresholds swept on the reporting data)
 threshold tuned on the test set). Three consecutive papers, three positions on the same axis, and
 the one that handled it best is also the one whose headline numbers are most trustworthy. That is
 the single most transferable lesson of the week.
+
+## 2026-10-20 run — Nantongo et al., measles vaccination defaulting, TabNet/soft-voting ensembles
+
+Decoded from **full text** (PMC13660459, 47,799 characters). Graded **2/5**. This was a queue spare,
+promoted after both of the week's bigger papers turned out to be abstract-only from here.
+
+**Two high-value papers deferred, both for retrieval, both now TOP-PRIORITY queue entries.**
+
+1. **Chen D, et al. "Reporting completeness of clinical trials evaluating large language model
+   interventions in medicine: systematic review." BMJ 2026;395:e100855** (PMID 42869550,
+   DOI 10.1136/bmj-2026-100855). **No PMC copy**; `doi.org`, `www.bmj.com` and `europepmc.org` all
+   fail DNS under this network policy; Scite still requires a paid plan. **This is the single most
+   on-topic paper this reading list could decode** — it measures, across 461 records (68 trial
+   reports, 15 protocols, 378 registrations, 2017–2025), how completely LLM trials report the very
+   things this list checks every day, scored against TRIPOD-LLM, CONSORT 2025 / CONSORT-AI, SPIRIT
+   2025 / SPIRIT-AI, CHART and the WHO Trial Registration Dataset. Mean completeness **TRIPOD-LLM
+   40%, CONSORT 2025 44%, CONSORT-AI 59%, CHART 52%, SPIRIT 2025 51%, SPIRIT-AI 57%, WHO registration
+   61%.** Author list includes **Gary Collins and Karel Moons** (TRIPOD/PROBAST), Danielle Bitterman
+   and Leo Celi. **Re-check PMC weekly** — BMJ research is open access and a PMC deposit is likely.
+2. **Patel VR, et al. "Clinician Use of an Artificial Intelligence–Enabled Clinical Information
+   Platform." JAMA 2026** (PMID 42879271, PMC13673371, DOI 10.1001/jama.2026.21868). The PMC record
+   exists but **serves an empty `full_text` field** — exactly EAGLE's day-one failure mode, which
+   resolved on day 27. 952,008 clinicians, 271 million queries to OpenEvidence over 2.5 years;
+   monthly active users 355 → 703,265. **Three of seven authors are employed by OpenEvidence**, the
+   platform studied, and an LLM was used to classify a stratified sample of 38.8 million queries —
+   a vendor-authored description of its own product's usage, which is a COI structure worth teaching.
+   **Re-check PMC weekly.**
+
+**Everything in today's paper reconciles.** Kenya 1,685/6,403 = 26.32% defaulters (paper: 26.3%);
+Uganda 1,504/6,793 = 22.14% (paper: 22.1%). The train/test split is never stated in words but is
+recoverable exactly: test-set defaulters 337/1,685 and 301/1,504 = **20.0% in both countries**.
+
+**64. A significant p-value and a confidence interval containing zero, in the same sentence — and
+why both are correct.** Table 12, Kenya: **ΔF1 = 0.0054, 95% CI −0.0156 to +0.0260, McNemar
+χ²=7.224, p=.007, "Significant."** The authors print the interval, note in the text that it "spans
+zero", and then conclude the result "confirms the advanced ensemble's structural advantage". Neither
+statistic is wrong; **they answer different questions.** The bootstrap CI asks *how big is the
+difference in F1*. **McNemar asks only whether the pattern of disagreements is lopsided** — it
+discards every case both models got right and every case both got wrong, and tests the discordant
+pairs against 50/50. A two-to-one split of discordant pairs (Cohen's g 0.1716 → ~67%) is very
+unlikely by chance even when the *net* change in the summary metric is negligible. **Check: when a
+paper reports both and they point different ways, the CI answers your question; when it reports only
+one, notice which.** The giveaway phrase is "statistically significant improvement" attached to a
+difference whose magnitude is never given in countable units.
+
+**65. Significance and effect size can rank two results in opposite directions — here they do.**
+Kenya ΔF1 **0.0054**, **2** extra true positives of 337, p=**.007**, "Significant". Uganda ΔF1
+**0.0059**, **8** extra true positives of 301, p=**.86**, "Not significant". **Uganda's improvement
+is larger on both measures that matter and it is the one called not significant**, because its
+discordant pairs split near-evenly (Cohen's g 0.0333 ≈ 53/47) while Kenya's were consistent. One
+country had a consistent tiny difference; the other an inconsistent slightly larger one. **The
+canonical example for this list.** Both traps are live: reading "significant" as "worth doing"
+(the paper's error) and reading "not significant" as "no effect" (the reader's). **The question that
+cuts through: significant improvement of what, in what units, by how much?** Here the answer is
+two children.
+
+**66. A paper can hand you the evidence against itself, and that is worth grading up for.** These
+authors printed the CI that undermines their headline, stated the Uganda null in the abstract AND
+twice in the text, wrote that "algorithmic complexity does not universally guarantee statistical
+superiority", said explicitly that SMOTE came after the train/test split and why, reported fold-level
+SDs, and warned in the limitations that SHAP importance "may reflect training correlations rather
+than direct epidemiological drivers". **None of that is required and most papers omit it.** The grade
+is 2/5 for what the design can carry, not for candour — and the distinction is worth keeping
+separate, because conflating them teaches readers that transparency is a liability.
+
+**67. "Not significant" is not permission to stop making recommendations — but it should be.** The
+Discussion states Uganda's result "was stochastic indicating that the ensemble architecture provided
+no statistically valid predictive advantage in that context." The **Recommendations section then uses
+that same model's SHAP rankings to propose Ugandan public-health strategy.** **Check: when a paper
+reports a null for a model, follow that model forward and see whether its outputs are still being
+interpreted later in the paper.** A model with no demonstrated advantage has no interpretable
+internals either.
+
+**68. Two datasets from different years are not two countries.** Kenya DHS **2022** vs Uganda DHS
+**2016** — a six-year gap spanning the COVID-19 disruption to routine immunisation that the paper's
+own introduction describes. The authors state the gap and its cause (only 10% of the 2022 UDHS is
+public) and then never carry it into the interpretation, so every "differs between Kenya and Uganda"
+claim is equally a "differs between 2022 and 2016" claim. **Check: in any cross-site comparison,
+find the collection dates of each site before reading any difference as a site effect.** Pairs with
+#62 (undescribed study population) — both are failures to pin down *who and when*, which is what
+transportability rests on.
+
+**69. When the top predictors are earlier steps of the same process, you have an adherence model,
+not a determinants model.** The retained feature set includes **Received Polio 3, Received
+Pentavalent 2, Received Pentavalent 3, Received Polio inactive and Received vitamin A1** — other
+items in the same infant schedule — and measles is, as the paper says, "the last administered among
+the basic antigens". Uganda's top five predictors are vitamin A, age, IPV, Pentavalent 3 and
+district. **So the model largely learned that children who missed earlier appointments miss the next
+one** — true and even useful, but not the social-determinants advance the introduction claims as its
+novelty. **Separate timing question the paper never answers: was "most recent vitamin A" recorded
+before the 9-month measles visit or at it?** If concurrent, it is not available at prediction time
+and is leakage rather than prediction. **Check: for every top predictor, ask whether it is knowable
+strictly before the outcome.**
+
+**Also noted.** Threshold tuned on the test set, stated outright in the Methods ("optimized
+dynamically using precision_recall_curve to maximize the localized F1-score **on the test set**") —
+the third consecutive day on this axis, and the plainest statement of it yet. The paper supplies its
+own evidence of how much that is worth: threshold tuning alone moved the **decision tree by +0.1172
+F1 (Kenya) and +0.0977 (Uganda)**; TabNet +0.0250/+0.0141; RF +0.0189/+0.0157. The two winning
+ensembles landed at thresholds of only **0.5125 and 0.5163**, so the headline models were barely
+affected — the optimism sits in the *choice among twelve candidates*, every one of whose numbers went
+through the same step. Other gaps: the same Uganda AUC is given as **0.8862 in the abstract and
+0.8867 in the Discussion**; no calibration plot or statistic for a tool meant to flag individual
+infants; feature selection (20 → 11 by phi-k against the target) may have used the full dataset; the
+text reads as though SMOTE was applied once before cross-validation rather than inside each fold,
+which would leak synthetic neighbours across folds — one sentence would settle it; the outcome counts
+"don't know" and missing cards as defaulting, so 26.3% and 22.1% are upper bounds; and there is no
+funding or competing-interests statement in the PMC rendering. Credit where due: tree-based models
+beat the deep-learning ones and the authors report it, and the prototype has a real integration path
+into Uganda's DHIS2/EPIVAC registry rather than stopping at a metrics table.
+
+**The threshold-discipline sequence is now four papers long**, and it is the strongest teaching
+thread this list has: **10-17/18 EAGLE** (fixed in cross-validation, locked before testing — and the
+most trustworthy headline numbers), **10-19 CheXNeXt** (swept on the reporting data, labelled as
+optimised), **10-20 Nantongo** (tuned on the test set, stated in the Methods), **10-16 Park** (tuned
+on the test set, not flagged). **Order of trustworthiness = order of threshold discipline.** Use this
+set whenever the concept needs teaching.
+
+**Next queue entry.** Remaining screened spares: gallstone body composition (PMC13647361), COPD rapid
+decline (PMC13637773). Above both, the two deferred papers at the head of this section (BMJ reporting
+completeness; JAMA OpenEvidence) — **check PMC for each before picking tomorrow's paper.** Watch item:
+PM Heart trial results (protocol PMID 42893738, Am Heart J), check quarterly. Standing re-checks:
+Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest
+deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023, Wu 2021). Standing offers never taken
+up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
+retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
