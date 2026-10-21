@@ -1668,3 +1668,122 @@ Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and 
 deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023, Wu 2021). Standing offers never taken
 up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
 retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+
+## 2026-10-21 run — Yang et al., COPD rapid lung function decline (phenotypes + CatBoost)
+
+Decoded from **full text** (PMC13637773). Graded **2/5**. A queue spare, promoted because the week's
+three better papers are all still abstract-only.
+
+**THE ABSTRACT-ONLY BACKLOG IS NOW THREE DEEP.** Re-checked today, all still blocked:
+1. **Chen D, et al. BMJ 2026;395:e100855** (PMID 42869550) — reporting completeness of LLM trials
+   against TRIPOD-LLM/CONSORT-AI/SPIRIT-AI/CHART. **Still no PMC copy.** Highest priority in the list;
+   it measures exactly what this project checks daily.
+2. **Patel VR, et al. JAMA 2026** (PMID 42879271, PMC13673371) — 952,008 clinicians, 271M queries to
+   OpenEvidence. **PMC record still serves empty `full_text`.** Same failure mode EAGLE showed for 26
+   days before opening on day 27, so keep re-checking.
+3. **NEW — Ariel D, Endelman S, Laban G. "Overuse and False Restraint in Large Language Model
+   Recommendations for Choosing Wisely Scenarios." Ann Intern Med, published 2026-10-20** (PMID
+   42896192, DOI 10.7326/ANNALS-26-01667). **No PMC copy.** Benchmark of 6 commercial LLMs (OpenAI,
+   Anthropic, Google production APIs, Feb–Mar 2026), 15 Choosing Wisely recommendations → 225
+   scenarios → 4,050 responses, 3 runs each. Overuse rate **5.4% (95% CI 0.6% to 12.2%)**; false
+   restraint **0.6% (CI 0.1% to 1.2%)**. Funding: None. **Worth decoding for one reason above all:
+   the CI around 5.4% runs from 0.6% to 12.2% on 4,050 responses** — because the unit of analysis is
+   the 15 recommendations, not the responses, and the overuse is concentrated in 2 of them (thyroid
+   ultrasound for an incidental subcentimetre nodule 42.8%, routine ECG in low-risk adults 28.3%,
+   with 8 of 15 at zero). A textbook clustered/over-dispersed outcome, with the false-restraint CI as
+   the narrow contrast in the same study. Also uses an LLM judge with physician adjudication.
+   **Re-check PMC weekly.**
+
+**Everything in today's paper reconciles.** Phenotype counts 289+373+553 = 1,215 ✓; rapid-decline
+counts 42.6%/55.8%/38.9% of those = 123+208+215 = 546 = the stated 44.9% ✓; test set 365 with 164
+events ✓ consistent with 30% of 1,215 at a 44.9% event rate.
+
+**70. When the outcome is a change score, check whether the baseline is a top predictor — then
+separate the floor effect from regression to the mean.** Rapid decliners' baseline FEV1 **1,645 mL**
+vs non-rapid **1,340 mL** (305 mL higher in the group *defined* by falling further), and baseline
+FEV1 carries SHAP 0.389, **2.1× the next predictor**. The authors name the **floor effect** (low
+baseline → no room to fall) and cite SPIROMICS agreeing — that part is real. **They do not address
+regression to the mean, which is the other half and is pure artefact:** a single noisy baseline puts
+lucky-day patients in the high group, and their second reading returns to normal, recording a fall
+that never happened. **Worked check: 100 people with identical true FEV1 of 1,500 mL and ±100 mL
+measurement error, split by first reading — the top group averages ~1,580 then ~1,500, an apparent
+80 mL decline in a group where nobody declined.** That is exactly this paper's threshold. **Fix:
+ANCOVA (model follow-up adjusted for baseline), or report the model with baseline removed.** Related
+to the ANCOVA/Lord's-paradox note from 10-12 but this is the prediction-model form of it. **Standing
+check: "those who started worst improved most" and "those who started best declined most" are the two
+most over-interpreted findings in medicine, and both are what noise alone produces.**
+
+**71. Compare the measurement error against the threshold — and remember that errors ADD when you
+subtract.** Inclusion tolerated FEV1 reproducibility up to **0.2 L (200 mL)** within a session; rapid
+decline was **≥40 mL/year over 2 years = 80 mL total**. The tolerated within-session wobble is
+**2.5× the change being detected**. Worse, **the variance of a difference is the sum of the
+variances**, so a two-point change carries ~**√2 = 1.41×** the error of one measurement: at ~100 mL
+per reading, ~141 mL on the difference, **larger than the 80 mL cut-off itself**. **This is very
+likely why the AUC stalls at 0.712 regardless of algorithm, and why all six models land within
+0.047 of each other — a large part of the label is noise, and noise is unpredictable by
+construction.** **Standing check: when every model performs about the same, suspect the labels before
+blaming the models.** The measurement-error figure usually hides in the exclusion criteria, as it did
+here.
+
+**72. Find the follow-up funnel and ask who came back.** 2,193,579 screened → 45,965 diagnosed →
+38,863 cross-sectional → **1,215 with both baseline and 24-month spirometry**. The prediction model
+rests on **3.1% of the cross-sectional cohort and 0.055% of those screened**, and **the paper never
+compares the 1,215 who returned with the 37,648 who did not** — on variables it already has. Who
+returns for a voluntary repeat lung-function test two years later is bound up with symptoms,
+distance, income and whether anyone chased them. **Check: in any longitudinal sub-study, divide the
+analysed n by the enrolled n, then look for the table comparing the two groups. If it is absent, the
+headline cohort size is advertising.** Pairs with #62 (undescribed study population).
+
+**73. Apply the trivial baseline to the operating point the authors actually recommend.** Threshold
+0.365 → Se 95.5%, Sp 23.3%, NPV 86.4%. Worked out on the stated test set (365 patients, 164 events):
+**157 TP, 7 FN, 47 TN, 154 FP — 311 of 365 flagged, 85.1% of everyone**, PPV 50.4% (NPV reproduces
+the paper's 86.4% exactly). **Flagging every patient catches 164/164 at PPV 44.9%.** So the model's
+entire contribution is **ruling out 54 of 365 people (14.9%) at the cost of missing 7 of 164
+events**, lifting PPV by 5.5 points. The DCA is consistent (net benefit 0.328 vs 0.29 for treat-all)
+and the authors argue coherently for a two-stage high-sensitivity screen — **the problem is the
+abstract's framing, not the strategy.** Extends #29 (the trivial baseline) to the specific case where
+prevalence is near 50%, where "always say yes" is already right half the time.
+
+**74. A near-tie among models on a small test set is not a finding.** CatBoost 0.712 vs logistic
+regression 0.701 = **0.011**, on 164 events where the Hanley–McNeil SE of a *single* AUC is **0.027**
+(95% CI roughly 0.658–0.766); the whole six-model spread is 0.047. The paired SE of the difference is
+smaller than 0.027, but 0.011 is still no basis for choosing an architecture — especially when the
+nomogram is then built by approximating CatBoost with logistic regression and restricted cubic
+splines, i.e. a long route back to where plain logistic regression started. **Check: before believing
+"model X was best", find the number of events and ask whether the gap exceeds the noise.**
+
+**75. Clustering can relabel what you already knew.** Three latent classes, separated almost entirely
+by smoking status (Cramér's V **0.72**), sex (**0.67**) and FEV1% predicted (**0.43**) — and named,
+in the paper's own words, "non-smoking females", "smoking males" and "severe smokers". **Latent class
+analysis found sex, smoking and severity.** Also: AIC and BIC "consistently decrease" as classes are
+added, so **no statistical minimum was ever reached**; three was chosen on an elbow plus clinical
+interpretability, which is defensible and openly stated but makes the number a judgement, not a
+finding. **Check: read the variables that separate the clusters before accepting that new phenotypes
+were discovered, and look for whether the fit statistics actually bottomed out.**
+
+**A note on grading calibration, recorded deliberately.** This is the **third consecutive 2/5**, and
+that is not drift. Each has a distinct specific defect large enough to undermine its headline:
+CheXNeXt (10-19) optimised thresholds never tested out of sample; Nantongo (10-20) a "significant"
+advance of two children; Yang (10-21) an outcome mechanically coupled to its top predictor with a
+noise floor above its threshold. The two 4/5 papers — Jerjes (10-15) and EAGLE (10-17/18) — both
+prespecified, validated externally, and reported the result that hurt them. **Today's paper does the
+third and not the first two.** What would have lifted it to 3, both achievable with data in hand:
+(a) one table comparing the 1,215 followed against the 37,648 not followed; (b) report the model with
+baseline FEV1 removed — if it still reached ~0.70, the finding would stand on its own.
+
+**Genuine credit, which matters for the grade.** 2.19 million screened across 160 sites and 31
+provinces; **ethics approval with its number and written informed consent properly reported**;
+**a calibration curve AND a decision curve analysis** — neither of the other two papers this week
+reported either, and calibration is precisely what an individual-risk tool needs; LASSO + Boruta +
+500-resample bootstrap stability at an 80% threshold; a limitations section naming five real problems
+unprompted including **internal validation only**; the counterintuitive wheezing result flagged as
+counterintuitive rather than spun; and evidence from a population (26% never-smokers, many
+non-smoking women with biomass exposure) that ECLIPSE, SPIROMICS and COPDGene largely miss.
+
+**Next queue entry.** **Check all three abstract-only entries at the head of the previous section
+first.** Remaining screened spare: gallstone body composition (PMC13647361) — the last one. **The
+spare shelf is nearly empty; restocking needed.** Watch item: PM Heart trial results (protocol PMID
+42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) /
+Mechael (42833894), and the four oldest deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023,
+Wu 2021). Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
+McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
