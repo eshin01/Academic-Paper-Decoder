@@ -1787,3 +1787,159 @@ spare shelf is nearly empty; restocking needed.** Watch item: PM Heart trial res
 Mechael (42833894), and the four oldest deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023,
 Wu 2021). Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
 McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+
+## 2026-10-22 run — Long et al., gallstone risk from CT body composition + machine learning
+
+Decoded from **full text** (PMC13647361). Graded **3/5** — the first 3 in four days, and the reason is
+specific: **it trained at one hospital and tested at another**, which the previous four papers did not.
+This was the last spare on the shelf; the shelf is now restocked (end of this section).
+
+**All three deferred papers re-checked, all three still blocked.**
+1. **Chen D, et al. BMJ 2026;395:e100855** (PMID 42869550) — **still no PMC copy**, and **Scite retried
+   today: still requires a paid plan**. Highest-priority entry in the whole queue.
+2. **Patel VR, et al. JAMA 2026** (PMID 42879271, PMC13673371) — PMC record **still serves empty
+   `full_text`**. Day 7 of this failure mode; EAGLE's resolved on day 27, so keep going.
+3. **Ariel D, et al. Ann Intern Med** (PMID 42896192) — **no PMC copy**.
+
+**Everything in today's paper reconciles.** 1,437 + 507 = 1,944 ✓; 222/1,437 = 15.4% ✓; 88/507 = 17.4%
+✓; 310 cases = 248 gallbladder + 28 bile duct + 34 both ✓; class weight 1,215/222 = 5.47 ✓ matches the
+paper's "≈5.47"; ET test accuracy recomputed from Se 0.671 / Sp 0.816 at 88/507 = 0.791 ✓ exactly.
+
+**76. The train-to-test drop, measured model by model — and the simplest model generalises best.**
+Six models, same two cohorts, every one worse at the external centre:
+**logistic regression −0.015** (0.690→0.675) · ET −0.056 (0.828→0.772) · RF −0.073 · CatBoost −0.083 ·
+SVM −0.090 · **XGBoost −0.093**. The simple model's gap is about **one sixth** of XGBoost's: it was the
+worst model at home and the most honest model away. **A flexible model is a better memoriser, and what
+it memorises about one hospital's scanners, lab and case mix does not travel.** **Standing check: when
+a paper gives both training and external performance, compute the drop for every model and read the
+ordering — it tells you which model learned the problem and which learned the dataset.**
+
+**77. Repeated multi-seed cross-validation is still internal, and still optimistic.** The authors did
+careful internal validation — repeated fivefold CV across **50 random seeds**, reporting ET at
+**0.810 ± 0.015**. At the outside hospital: **0.772**. That is **0.038 below, about 2.5 SDs of the
+internal estimate — its own uncertainty band did not cover the shortfall.** Cross-validation measures
+performance on *new patients from the same place*; every fold shares the hospital, scanners and lab.
+**Check: internal CV, however many seeds, cannot estimate transportability. Averaging more folds
+narrows the interval around the wrong quantity.** Strengthens #25 (the six-rung external-validation
+ladder) and #36 (nested CV and the leak it doesn't close) with a measured number.
+
+**78. Overlapping confidence intervals do not settle a model comparison — in either direction.** Test
+AUCs with 95% CIs: ET 0.772 (0.714–0.822), RF 0.733 (0.675–0.786), SVM 0.697 (0.639–0.750), CatBoost
+0.688 (0.622–0.752), LR 0.675 (0.609–0.741), XGBoost 0.668 (0.599–0.735). **ET's interval overlaps
+every other model's**, and RF's upper bound (0.786) sits *above* ET's point estimate. But two
+overlapping intervals also do **not** prove no difference — **comparing separate intervals is simply
+the wrong tool**, because it discards the key fact that all six models ran on **the same 507
+patients**. The right tool is a **paired test — DeLong for AUCs** — and **none is reported**. Worked
+intuition: two models each right about 70 of 100 patients are indistinguishable if right about
+*different* patients, but if they agree on 90 and A wins 9 of the 10 disagreements, the difference is
+clear — and only a paired analysis sees it. **Standing check: do the intervals overlap, and was a
+paired test run? Overlap plus no paired test = a league table, not a result.** Pairs with #43-adjacent
+material and with the DeLong note from the 10-16 Park decode.
+
+**79. "Externally validated" spans four rungs of the ladder — ask whether the test patients came from
+a different institution.** This paper is rung 4: Centre 1 trained, Centre 2 tested, no mixing, and the
+two centres **differ significantly on waist, weight, lymphocytes, triglycerides, total cholesterol,
+indirect bilirubin, hypertension and diabetes** — so the test was not a formality. **The sentence that
+shows they understood it:** they declined repeated random train–test splits because it "would
+compromise the independence of the external validation cohort and undermine the validity of the
+external validation." **That is exactly right and rarely said.** Pooling centres and then randomly
+splitting the pool yields an impressive-sounding multi-centre dataset and a **rung-2** validation —
+the specific failure this paper avoided. **Check: did any patient appear in both halves, and did the
+halves come from different institutions? "We split 70:30" is rung 2 however it is dressed.**
+
+**80. Credit the correct threshold direction when you see it.** The logistic-regression classification
+threshold was chosen by **Youden on the training set (0.492)** and applied **unchanged** to the test
+set. That is the right sequence — pick settings where you may look, measure where you may not — and
+the **opposite** of three papers decoded this week. **But no threshold is stated for the five ML
+models, and the consequences show:** on the same test set sensitivity runs **0.307 (XGBoost) to 0.716
+(LR)**, i.e. the models flag between ~14% and ~43% of patients. Those are six different trade-offs,
+not six answers to one question. **Check: a wide sensitivity spread across models on one test set means
+the thresholds differ; if the paper doesn't say how each was set, the comparison is not like-for-like.**
+This now extends the threshold-discipline thread to **five** papers.
+
+**81. A paper that hunts for its own outcome misclassification deserves saying so.** Of the 1,069
+patients who happened to have ultrasound data, **77 (7.2%) were CT-negative but ultrasound-POSITIVE** —
+counted as non-cases in the primary analysis. The authors went looking, found it, published it, and
+then explained why the naive fix was worse: ultrasound covered only about half the cohort at
+inconsistent times, so reclassifying only those patients would have created **inconsistent outcome
+ascertainment plus indication bias**. Instead they quantified the impact — sensitivity analysis on
+concordant/surgically-confirmed cases **0.756 (0.655–0.840)** against primary **0.772 (0.714–0.822)**.
+They also pre-empted the differential-surveillance objection: the gallstone group had fewer follow-up
+CTs (4.37 vs 7.46 at Centre 1; 4.16 vs 6.72 at Centre 2) **because imaging stopped at the endpoint**,
+median 1.1 years against a 3-year control requirement. **Keep this as the worked example of how to
+report a bias you cannot remove.**
+
+**82. Read the case and control definitions for asymmetry in required follow-up.** Controls needed
+**≥1 abdominal CT per year for 3 years** with no stones; cases needed **one** positive CT within 3
+years. The authors name the selection ("a clinical population rather than the general population") but
+not this asymmetry: **the control definition requires sustained imaging access, the case definition
+does not**, so anyone who stopped attending is excluded from the controls while still able to enter the
+cases — tilting controls toward reliably followed patients. **Check: in any cohort defined by repeat
+testing, compare what a case must do against what a control must do.** Related to #72 (find the
+follow-up funnel).
+
+**Minor findings.** Univariate AUCs are 0.610–0.627 (NLR 0.627, ABSI 0.615, STR_area 0.610) and the
+combined ET reaches 0.772 — **a jump of +0.145 over the best single component**, possible via
+interactions but worth a model-with-and-without-the-CT-block check, which is after all the paper's
+stated question. **No calibration curve, no calibration statistic, no decision curve analysis** — the
+gap versus yesterday's COPD paper, which was graded lower yet reported both. Small arithmetic slip:
+1,069/1,944 = **55.0%**, not the stated "approximately 53.6%". Per-unit odds ratios on uninterpretable
+scales ("each 0.01 increase in ABSI → 59% higher risk", where 0.01 is about half of ABSI's plausible
+range; compounded over 0.02 that is 2.53×) — see #50-adjacent material. The paper never says which
+listed hospital is Centre 1 and which is Centre 2. Funding and competing interests not reported;
+ethics approval and **both** approval numbers are given.
+
+**Grading note.** 3/5 after three consecutive 2/5s, on the strength of: genuine rung-4 external
+validation, nested CV, a classical baseline reported fairly, 2,000-resample bootstrap CIs at a sound
+event count (88), a 50-seed stability check, the training-set threshold, two sensitivity analyses, a
+self-found misclassification, and a limitations table that includes its own. Held at 3 rather than 4 by
+the untested model ranking, the unexplained operating points, the absent calibration, and the narrow
+population. **The scale moves when the work does.**
+
+**SHELF RESTOCKED — six fresh candidates, every PMC copy confirmed present today.** In priority order:
+
+1. **Zhang H, et al. "Dose-conditioned machine-learning prediction of a composite target sedation
+   state in patients undergoing propofol-sedated gastrointestinal endoscopy." Ann Med 2026;58(1):2737005**
+   (PMID 42803764, PMC13629798). **TOP PICK.** Prospective, single-centre, 1,248 adults, **temporal
+   validation** (first 1,000 develop, next 248 validate). And the abstract writes this list's own
+   lessons unprompted: *"Calibration was suboptimal across models."* *"With only 33 validation events,
+   confidence intervals were wide and comparisons among models remain uncertain."* *"No single model was
+   uniformly superior."* Validation AUCs 0.780–0.821; RF highest AUC, ExtraTrees highest average
+   precision — i.e. the winner changes with the metric. A paper that volunteers its own limits.
+2. **Zhou X, et al. "Language-supervised electrocardiogram interpretation with vision transformer."
+   Health Inf Sci Syst 2026;14(1):85** (PMID 42876871, PMC13661825). ECG-VLM: contrastive
+   vision-language model trained on **800,034 paired ECGs + reports** (MIMIC-IV-ECG), **zero-shot via
+   natural-language prompts with no condition-specific fine-tuning**, externally validated on
+   **45,151 recordings** across 14 conditions. AUROC 0.679–0.981 internal, 0.691–0.991 external;
+   strong for rhythm (mean 0.948/0.921), weaker for morphology. The foundation-model paradigm with real
+   external validation — and a wide per-condition spread worth teaching.
+3. **Wang J, et al. "Construction and validation of an identification model for frailty in maintenance
+   hemodialysis patients..." Ann Med 2026;58(1):2743986** (PMID 42860582, PMC13656680). 626 patients,
+   4 tertiary hospitals, **external validation set from a different city** (Wuxi n=502 → Yancheng
+   n=124). Ten models; XGBoost external **AUC 0.917** with calibration, Brier score and DCA. **Scrutinise
+   that 0.917** — the outcome is a questionnaire (FRAIL scale) at 48.6% prevalence, and grip strength is
+   a predictor, which is close to being an item of the thing being predicted. Cross-sectional despite
+   the "identification model" framing.
+4. **Wang X, et al. "Identification and validation of a chronic kidney disease prediction model after
+   radical nephrectomy." Ann Med 2026;58(1):2737504** (PMID 42808223, PMC13629762). 649 patients,
+   **8 centres**, external cohort of 320 from the 7 non-primary centres. LightGBM internal 0.751
+   (0.640–0.862) vs external **0.755** (0.702–0.808) — **essentially no drop**, which is unusual enough
+   to be worth investigating against technique #76.
+5. **Lin S, et al. "...predicting urine culture positivity in children with suspected urinary tract
+   infections." Ann Med 2026;58(1):2742648** (PMID 42841462, PMC13647408). Paediatric; 61% of children
+   aged 0–12 months; culture positivity 42.2%; RF AUC 0.814 (0.742–0.875); seven routine labs; a
+   deployed web calculator. No external validation evident. Pairs with the antimicrobial-resistance
+   mapping, which is a different kind of claim in the same paper.
+6. **Chen X, et al. "Machine learning-based nomogram for acute kidney injury after liver
+   transplantation." Ren Fail 2026;48(1):2698148** (PMID 42802088, PMC13618104). **n=127** from 146
+   screened, split 3:1, nomogram AUC 0.861 train / 0.761 validation, five models, SVM "numerically
+   highest" at 0.846, **internal validation only**. A deliberately small study — the right vehicle for
+   events-per-variable and why a 3:1 split of 127 patients cannot settle anything.
+
+**Also still outstanding.** Watch item: PM Heart trial results (protocol PMID 42893738), quarterly.
+Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the
+four oldest deferred reviews (Topol 2019, Beam & Kohane 2018, Moor 2023, Wu 2021). Standing offers never
+taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
+retrofit summary #1 (Vishwanath) with a Statistics Spotlight. **Note for future restocking: the
+`pubmed pmc[sb]` filter plus a date window is the reliable way to find candidates that will actually
+open — six for six today, against three unreachable papers from top journals this fortnight.**
