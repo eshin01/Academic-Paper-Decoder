@@ -1943,3 +1943,137 @@ taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10
 retrofit summary #1 (Vishwanath) with a Statistics Spotlight. **Note for future restocking: the
 `pubmed pmc[sb]` filter plus a date window is the reliable way to find candidates that will actually
 open — six for six today, against three unreachable papers from top journals this fortnight.**
+
+## 2026-10-23 run — Zhang et al., dose-conditioned prediction of a target sedation state
+
+Decoded from **full text** (PMC13629798). Graded **4/5** — the first 4 since EAGLE, and **the
+best-reported paper in this reading list**. Top pick from yesterday's restocked shelf; it earned the
+slot.
+
+**THE DEFERRED BACKLOG IS NOW FOUR DEEP. A GENUINELY LANDMARK PAPER JOINED IT TODAY.**
+1. **Heydari AA, et al. "The anatomy of a personal health agent." Nature, 21 October 2026** (PMID
+   42907512, DOI 10.1038/s41586-026-11161-8). **NEW, and the most important of the four.** Google
+   Research / DeepMind. An open-source multi-agent LLM framework reasoning over consumer wearables
+   and medical records, built from analysis of web-search and health-forum queries plus user research,
+   with three specialist sub-agents (data science, health domain expert, health coach). Evaluated
+   across **11 benchmark tasks with >7,000 annotations and 1,350 hours of expert and end-user effort**
+   — described as the most comprehensive evaluation of a personal health agent so far. **No PMC copy.**
+   This is the paper everyone will cite about consumer health AI; get it the moment it opens.
+2. **Chen D, et al. BMJ 2026;395:e100855** (PMID 42869550) — LLM-trial reporting completeness. Still
+   no PMC copy. Scite still paywalled.
+3. **Patel VR, et al. JAMA 2026** (PMID 42879271, PMC13673371) — **PMC record still serves empty
+   `full_text`, now day 8.** EAGLE's identical failure resolved on day 27.
+4. **Ariel D, et al. Ann Intern Med** (PMID 42896192) — Choosing Wisely LLM benchmark. No PMC copy.
+
+**Everything in today's paper reconciles, to three decimals.** Funnel 1,441 − 45 − 148 = 1,248 ✓ (the
+148 components 37+32+34+45 sum exactly ✓); 1,000 + 248 = 1,248 ✓; EPV 153/21 = 7.29 ✓ matches the
+paper's own stated figure. **All seven ExtraTrees metrics recompute from the published confusion
+matrix (TN 198, FP 17, FN 15, TP 18):** sensitivity 0.545 ✓, specificity 0.921 ✓, PPV 0.514 ✓, NPV
+0.930 ✓, accuracy 0.871 ✓, F1 0.529 ✓, MCC 0.455 ✓.
+
+**83. Nine metrics, five winners: "best model" is not a property of a model.** Validation winners:
+**AUC → random forest** (0.821) · **average precision → ExtraTrees** (0.570) · **MCC → ExtraTrees**
+(0.455) · **F1 → ExtraTrees** (0.529) · **PPV → random forest** (0.579) · **sensitivity → HistGB and
+ExtraTrees** (0.545) · **specificity → logistic regression and SVM** (0.972) · **Brier → SVM** (0.097)
+· **mean net benefit → SVM** (0.035). **Every one of the five models won something.** The authors
+built Table 3 for the express purpose of saying so; its note reads that the highest values "were
+obtained from different models and should not be interpreted as indicating superiority of any single
+model." **That note is the single most transferable sentence decoded this month.** Note also that
+SVM, the best *probability* estimator, caught only **6 of 33 events** at its own threshold — excellent
+calibration and near-useless classification in the same model. **Standing check: when a paper names a
+winner, find which metric that was and whether the others agreed.** Completes #78 (overlapping CIs)
+from the other direction: #78 says the ranking may be noise; #83 says even a noiseless ranking is
+metric-specific.
+
+**84. Calibration intercept and slope — how to actually read them.** ExtraTrees: **intercept −1.468
+(ideal 0), slope 1.767 (ideal 1)**, Brier 0.150. **Intercept = overall level**; negative here means
+predicted probabilities are systematically **too high**. **Slope = spread**; above 1 means predictions
+are **bunched too close together** and need stretching (the commoner failure, slope < 1, is the
+opposite — an overconfident model). The paper states both correctly and concludes the probabilities
+"should not be used for bedside decisions in their present form." **The mechanism the paper does NOT
+name (my inference from its stated specifications): all five models used BALANCED CLASS WEIGHTS**,
+which by construction inflates predicted probabilities. The giveaway is the thresholds — for a 13.3%
+outcome the MCC-optimal cut-offs were **0.177 to 0.811**, and nothing is 81% likely in a 13% world
+unless the scale has been stretched. **Balanced weighting fixes learning-from-few-events and breaks
+calibration; the two are in tension and this paper shows both halves at once.** **Standing check: AUC
+cannot detect miscalibration at all — add 0.3 to every probability and the AUC does not move. Any
+paper that shows a patient a number owes you an intercept, a slope and a Brier score.** Miscalibration
+is usually *repairable* by recalibration, which is why it is less damning than poor discrimination —
+and the paper prescribes exactly that (logistic recalibration of intercept and slope, isotonic if
+nonlinear).
+
+**85. Count the events, then divide by the predictors — and note when the authors did it for you.**
+**153 events / 21 candidate predictors = 7.29**, published by the authors themselves, with the
+observation that it is *before* categorical expansion so the true figure is lower. Against the
+traditional minimum of 10. On the validation side, **33 events** drive every metric, which is why
+sensitivity 0.545 carries an interval of **0.367–0.714** (18 of 33 caught; the truth is somewhere
+between about 12 and 24). Swapping two patients moves it. **The authors wrote this into the abstract:
+"With only 33 validation events, confidence intervals were wide and comparisons among models remain
+uncertain"** — and then ran **no pairwise tests**, which at 33 events is the right call rather than a
+gap. **Standing check: an impressive patient count is not an event count. A study of 10,000 patients
+with 40 events is a 40-event study.** Pairs with #74 (a near-tie on a small test set is not a finding).
+
+**86. Temporal validation catches what internal cross-validation cannot — and it did here.**
+Development out-of-fold ranking: **HistGradientBoosting 1st (0.804)**, RF 0.800, SVM 0.787, ET 0.787,
+LR 0.769. Temporal validation ranking: RF 0.821, ET 0.819, SVM 0.802, LR 0.797, **HistGradientBoosting
+LAST (0.780)**. **The internal winner finished last on patients enrolled months later at the same
+hospital.** The authors draw the right conclusion: "model ranking during internal cross-validation
+does not necessarily remain unchanged when the model is applied to patients enrolled during a later
+time period," and note that random splitting "may provide an optimistic impression." A chronological
+split sits **between** rungs 3 and 4 of the validation ladder (#25/#79) — same institution, so not
+external, but it catches drift over time, which random splitting cannot. **Standing check: when a
+paper reports both internal and later-period performance, compare the ORDERINGS, not just the
+numbers.** Extends #76/#77.
+
+**87. The gold standard for a methods section, as a checklist to measure others against.** This paper
+does, in one place, nearly everything this list has spent a month asking for: prospective consecutive
+enrolment with dates · ethics approval **with its number** and **written informed consent** · **STROBE
+and TRIPOD+AI named and followed** · a **complete firewall statement** ("the validation cohort was not
+used for model training, preprocessing fitting, feature selection, threshold selection, or model
+tuning" — all five named) · **preprocessing fitted only within each training fold** · an **explicit
+list of every post-sedation variable excluded** to prevent leakage, with reasons · **threshold chosen
+on development data by a stated rule (max MCC) with a stated tie-break (higher F1, then lower
+threshold) and applied unchanged** · calibration intercept, slope, Brier and curves · DCA labelled
+exploratory · a sensitivity outcome · a dose-support overlap check between cohorts · a **scenario
+analysis for the 148 excluded patients** whose outcomes could not be reconstructed and for whom an
+included-vs-excluded comparison was impossible · random seed and every package version · 1,000
+subject-level bootstrap resamples · **seven numbered limitations, none softened** · and an explicit
+causal caveat that the dose was never assigned (fixed 100 mg/min to LOC, so dose is a proxy for time
+to unconsciousness). **Keep this list as the benchmark.**
+
+**88. A paper arguing against its own most interesting finding is telling you something.** Drinking
+status topped the SHAP ranking — the kind of result that writes its own press release. The authors
+instead spend a paragraph dismantling it: self-reported crude binary with no amount, frequency,
+duration or abstinence data; **prevalence differed between cohorts (32.3% vs 39.5%, p = 0.031)**; may
+reflect coding structure, proxy effects or residual confounding; and **a sensitivity analysis removing
+it made calibration WORSE** (Brier 0.150 → 0.160, intercept −1.468 → −1.498, slope 1.767 → 2.397).
+Their conclusion: it "should not be used in isolation for clinical interpretation or dose selection."
+**Check: when SHAP surfaces a surprising top predictor, look for whether the authors interrogated it
+or celebrated it.** Companion to #66 (a paper that hands you the evidence against itself).
+
+**Grading note, since this is the first 4 since EAGLE (10-17/18).** The two look incomparable — EAGLE
+had 12 centres, 3 countries, 80,612 patients, a prospective deployment and a reader study; this has
+one centre, 1,248 patients and 33 validation events. They share a grade because **the scale measures
+how far you can trust what the paper claims.** EAGLE proved much more and then overstated part of it
+in its abstract; this proves much less and overstates none of it. **A large study that overclaims and
+a small study that does not can be equally reliable guides to their own contents.** Held at 4 rather
+than 5 by the design ceiling alone — one centre, temporal rather than external validation, EPV 7.29,
+33 validation events, uncalibrated probabilities, an investigator-defined single-instant composite hit
+by only 15.3%, 148 (10.3%) excluded with no possible comparison, and a registration identifier stripped
+from the PMC rendering so prespecification could not be checked. **Every one of those is named by the
+authors.**
+
+**Next queue entry.** Check the four deferred first — the Nature personal health agent paper is now
+the one to watch. Then the shelf, in the order set yesterday: **(2) ECG-VLM vision-language ECG model**
+(PMID 42876871, PMC13661825 — 800,034 paired ECGs, zero-shot, externally validated on 45,151
+recordings), **(3) frailty in haemodialysis** (PMID 42860582, PMC13656680 — external validation from a
+different city, XGBoost AUC 0.917, and that number deserves scrutiny given a questionnaire outcome at
+48.6% prevalence with grip strength as a predictor), **(4) CKD after radical nephrectomy** (PMID
+42808223, PMC13629762 — 8 centres, and internal 0.751 vs external 0.755 with essentially **no drop**,
+which is unusual enough to test against #76), **(5) paediatric urine culture positivity** (PMID
+42841462, PMC13647408), **(6) AKI after liver transplant** (PMID 42802088, PMC13618104 — n=127, the
+right vehicle for #85). Watch item: PM Heart trial results (protocol PMID 42893738), quarterly.
+Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the
+four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
+(Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
+Statistics Spotlight.
