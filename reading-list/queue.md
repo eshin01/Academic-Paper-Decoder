@@ -2077,3 +2077,119 @@ Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mech
 four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
 (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
 Statistics Spotlight.
+
+## 2026-10-24 run — Zhou et al., ECG-VLM: language-supervised ECG interpretation
+
+Decoded from **full text** (PMC13661825). Graded **3/5** — good machine-learning work, honestly
+reported, establishing a feasibility result rather than a clinical one. Spare #2 from the restocked
+shelf.
+
+**All four deferred papers re-checked, all four still blocked.** Google's personal health agent
+(Nature, PMID 42907512) — no PMC copy. BMJ LLM-trial reporting (42869550) — no PMC copy. Ann Intern
+Med Choosing Wisely (42896192) — no PMC copy. **JAMA OpenEvidence (42879271, PMC13673371) — PMC record
+still serves an empty `full_text`, now day 9.**
+
+**Everything reconciles.** 800,034 ECGs / 161,352 patients = **4.96 recordings per patient**, which is
+exactly why patient-level splitting mattered and why they did it. Token truncation 2,648/800,034 =
+**0.33%** ✓ matches the paper's own audit. Retrieval pool 22,722 + 15,851 + 42,111 = **80,684**.
+
+**89. AUROC is prevalence-independent; AUPRC, precision and F1 are not — and this paper is the clean
+natural experiment.** Internal → external: **AUROC range 0.679–0.981 → 0.691–0.991 (barely moves)**,
+while **AUPRC 0.130–0.877 → 0.058–0.982** and **precision floor 0.105 → 0.016** collapse at the bottom.
+Cause, given by the authors with their own figures: **RBBB prevalence 7.9% → 1.4%, LBBB 3.4% → 0.5%**
+(5.6- and 6.8-fold falls). Worked illustration (my arithmetic): a fixed test at sensitivity 0.90 /
+specificity 0.90 on 10,000 people gives precision **0.436 at 7.9% prevalence, 0.113 at 1.4%, 0.043 at
+0.5%** — same test, same AUROC, precision down tenfold, because the false-alarm pool grew while the
+case pool shrank. **The check cuts BOTH ways and that is the part usually missed: a low external AUPRC
+is not automatically model degradation — compare it against the prevalence in that dataset.** 0.058
+where the condition affects 0.5% is ~10× chance; 0.058 where it affects 5% is failure. The same effect
+appears inside a subgroup here: the **paediatric group had the HIGHEST AUROC and the LOWEST AUPRC** of
+any age band. Extends #42 (predictive values depend on prevalence) to the summary-curve metrics.
+
+**90. "Zero-shot" covers the ranking, not the threshold — and this paper draws the line itself.**
+AUROC and AUPRC are computed by sweeping every cut-off, so they need no labels and the zero-shot claim
+genuinely holds for them. Sensitivity, specificity, precision and F1 all need a decision boundary, and
+here it was chosen on the **validation set** by: *among thresholds reaching sensitivity ≥ 0.80, take the
+highest F1*. The authors state it unprompted — the procedure "requires labeled validation examples for
+each cardiac condition and therefore constitutes condition-specific calibration, distinct from the
+zero-shot ranking evaluation reflected by AUROC and AUPRC." **Practical consequence: the architecture's
+selling point is that a new condition costs a sentence instead of a dataset — true for ranking, false
+for a yes/no answer at a sensible operating point, which is most of the cost you were avoiding.**
+**Standing check: if a paper claims zero-shot and reports sensitivity or F1, ask how the threshold was
+set.** This is the **sixth** paper on the threshold axis in eight days and the most subtle: the issue is
+not tuning on test data but that the *framing* implies no labels while the *metrics* required them.
+
+**91. A sensitivity-first threshold is a declaration of intended use — read it as one.** Rule:
+sensitivity ≥ 0.80 first, F1 second. Result internally: **sensitivity never below 0.791** across all 14
+conditions, but **precision 0.105 (AVB), 0.108 (SVT), 0.118 (PQTI)** — about **9–10 flagged per real
+case**; externally the floor is **0.016**, about **62 flagged per real case**. Whether that is bad
+depends entirely on what a flag triggers: nine extra cardiologist glances to avoid a missed block is a
+good trade; nine extra admissions is not. The authors land correctly — the model "is better suited to
+prioritizing recordings for clinician review than to autonomous diagnosis." **Check: a sensitivity
+figure quoted without its precision, for a rare condition, is close to meaningless — you reach 100%
+sensitivity by flagging everything. Ask how many it flags and what happens to them.** Pairs with #73
+(the trivial baseline) and #29.
+
+**92. Patient-level splitting is the silent error to check first in any multi-record dataset.** 800,034
+recordings from 161,352 patients is **~5 ECGs per person**. A random record-level split would put the
+same patient's tracings on both sides of the wall and inflate every number — and nothing in the
+reported results would look wrong. **This paper partitioned at the patient level and said so.**
+**Standing check: whenever one subject can contribute several records — serial ECGs, repeat imaging,
+multiple lesions, both eyes — find the sentence saying the split was by subject. If it is absent,
+assume it was not.**
+
+**93. When a metric makes a model look bad, check whether the metric is measuring the right thing.**
+Retrieval recall@1 fell from **0.413 (rare reports) to 0.073 (frequent reports)** — apparently terrible
+on common findings. It was the scoring. Under instance-level matching a retrieval counts as correct
+only if it returns *the very report paired with that ECG*; routine ECG reports are highly templated, so
+the model kept returning **identical text belonging to another patient** and being marked wrong.
+Rescored by text content, frequent-report recall@1 rose **0.073 → 0.282, nearly 4×**. The authors
+diagnose the cause properly: under CLIP's symmetric InfoNCE objective **every unpaired combination in a
+mini-batch is a negative regardless of semantic identity**, so semantically equivalent pairs are
+actively pushed apart — the "false-negative problem" in medical vision-language pretraining. **Check:
+before accepting that a model failed on a subgroup, confirm the metric can express success there.**
+Companion to #83 (the winner changes with the metric) — here the metric does not change the winner, it
+manufactures a loser.
+
+**94. Check whether the thing tested is the thing advertised.** The introduction's case for image-based
+ECG AI is that real hospitals hold ECGs as **printed reports, scanned documents and phone
+photographs** with no waveform available. **Every image in the study was rendered by the authors from
+clean digital waveforms at 224 × 224 pixels.** None was a scan or a photo. So the method was never
+tested on the problem it exists to solve. **To their considerable credit the authors say this in the
+introduction, the discussion AND the limitations, and frame the paper as a foundation for future
+extension** — but the gap between motivating problem and tested problem is the single most important
+fact about the paper, and it is exactly the kind of gap that vanishes by the time a result reaches a
+headline. **Standing check: write down in one line what the paper says the problem is, and in one line
+what it actually measured, and compare them.**
+
+**Also noted.** Internal labels are **rule-based text matching over machine-generated reports**, so
+internally the model is scored against an ECG machine's own reading rather than a clinician's; external
+labels are **physician-adjudicated SNOMED-CT**, and the authors flag this difference as a second reason
+internal and external figures should not be compared naively. Performance by category reproduces across
+both datasets — **rhythm 0.948/0.921, conduction 0.858/0.843, morphology 0.741/0.750** — and morphology
+is the only category that did not fall externally, because it was already lowest. Subgroups: AUROC
+declines with age (**0.891 / 0.870 / 0.831** for 12–44 / 45–74 / 75+, spread 0.060), **near-identical by
+sex**, slightly lower in ICU. Comparisons against ECG-CLIP and two supervised models use **figures
+carried over from prior publications rather than a fresh head-to-head run** — weaker than they look.
+Single external cohort. **No funding, competing-interests or ethics statement in the PMC rendering**,
+despite two governed public databases. Credit: TRIPOD+AI named, stratified bootstrap CIs with a fixed
+seed, a self-audit of token truncation nobody asked for, and a discussion that declines to over-read
+its own favourable comparison ("the present study cannot disentangle these effects").
+
+**Why 3 and not 4.** It would be a 4 if the images had been real — scanned, printed or photographed —
+because that one change makes the practical claim testable and the rest of the methodology is already
+in place. Held at 3 by: the untested motivation, internal ground truth that is a machine's own report,
+precision down to 0.016, a single external cohort, and carried-over comparison figures.
+
+**Next queue entry.** Check the four deferred first. Then the shelf: **(3) frailty in haemodialysis**
+(PMID 42860582, PMC13656680 — external validation from a different city, XGBoost external AUC 0.917;
+**scrutinise that number** — questionnaire outcome at 48.6% prevalence with grip strength as a
+predictor, which is close to an item of the thing being predicted), **(4) CKD after radical
+nephrectomy** (PMID 42808223, PMC13629762 — 8 centres, internal 0.751 vs external 0.755 with
+essentially **no drop**, worth testing against #76), **(5) paediatric urine culture positivity** (PMID
+42841462, PMC13647408), **(6) AKI after liver transplant** (PMID 42802088, PMC13618104 — n=127, the
+right vehicle for #85). Watch item: PM Heart trial results (protocol PMID 42893738), quarterly.
+Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the
+four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
+(Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
+Statistics Spotlight.
