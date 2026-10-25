@@ -2193,3 +2193,108 @@ Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mech
 four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
 (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a
 Statistics Spotlight.
+
+## 2026-10-25 run — Wang et al., machine-learning identification of frailty in haemodialysis
+
+Decoded from **full text** (PMC13656680). Graded **3/5**. Spare #3, flagged three days ago with a
+specific instruction to scrutinise the external AUC of 0.917. **The scrutiny was warranted — and the
+authors got there first, which changes the verdict.**
+
+**All four deferred papers re-checked, all four still blocked.** Nature personal health agent
+(42907512), BMJ LLM-trial reporting (42869550), Ann Intern Med Choosing Wisely (42896192) — none has a
+PMC copy. **JAMA OpenEvidence (42879271, PMC13673371) — empty `full_text`, day 10.**
+
+**Everything reconciles exactly.** 352 + 150 = 502 ✓; 502 + 124 = 626 ✓; 304/626 = 48.6% ✓. The
+external confusion matrix was never printed but is recoverable to a unique solution: **60 frail /
+64 non-frail, TP 51, FN 9, TN 54, FP 10**, which reproduces sensitivity 0.850, specificity 0.844,
+PPV 0.836, NPV 0.857 and accuracy 0.847 — all five to three decimals.
+
+**95. When the outcome is a score, read its items against the predictor list — then ask what a
+circularity sensitivity analysis can and cannot settle.** FRAIL scale items: fatigue · weight loss ·
+cannot climb one flight · cannot walk 500 m · **more than five illnesses** (≥3 of 5 = frail). Final
+predictors: age · grip strength · **number of comorbidities** · **CCI score** · albumin · pro-BNP. So
+one fifth of the outcome is also an input, twice over. **To their real credit the authors anticipated
+this, headed a section "Sensitivity analysis addressing potential predictor–outcome circularity", and
+published it: external AUC 0.917 → 0.904 (drop comorbidity count) → 0.902 (drop CCI) → 0.891 (drop
+both), a total cost of 0.026.** **But two limits the analysis cannot reach, and these are the teaching
+points. (a) All four sensitivity models RETAIN grip strength**, which measures the same functional
+capacity as the stairs and 500-m items, recorded at the same visit — one leak closed, another left
+open. **(b) Dropping a predictor tests whether that COLUMN mattered, not whether the INFORMATION
+mattered**: albumin, pro-BNP and grip strength all track the same illness burden, so a small drop is
+equally consistent with "comorbidity was not doing the work" and "the other columns quietly took
+over." Settling it needs a model built only from variables that cannot restate the outcome — here age,
+albumin and pro-BNP. **Standing check: find the outcome scale's components (usually in a reference,
+not the paper) and compare them to the predictor list; if a sensitivity analysis exists, ask whether
+it removed ALL the overlapping variables.**
+
+**96. Identification is not prediction — and the cost question almost no paper asks itself.**
+Predictors and outcome were measured at the **same visit**; the paper says so ("assessed
+contemporaneously") and, unusually, states outright that it "does not establish a model for predicting
+future frailty incidence." Credit for the discipline. **But an identification model only earns its
+place if measuring the outcome directly is hard, and here it is trivial.** The comparison the paper
+never makes: **FRAIL scale = five yes/no questions, no equipment, no blood, under a minute,
+patient-answerable. The model = age + comorbidity count + CCI (chart review) + grip strength
+(dynamometer) + albumin + pro-BNP (two blood tests).** The model is substantially more expensive than
+the thing it identifies, and right 85% of the time rather than by definition — yet the paper proposes
+an online calculator for patients and families to self-assess. **Standing check: for any model whose
+outcome is a questionnaire or bedside test, write down what it costs to run the model and what it
+costs to measure the outcome, and compare.** The legitimate use case sitting unclaimed here is
+patients who *cannot* self-report (dementia, no speech) — grip strength and albumin need no answers.
+
+**97. Read the table, not the sentence about the table.** The paper justifies XGBoost over KNN on four
+external metrics — accuracy 0.847 vs 0.831, specificity 0.844 vs 0.812, PPV 0.836 vs 0.810, F1 0.843
+vs 0.829. **I checked all four: all four are correct.** But the comparison stops at the one model that
+beat it on AUC. Across the full ten-model external table, **XGBoost wins NONE of the eight metrics
+outright**: accuracy, sensitivity, NPV, F1 and Kappa all go to **SVM** (0.855 / 0.883 / 0.883 / 0.855 /
+0.710 against XGBoost's 0.847 / 0.850 / 0.857 / 0.843 / 0.693); specificity and PPV go to **naive
+Bayes** (0.953 / 0.936); AUC to **KNN** (0.920). **Nothing was misreported — a true statement about one
+comparison was presented as a conclusion about all of them.** **Standing check: when a paper names a
+winner, find the full results table and ask who wins each column; if it compares against only one
+rival, ask what the other eight did.** Sharpens #83 into a verification procedure rather than a
+caution.
+
+**98. Credit DeLong when you see it — then notice what the paper did with the answer.** This paper ran
+**pairwise DeLong tests across all ten models on all three datasets**, presented as a heatmap — the
+exact analysis #78 and #83 were written about after two consecutive papers omitted it. XGBoost vs KNN
+came back **p = 0.768**, i.e. indistinguishable, and the authors say so. **That is the right test,
+honestly reported.** The gap is what followed: having established statistically that the AUCs cannot
+be separated, the correct conclusion is "several models perform equivalently, so choose the simplest"
+— which points at **logistic regression, external AUC 0.909, within 0.008 of the chosen model** — not
+"ours wins on these four numbers against this one competitor." **A correct test whose answer is then
+worked around is worth noting as its own pattern.**
+
+**99. The train-to-external drop ordering reproduces for the sixth time.** MLP **−0.084** (0.989 →
+0.905) · GBM **−0.076** (0.990 → 0.914) · XGBoost **−0.073** (0.990 → 0.917) · DT −0.052 · NB −0.052 ·
+SVM −0.044 · KNN −0.041 · EN −0.034 · LDA −0.031 · **logistic regression −0.029** (0.938 → 0.909).
+**The three models that reached ~0.99 in training lost the most; the simplest lost least and finished
+within 0.008 of the winner.** This is now observed in enough papers (#76, #77, #86, and here) to treat
+as a standing expectation rather than an observation: **a training AUC near 0.99 is not a strength, it
+is a warning about how much of the development data the model absorbed.**
+
+**Also noted — genuine strengths, several of them things recent papers lacked.** External validation
+at a hospital in a **different city** (Jianhu, Yancheng vs three Wuxi hospitals). **TRIPOD** named.
+Calibration curves and Brier scores on all three datasets plus DCA. **Two independent assessors per
+centre with a third senior nephrologist adjudicating disagreements** — proper outcome ascertainment,
+better than most of this list. VIF diagnostics printed (all 1.03–1.14; **two comorbidity measures
+being essentially uncorrelated is surprising and unexplained**). No missing data, checked and stated.
+A self-critical **"Sample size and model complexity"** section conceding the development sample was
+"relatively modest in relation to the overall modeling process" and that comparisons should be
+"interpreted cautiously." A thoughtful survivor-bias explanation for why dialysis duration did *not*
+associate with frailty. **No funding or competing-interests statement.**
+
+**Why 3 and not 2.** The methods are not the problem — external validation, DeLong, calibration, DCA,
+duplicate outcome assessment and a self-initiated circularity test put it clearly above the three 2/5
+papers earlier this month. **The problem is that the paper never asks what the model is for.** Why not
+4: the research question does not survive contact with the five-question alternative, the circularity
+is only half-addressed, and the model-selection claim does not survive reading the table.
+
+**Next queue entry.** Check the four deferred first. Then: **(4) CKD after radical nephrectomy** (PMID
+42808223, PMC13629762 — 8 centres, internal 0.751 vs external 0.755, essentially **no drop**, which
+after #99 is unusual enough to be the point of decoding it), **(5) paediatric urine culture
+positivity** (PMID 42841462, PMC13647408), **(6) AKI after liver transplant** (PMID 42802088,
+PMC13618104 — n=127, the right vehicle for #85). **Two spares left after that — restock within the
+week**, using the `pubmed pmc[sb]` + date-window method that went six for six on 10-22. Watch item: PM
+Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
+(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing
+offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs
+are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
