@@ -2298,3 +2298,94 @@ Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Hua
 (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing
 offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs
 are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+
+## 2026-10-26 run — Wang et al., CKD progression after radical nephrectomy
+
+Decoded from **full text** (PMC13629762). Graded **4/5** — the second 4 in four days and the
+best-reported paper after the propofol study. Spare #4, flagged four days ago for one reason: internal
+AUC 0.751 vs external 0.755, **essentially no drop**, which after #99 was unusual enough to decode on
+its own. **The question has a three-part answer, and the real finding was somewhere else.**
+
+**All four deferred papers re-checked, all four still blocked.** Nature personal health agent
+(42907512), BMJ LLM-trial reporting (42869550), Ann Intern Med Choosing Wisely (42896192) — no PMC
+copies. **JAMA OpenEvidence (42879271) — empty `full_text`, day 11.**
+
+**Everything reconciles exactly.** 229 + 100 = 329 ✓; 329 + 320 = 649 ✓; exclusions sum to the stated
+369 and 428 ✓; 224/649 = 34.51% ✓; and the two cohort event rates reproduce the total exactly
+(0.237×329 = 78, 0.456×320 = 146, sum 224 ✓). The unprinted external 2×2 for LightGBM resolves to
+**TP 83, FN 63, TN 135, FP 39**, reproducing accuracy 0.6813 to four decimals.
+
+**100. The answer to "why no drop?": find out WHERE the optimism was paid.** Full sequence:
+**training 0.8604 → internal 0.7508 → external 0.7549.** The loss was **−0.110 from training to
+internal** and **+0.004 from internal to external**. **The optimism was real and paid in full — just
+one step earlier than the comparison being looked at.** Two further contributors: **(a) the internal
+set is n=100 with a 95% CI of 0.6399–0.8617, width 0.222 against the external width of 0.105 — 2.1×
+wider, spanning "nearly useless" to "very good", so it could not have shown a difference**; and
+**(b) the ten predictors were PRESPECIFIED from the group's prior published study**, with the paper
+stating "no predictors were selected or excluded according to univariable P values in the current
+study" — which removes an entire class of optimism before any model is fitted. **Standing check: when
+internal and external agree, ask three things — was a training figure reported and how big was THAT
+drop; how wide is the internal CI; and were the predictors chosen on this data or fixed beforehand?**
+Matching numbers reassure only when the internal estimate was precise enough to have disagreed.
+
+**101. Discrimination can transport while calibration collapses — and a prevalence shift predicts the
+direction.** The cleanest example this list has found. **AUC 0.7508 → 0.7549 (moved 0.004). Brier
+0.1558 → 0.2553 (+0.0995). Calibration intercept −0.29 (95% CI −1.07 to 0.49, CONTAINS zero) → +0.61
+(95% CI 0.27 to 0.95, EXCLUDES zero).** Cause, stated by the authors: the outcome occurred in **23.7%**
+of the development cohort and **45.6%** externally — **1.92×**. A model bakes in the background rate it
+learned; move it somewhere the event is twice as common and every probability is too low, while the
+ordering is untouched because everyone shifts together. **Read the SIGN of a calibration intercept:
+positive = risk UNDERSTATED, negative = overstated.** Worked illustration: four patients told 10/20/30/40%
+whose true risks are 20/38/55/70% — perfect ordering, every number wrong, and a clinician using a 30%
+monitoring threshold reassures three people who should be watched. **AUC is physically incapable of
+detecting this.** Completes the arc of #84 (how to read intercept and slope) and #89 (AUROC vs AUPRC):
+#89 was prevalence moving a discrimination-adjacent metric; this is prevalence moving calibration while
+discrimination sits still.
+
+**102. Prespecifying predictors from a prior study is the cheapest large methodological win available.**
+Ten variables fixed in advance; no univariable screening, no LASSO, no Boruta, no stepwise in this
+cohort — and the paper says so in those words. Every data-driven selection decision is fitted to one
+sample and evaporates on new data; skipping the step means there is nothing to evaporate. **This is
+the structural reason the development-to-validation gap appeared once here and then stopped.** Contrast
+with the four preceding papers, all of which ran LASSO and/or Boruta inside the development cohort.
+**Standing check: find the sentence saying how the predictor list was arrived at. "Prespecified from
+[prior work]" is worth more than any amount of resampling.**
+
+**103. Read the full external column — a wide spread between models is itself the finding.** External
+AUCs: LightGBM **0.7549**, RF **0.7292**, XGBoost **0.7187**, then **SVM 0.5635 and logistic regression
+0.5603 — both near a coin flip.** Two of five models effectively failed while three held. In most papers
+on this list the models cluster within a few hundredths and the choice is noise (#74, #83, #97); here
+the field **split clean in two along a line-versus-regions boundary** — the parametric models (LR, SVM)
+collapsed, the three tree ensembles survived. That says something about the problem (likely non-linear
+thresholds, with the external centres differing significantly on age) and the paper never comments.
+**Standing check: a tight cluster means take the simplest model; a wide spread means the choice matters
+and you should ask WHICH models held and why.**
+
+**104. Credit the disclosure that costs the authors something.** Two to record here. **(a)** The
+external cohort was consulted when choosing the winning algorithm, and the authors say so twice and
+**rename the cohort** accordingly: "the external cohort is interpreted as an external **evaluation**
+cohort rather than as independent confirmation of a LightGBM model finalized a priori." **(b)** They
+report the one DeLong comparison that failed — LightGBM vs random forest externally, **p = 0.1119** —
+rather than quietly omitting it. **A paper that renames its own validation cohort to warn you about a
+peek is telling you it wants to be understood rather than believed.** Companion to #66 and #88.
+
+**Also noted — what holds it at 4 rather than 5.** **Attrition: 1,446 screened → 649 analysed
+(44.9%)**, and the largest single exclusion in BOTH cohorts is **follow-up under three years (214/698 =
+30.7% and 234/748 = 31.3%)**; for a kidney-decline outcome, patients who died or dropped out are
+systematically absent and the direction of that bias is never discussed. **One predictor is
+post-operative** — the post-to-preoperative creatinine ratio, third-ranked by SHAP — so the model
+cannot inform the decision to operate, and the paper never says when the post-op sample was drawn.
+**Baseline coupling (#70) is unaddressed**: the outcome is crossing an eGFR band and preoperative eGFR
+is both a predictor and the thing determining how far you sit from the next band — which is very likely
+why it tops the SHAP ranking. **No reporting guideline named** (TRIPOD+AI fits this design and most of
+its items are already met), **no funding statement, no competing-interests statement.**
+
+**Next queue entry.** Check the four deferred first. Then the last two spares: **(5) paediatric urine
+culture positivity** (PMID 42841462, PMC13647408 — RF AUC 0.814, seven routine labs, a deployed web
+calculator, no external validation evident), **(6) AKI after liver transplant** (PMID 42802088,
+PMC13618104 — **n=127**, the right vehicle for #85 on events-per-variable). **After those the shelf is
+empty — restock on the 10-28 run** using the `pubmed pmc[sb]` + date-window method that went six for six
+on 10-22. Watch item: PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks:
+Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred
+reviews. Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
+McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
