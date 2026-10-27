@@ -2380,12 +2380,158 @@ is both a predictor and the thing determining how far you sit from the next band
 why it tops the SHAP ranking. **No reporting guideline named** (TRIPOD+AI fits this design and most of
 its items are already met), **no funding statement, no competing-interests statement.**
 
-**Next queue entry.** Check the four deferred first. Then the last two spares: **(5) paediatric urine
-culture positivity** (PMID 42841462, PMC13647408 — RF AUC 0.814, seven routine labs, a deployed web
-calculator, no external validation evident), **(6) AKI after liver transplant** (PMID 42802088,
-PMC13618104 — **n=127**, the right vehicle for #85 on events-per-variable). **After those the shelf is
-empty — restock on the 10-28 run** using the `pubmed pmc[sb]` + date-window method that went six for six
-on 10-22. Watch item: PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks:
-Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred
-reviews. Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
-McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-10-27 — Lin S et al., paediatric urine culture positivity (Ann Med; PMID 42841462) — graded 2/5
+
+581 children at Fujian Children's Hospital, 2023–2025, 42.17% culture-positive, seven same-day labs,
+random forest AUC 0.814 (0.742–0.875) on a 175-patient internal holdout, **no external validation**, and
+a public web calculator shipped on it. Reported honestly in its limitations; the three problems it does
+not see are all detectable from numbers it prints.
+
+**105. Compare confidence-interval WIDTHS before you let a paper compare the numbers beside them.**
+The best technique this list has acquired in weeks, because it is ten seconds and works on anything with
+an interval. Here the paper justifies machine learning by setting the random forest (AUC **0.814, CI
+0.742–0.875**, half-width **0.0665**) against the single best lab value (BACT alone, AUC **0.730, CI
+0.692–0.769**, half-width **0.0385**). The forest's interval is **1.7× wider**. Intervals widen when
+samples shrink, so these were not computed on the same children. Confirm with **Hanley–McNeil (1982)**,
+which gives an AUC's standard error from the AUC and the class counts: AUC 0.730 at n=245/336 (**the full
+cohort**) predicts half-width **0.042**; AUC 0.814 at n=74/101 (**the holdout**) predicts **0.067**. Both
+land on the reported values. So an **in-sample full-cohort baseline is being subtracted from an
+out-of-sample holdout model**, and the 0.084 gap has never been measured. The fix costs nothing: score
+both on the same 175 and run a paired DeLong. **Standing check: unequal CI widths = unequal samples =
+find out why before accepting the comparison.** Generalises past AUC to proportions, hazard ratios,
+anything bracketed. Sharpens #88 (overlapping CIs settle nothing without a paired test) by giving you a
+way to detect the mismatch rather than just the uncertainty.
+
+**106. The SHAP base value is the model's effective prevalence — read it against the real one.**
+The waterfall legend prints **E[f(X)] = 0.499** and calls it "the population baseline." The training
+prevalence is **171/406 = 0.421**. The 0.078 gap is `class_weight = "balanced"`, applied to every tree
+model here: weighting the rarer class up until both contribute equally to the loss is the same as
+training on a 50/50 world, so **the model's mean output moves to 0.5 by construction.** Ranking is
+untouched (everyone shifts together, AUC unaffected); every displayed percentage is pulled toward 50%.
+This is the **second paper in a week** where balanced weights broke calibration, and it is now the most
+common way a clinical tool ships an uninterpretable number. **What is new here is the detection method:
+you can read a model's effective prevalence straight off its SHAP base value, from a figure legend,
+without any access to the model.** Extends #99 (balanced weights break calibration by construction) with
+the receipt.
+
+**107. A Brier score is not a calibration measure. Compute the no-skill Brier first.**
+The figure legend reads "a Brier score of 0.188 indicates a modest calibration improvement." It does not.
+Brier decomposes as **reliability − resolution + uncertainty**: calibration is one of three parts, and a
+model can score well by discriminating sharply while its probabilities are systematically wrong.
+Always compute the floor before reading the number: a model predicting the prevalence for everyone —
+zero discrimination, perfect calibration — scores **p(1−p) = 0.4229 × 0.5771 = 0.2440**. Against that,
+0.188 is a **Brier skill score of 0.230**: 23% of the available room, composition unknown. **Standing
+check: Brier alone is uninterpretable; demand the calibration intercept and slope (#84), which separate
+the components and give you the direction of the error.** The paper has the calibration curve and reports
+a Brier score instead of reading it.
+
+**108. When the controls are sicker than the cases, a coefficient's sign belongs to the sampling frame.**
+Fever: **52.2% of culture-positives vs 73.5% of culture-negatives** (p<0.001). CRP: median **18.53 vs
+24.56 mg/L** (p=0.02). The children growing bacteria were *less* systemically inflamed. The explanation is
+correct and the paper gives it — the negative group is stuffed with feverish children whose infection is
+elsewhere and who got a urine culture as part of a fever workup, plus genuine infections that failed to
+grow. The consequence it does not follow through: **CRP enters the model with a negative weight.** The
+model has learned "more inflammation → less likely a positive urine culture," which is true of *this
+hospital's referral pattern* and not of urinary infection. Move to a clinic that only cultures when a
+urinary source is suspected and the contrast group changes, so the coefficient weakens or flips with no
+biology changing at all. **Standing check: when a predictor's direction surprises you, do not reach for a
+mechanism — ask what the comparison group is made of.** Companion to #70 (baseline coupling) and the
+spectrum-bias entries; this is the version where the distortion lives in the *controls*.
+
+**109. The stated purpose names the metric that must be printed — check whether it is there.**
+The introduction's own framing: 70–80% of submitted specimens culture negative, so the job is to **avoid
+cultures that will come back empty.** That job is governed by **specificity** and **NPV**. Sensitivity is
+given three times, to three decimals, with a bootstrap CI (**0.770, 0.662–0.865**). **Specificity is
+listed in the methods, drawn as an unlabelled bar in Figure 4D, and printed as a number nowhere. NPV is
+never computed.** So the paper cannot answer its own question, and neither can the reader. **Papers
+report the metric the model won on far more often than the metric the use case needs; when those diverge,
+the divergence is the finding.** Standing demand for any screening tool: **sensitivity and specificity at
+a single stated threshold, together, plus the threshold.** Here no threshold appears anywhere, while a
+public calculator returns a probability — so a clinician reading 47% cannot tell which side of the
+published operating point they are on. Companion to #92 ("zero-shot" covers ranking but not thresholds).
+
+**110. An outcome definition can make a model look WORSE than it is — the inverse of circularity.**
+Every prior entry on outcome definitions in this list (#78, #98) is about a definition that flatters the
+model. This is the mirror. The outcome is culture positivity, and the paper's own third limitation notes
+that **up to 31% of febrile infant pyelonephritis is culture-negative** (pre-hospital antibiotics,
+collection error, non-growing organisms). Those children are genuinely infected, sit in the negative
+group, and the model — correctly reading their inflammation — scores them high. **They are counted as the
+model's false positives, so the reported specificity is biased DOWNWARD by children it got clinically
+right.** Credit: the authors found this themselves and said it. **Standing check: ask which direction an
+outcome-definition problem pushes. It is not always upward, and a definition that understates a model is
+still a definition problem.**
+
+**111. A small train-to-validation gap is a fact about regularisation, not about usefulness.**
+XGBoost 1.000 → 0.707; gradient boosting 0.999 → 0.732; LightGBM 0.996 → 0.713; random forest **0.845 →
+0.814**. The paper reads the small forest gap as "superior generalization." The forest's gap is small
+because it was **capped at depth 4** with min_samples_split 10 and max_features 0.3 — a model that cannot
+memorise has nothing to lose. The gap measures how much a fitting procedure overfitted; **only the
+validation number measures what the user gets.** A forest at 1.000 → 0.814 would be exactly as useful.
+**Standing check: when a paper cites the gap as evidence of quality, look at the hyperparameters that
+produced the training number before crediting the algorithm.**
+
+**112. A retrospective cohort spanning calendar years contains a free temporal validation.**
+Three full years of data (2023–2025), with the year already broken out in the resistance analysis — so
+the variable is in the dataset. Training on 2023–2024 and testing on 2025 costs nothing, needs no new
+patients, and tests the question a deployed tool actually faces. **They used a random split instead.** A
+random split asks "does this work on more children exactly like these?"; a temporal split asks "does it
+work next year?" **Standing check: when a study spans time and splits at random anyway, that is a
+decision — ask why.** This is the single cheapest thing that would have moved this paper from 2 to 3.
+
+**113. Check two percentages per table against their stated denominator.**
+Two defects here, neither conclusion-changing, both showing the table was never re-derived. **(a)** The
+clinical-diagnosis block gives fever as **128 (25.00%)** and **247 (48.24%)**; against the group sizes
+those are 52.24% and 73.51%. Both reported figures correspond to a denominator of **512** — not 245, not
+336, not 581, not their sum (686). The abnormal-urinalysis row uses the same phantom denominator.
+**(b)** Table 1 reports **134** children with underlying disease and uses 134 for the component rows, but
+the Results text gives VUR as **81.57%** of underlying disease, which needs a denominator of **114** (the
+three named conditions summed). Against the table's 134, VUR is 69.4%. Also: the fever chi-square is
+reported as **28.92**; from the group counts I compute **28.00** (p<0.001 either way).
+
+**Also noted — what the paper gets genuinely right, and it is a decent list.** A **real leakage firewall
+stated in the authors' own words** — all preprocessing, all three feature-selection algorithms and all
+hyperparameter tuning fitted on the 406 training patients only, holdout "kept entirely unseen until final
+model evaluation." **The hyperparameter search is reproducible**: RandomizedSearchCV, 40 iterations,
+5-fold stratified, search space and winning configuration both printed. **EPV = 171/7 = 24.4**, comfortably
+above the floor (contrast #85). **Stratification verified**: 42.12% train vs 42.29% holdout vs 42.17%
+overall, and every count in the cohort, age, sex, LEU, NIT and microbiology tables reconciles exactly.
+**The bootstrap holds up** — I reconstructed sensitivity as 57/74 and the exact Clopper–Pearson interval
+is **0.658–0.860** against the paper's bootstrap **0.662–0.865**, so 500 replicates was adequate here
+(worth recording, since I have criticised small-replicate bootstraps on #63). **Specimen collection is
+described properly** (bags after disinfection, catheter or suprapubic aspiration, clean midstream,
+inoculated within 1–2 h) — contamination is the dominant error source in paediatric urine and a model
+trained on contaminated specimens learns contamination. **DCA performed.** **Limitations section names
+single-centre design, the 74-positive holdout, boosting overfitting, its own CI width, the age skew, age
+being dropped, the culture-negative-infection problem and SHAP's non-causality**, and uses the words
+"strictly as preliminary."
+
+**Against that: no external validation of any kind, an internal contradiction** (the interpretability
+section says the RF "was chosen to interpret the model's output" and then that "the variables importance
+based on **LGBM** model is shown in" the figure — one is wrong and the reader cannot tell which),
+**no reporting guideline named** (TRIPOD+AI fits and most items are already met), **no funding statement,
+no competing-interests statement**, and **no pairwise test** between any two models. The web calculator's
+URL was stripped by the PMC text extraction and **was not reproduced in the summary rather than guessed
+at**; Figure 4D's accuracy/precision/specificity/F1 bars are described only qualitatively in the
+alt-text, so the confusion matrix could not be reconstructed and that is stated in the summary.
+
+**Clinically useful regardless of the model.** This hospital, 2023–2025: **204/245 isolates Gram-negative
+(83.27%)**, *E. coli* 72.55% and *K. pneumoniae* 10.78% of those; 41 Gram-positive, *E. faecalis* 48.78%
+and *E. faecium* 39.02%. **First- to third-generation cephalosporins resisted at 21.74–65.38%**, while
+amikacin, piperacillin/tazobactam, cefoperazone/sulbactam and meropenem all stayed **below 10%**.
+*E. faecium* **100% resistant to penicillin G and ampicillin**; both enterococci **100% susceptible to
+vancomycin and linezolid**. And as a standalone test in this cohort, **nitrite ran sensitivity 0.302 /
+specificity 0.899** — it missed seven of every ten real infections.
+
+**Next queue entry.** Check the four deferred first; all four were re-checked on 10-27 and all four are
+still blocked — Google's personal health agent (PMID 42907512), the BMJ LLM-trial reporting review
+(42869550) and the Annals Choosing Wisely benchmark (42896192) returned **no PMC identifier at all** on
+an ID-conversion query, and JAMA OpenEvidence (42879271, PMC13673371) **still serves an empty PMC body,
+day 12**. Then the **last spare: (6) AKI after liver transplant** (PMID 42802088, PMC13618104 — **n=127**,
+the right vehicle for #85 on events-per-variable). **After that the shelf is empty — restock on the 10-28
+run** using the `pubmed pmc[sb]` + date-window method that went six for six on 10-22. Watch item: PM Heart
+trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
+(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
+never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
+supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
