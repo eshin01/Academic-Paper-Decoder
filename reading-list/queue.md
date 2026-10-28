@@ -2524,14 +2524,168 @@ amikacin, piperacillin/tazobactam, cefoperazone/sulbactam and meropenem all stay
 vancomycin and linezolid**. And as a standalone test in this cohort, **nitrite ran sensitivity 0.302 /
 specificity 0.899** — it missed seven of every ten real infections.
 
-**Next queue entry.** Check the four deferred first; all four were re-checked on 10-27 and all four are
-still blocked — Google's personal health agent (PMID 42907512), the BMJ LLM-trial reporting review
-(42869550) and the Annals Choosing Wisely benchmark (42896192) returned **no PMC identifier at all** on
-an ID-conversion query, and JAMA OpenEvidence (42879271, PMC13673371) **still serves an empty PMC body,
-day 12**. Then the **last spare: (6) AKI after liver transplant** (PMID 42802088, PMC13618104 — **n=127**,
-the right vehicle for #85 on events-per-variable). **After that the shelf is empty — restock on the 10-28
-run** using the `pubmed pmc[sb]` + date-window method that went six for six on 10-22. Watch item: PM Heart
-trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
+---
+
+## 2026-10-28 — Chen X et al., AKI after liver transplantation (Ren Fail; PMID 42802088) — graded 2/5
+
+**n = 127** — the smallest cohort this list has decoded — at one Chongqing centre, 48% AKI, 62 candidate
+variables screened to 4 by LASSO, five models compared, **no external validation**. Weak evidence,
+**exceptionally reported**: names TRIPOD and TRIPOD+AI, publishes its own EPV, runs all 30 pairwise
+DeLong tests with Benjamini–Hochberg and prints every one, adds bootstrap optimism correction and 5-fold
+CV, discloses the predictor–outcome overlap unprompted, and leads its abstract with its weakest number.
+
+**114. The AUC grid — with n₁ positives and n₂ negatives, AUC moves only in steps of 1/(n₁×n₂).**
+The best small-sample tool this list has acquired. An AUC is a *counting* statistic: the fraction of
+positive–negative pairs ranked the right way round. Validation cohort here: **16 × 17 = 272 pairs**, so
+the smallest expressible difference is **1/272 = 0.00368**. Every reported validation AUC lands on that
+grid — SVM 0.846 = **230**/272, XGBoost 0.842 = **229**/272, RF 0.816 = 222/272, LightGBM 0.811 =
+220.5/272 (the half is a tie), logistic 0.761 = 207/272. So the paper's "numerically best" model, the one
+chosen for the SHAP analysis, **beat the runner-up by exactly one pair** — one patient out of 33 ranked
+one place differently. The paper's own DeLong agrees (ΔAUC 0.004, adjusted p = 0.926). **Standing check:
+multiply positives by negatives, take the reciprocal, and ask whether the claimed difference is more than
+a couple of grid steps.** Fires only on small samples — which is exactly where model-ranking claims live.
+Pairs with #105 (CI width as a sample fingerprint): #105 tells you *which sample* a number came from,
+#114 tells you *how finely that sample can measure*.
+
+**115. Compute events-per-variable against the candidates screened, not the predictors that survived.**
+The paper reports **EPV 11.25** (45 events / 4 predictors), states the ≥10 rule, and deserves credit for
+computing it at all. But the outcome was consulted about **62 variables** — every one appears in Table 1
+with a p-value in both cohorts, and LASSO then searched among them using the outcome again. The honest
+denominator is the number of chances the procedure had to find a spurious pattern: **45/62 = 0.73 events
+per candidate.** Supporting 62 candidates at EPV 10 needs ~620 events, roughly 1,290 recipients at this
+AKI rate. Analogy for the summary: 14 heads in 20 flips is weak evidence from one coin and no evidence
+at all if you flipped 62 coins and reported the best. **Standing check: find the sentence saying how many
+candidates were screened; if there isn't one, count the rows of Table 1.** Corrects the application of
+#85, which this list has until now computed the paper's way.
+
+**116. When a paper gives several estimates of the same quantity, the spread between them IS the
+measurement.** Plain logistic regression, no tuning, no randomness: apparent AUC **0.861** fitted and
+scored on 94 patients, **0.729** fitted and scored on all 127. Same method, both in-sample, nothing
+changed but which patients were in the pot — **a gap of 0.132.** That is this dataset's noise amplitude,
+and it is larger than *every* between-model difference the paper reports in validation (0.004, 0.006,
+0.026, 0.029, 0.031, 0.035, 0.050, 0.055, 0.081, 0.085). **Standing check: when a study runs a second
+validation scheme that should not matter, read the disagreement as a free estimate of how much any one
+number can be trusted.** Here 5-fold CV moved SVM by **0.142** and RF by 0.009 — which identifies the
+SVM's validation figure, not the RF's, as the fluke. Extends #83.
+
+**117. A significance test on apparent (in-sample) performance measures memorisation, not skill.**
+The DeLong table's "Apparent whole dataset" rows report RF 0.941 vs XGBoost 0.881, ΔAUC 0.060, **BH-
+adjusted p < 0.001** — and both AUCs are resubstitution estimates on data the models were fitted to.
+RF's apparent 0.941 against its own 5-fold CV 0.807 is a gap of **0.134**, larger than the maximum
+bootstrap optimism the paper itself estimated (0.025–0.059). **A "significant" difference between two
+apparent AUCs tells you which model overfitted harder, and the more flexible model always wins it.**
+Standing check: before reading any model-comparison p-value, find out which dataset the two AUCs were
+computed on. Companion to #105.
+
+**118. Repeated identical Benjamini–Hochberg values are the procedure's signature, not ten
+measurements.** The validation column holds ten comparisons and **two distinct adjusted values**:
+0.609 (×8) and 0.926 (×2). BH sorts the raw p-values, scales each by m/rank, then **enforces
+monotonicity** — the adjusted values may never decrease walking down the list. Where nothing is small,
+that enforcement flattens a whole run onto one ceiling, collapsing eight different raw values into one
+printed number. **Correct reading: "nothing here is significant and the procedure stopped
+distinguishing." Incorrect reading: "eight comparisons are equally uncertain."** Also worth recording:
+BH controls the **false discovery rate** — the expected share of *declared* discoveries that are wrong —
+so it does nothing at all when, as here, nothing is declared. And note where it was *not* used: Table 1's
+62 variables × 2 cohorts ≈ 124 uncorrected p-values, of which ~3 would cross 0.05 by chance with nothing
+going on. **These authors know about multiplicity — they applied BH where it weakened their own claim.**
+
+**119. Check whether the predictor's measurement TIME falls inside the outcome's ascertainment
+window.** Sharper than "the predictor and outcome share a variable" (#98, #110). The outcome is KDIGO
+AKI: a creatinine rise ≥26.5 μmol/L **within 48 h** of transplant. The top predictor is eGFR, computed
+from creatinine drawn at the first urgent post-op blood test, **generally within 1 h** — inside that
+48-hour window. For any patient whose creatinine had already climbed 26.5 μmol/L by that first draw,
+**the measurement used to predict the outcome is a measurement that can satisfy the outcome.** The
+authors disclose "partial overlap" and frame it as a shared ingredient; the timing is the sharper
+statement and they do not make it, nor report how many patients it applied to. **Standing check: write
+down when the predictor was measured and when the outcome window opens. If the first is inside the
+second, it is leakage, not correlation.**
+
+**120. Credit an abstract that leads with its own weakest number.** The title is "Machine learning-based
+nomogram"; the nomogram is the logistic model; its validation AUC of **0.761 is the lowest of the
+five**, and the abstract reports it *before* mentioning the SVM's 0.846. Then the paper says three
+separate times that the SVM was chosen only because its number was numerically highest and that the
+choice should be treated cautiously. **Papers almost never volunteer the ordering that makes them look
+worse.** Companion to #104 (credit the disclosure that costs the authors something).
+
+**The grade, and why it is the point.** **2/5 for the evidence, and the best-reported 2/5 in this list.**
+The grade answers "how much should a reader update?" — and 127 patients at one centre, tested only on
+themselves, with a top predictor overlapping the outcome window, is weak however it is written up. But
+the authors told you all of it: they published the DeLong test that killed their headline, ran a second
+validation that reversed their ranking and printed it, flagged the predictor–outcome overlap before
+anyone asked, computed their own EPV, named TRIPOD+AI, listed the variables they could not obtain
+(donor characteristics, cold ischaemia time, BP trajectories, vasopressor dose, immunosuppression,
+nephrotoxic exposure, injury biomarkers), explained *why* external validation was impossible for them,
+and stated that **no organs from executed prisoners were used**. **Honesty is not strength, but it is
+what lets you measure strength** — and the dangerous combination is the opposite one: a 10,000-patient
+study that hides its calibration and reports only the metric it won on. Worth carrying forward as a
+standing distinction when grading.
+
+**Also noted.** Two of the four nomogram predictors are **not significant** in the multivariable model
+— ln(D-dimer) p = 0.131, ALT p = 0.425, both CIs spanning 1 — yet both carry point scales a clinician
+will move; ALT's mean |SHAP| is 0.014 against eGFR's 0.191, **fourteen times smaller**. Nothing
+pre-operative differed between groups (not age, sex, BMI, diabetes, hypertension, Child-Pugh, MELD,
+pre-op creatinine or pre-op eGFR) — the only intraoperative signal was **anhepatic phase time, 70 vs 59
+min, p = 0.004**, which puts the risk factor in surgical conduct rather than patient selection.
+**No calibration intercept, slope or Brier score is printed anywhere** (calibration is described in words
+and drawn in Figure 2C/F/I), so the direction of miscalibration cannot be read. **No funding statement,
+no competing-interests statement.** ICU stay was measured and correctly **excluded** from the predictor
+set as a post-outcome consequence — worth crediting; that is exactly the variable that usually leaks in.
+Exclusions removed the highest-risk group by design (15 of 19 exclusions were pre-existing renal
+impairment), which the authors explain and which bounds generalisability.
+
+---
+
+## Shelf restocked — 2026-10-28
+
+The spare shelf was emptied by today's run. Restocked with the `pubmed pmc[sb]` + date-window method
+(window 2026/10/08–2026/10/28, 355 hits, screened by metadata). **All six are PMC-confirmed.** Ordered
+by what each would teach that this list has not covered.
+
+**(1) LLM auto-calculating the PECARN intra-abdominal injury rule from unstructured ED notes** — PMID
+42893265, PMC13676203, *J Am Coll Emerg Physicians Open* 2026;7(6):100525, Devisetti L et al. (UCSF).
+OpenAI o1 vs clinician-derived standards on **196 children** after blunt abdominal trauma: accuracy
+95.4% (92.5–98.3), sensitivity 94.4%, specificity 98.2% (94.6–**100**), F1 0.97, **weighted Cohen's
+κ 0.96 (0.92–1.00)**. **Top pick: this list has never taught a reliability statistic** (κ, weighted κ,
+why κ is not accuracy, what a ceiling-touching CI means). Also a rare non-Chinese, non-single-centre-
+nomogram entry.
+
+**(2) Systematic review and meta-analysis of 160 deep-learning echocardiography studies** — PMID
+42899077, PMC13678652, *Eur Heart J Digit Health* 2026;7(9):ztag148, Romano-Martinez A et al. (Mainz).
+16,248 records screened, random-effects pooling across five task categories, and the paper reports
+**"high heterogeneity that could not be resolved"**. **This list has never decoded a meta-analysis** —
+would teach random-effects vs fixed-effect pooling, I², PRISMA, and why pooling diagnostic accuracy
+across heterogeneous tasks is contested.
+
+**(3) Interpretable ML for SARS-CoV-2 reinfection, mucosal + cellular immunity** — PMID 42908321,
+PMC13700530, *Emerg Microbes Infect* 2026;15(1):2746253, Ran J et al. Two prospective cohorts (Wuxi,
+Nantong), **1,156 adults, 128 reinfections (11.1%)**, 18 features, XGBoost internal AUC 0.835, **with
+external validation**. Class imbalance at 11% plus a reported non-linear SHAP association.
+
+**(4) AI detecting cardiac-intervention complications from Dutch electronic records** — PMID 42905390,
+PMC13694613, *Neth Heart J* 2026;34(11):407–413, Okken A et al. **6,564 patients**, structured +
+unstructured data, deliberately **optimised for sensitivity: 94.4–100% sensitivity, 99.4–100%
+specificity — and PPV only 47.5–81%.** A clean, real-world demonstration of base rates destroying
+positive predictive value at near-perfect specificity.
+
+**(5) Habitat-informed 3D deep learning for immunochemotherapy response in oesophageal SCC** — PMID
+42920785, PMC13691255, *iScience* 2026;29(11):117782, Li T et al. 277 patients, external test AUC
+**0.927 (95% CI 0.850–0.951)** — note the CI is **markedly asymmetric** (0.077 below, 0.024 above),
+worth interrogating — and DeLong p = 0.343 against the simpler habitat-radiomics model it claims to beat.
+
+**(6) Deep learning for visualisation quality during cholangioscopy-guided lithotripsy** — PMID
+42898633, PMC13678035, *DEN Open* 2026;7(1):e70454, Kamada H et al. Tiny (12 validation cases) but
+remarkable: inter-reader weighted κ **0.98** against model-vs-consensus κ **0.60**, and the authors
+**voluntarily re-weight their metrics to the natural frame distribution** because their validation
+sample was enriched — giving sensitivity **29.8%** / specificity 93.5%. Primary endpoint p = 0.15
+(not significant); post-hoc analyses significant and labelled as such.
+
+**Next queue entry.** Check the four deferred first. As of the 10-28 run all four are still blocked:
+Google's personal health agent (PMID 42907512), the BMJ LLM-trial reporting review (42869550) and the
+Annals *Choosing Wisely* benchmark (42896192) all return PubMed records with **no PMC identifier**, and a
+Scite full-text fallback was attempted today and the server remains paywalled; JAMA OpenEvidence
+(42879271, PMC13673371) serves an **empty PMC body, now day 13**. Then work the restocked shelf in the
+order above, starting with **(1) the PECARN LLM paper** for the weighted-kappa teaching. Watch item: PM
+Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
 (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
 never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
 supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
