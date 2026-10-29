@@ -2641,7 +2641,7 @@ The spare shelf was emptied by today's run. Restocked with the `pubmed pmc[sb]` 
 (window 2026/10/08–2026/10/28, 355 hits, screened by metadata). **All six are PMC-confirmed.** Ordered
 by what each would teach that this list has not covered.
 
-**(1) LLM auto-calculating the PECARN intra-abdominal injury rule from unstructured ED notes** — PMID
+**(1) [x] DECODED 2026-10-29 — LLM auto-calculating the PECARN intra-abdominal injury rule from unstructured ED notes** — PMID
 42893265, PMC13676203, *J Am Coll Emerg Physicians Open* 2026;7(6):100525, Devisetti L et al. (UCSF).
 OpenAI o1 vs clinician-derived standards on **196 children** after blunt abdominal trauma: accuracy
 95.4% (92.5–98.3), sensitivity 94.4%, specificity 98.2% (94.6–**100**), F1 0.97, **weighted Cohen's
@@ -2679,13 +2679,136 @@ remarkable: inter-reader weighted κ **0.98** against model-vs-consensus κ **0.
 sample was enriched — giving sensitivity **29.8%** / specificity 93.5%. Primary endpoint p = 0.15
 (not significant); post-hoc analyses significant and labelled as such.
 
-**Next queue entry.** Check the four deferred first. As of the 10-28 run all four are still blocked:
-Google's personal health agent (PMID 42907512), the BMJ LLM-trial reporting review (42869550) and the
-Annals *Choosing Wisely* benchmark (42896192) all return PubMed records with **no PMC identifier**, and a
-Scite full-text fallback was attempted today and the server remains paywalled; JAMA OpenEvidence
-(42879271, PMC13673371) serves an **empty PMC body, now day 13**. Then work the restocked shelf in the
-order above, starting with **(1) the PECARN LLM paper** for the weighted-kappa teaching. Watch item: PM
-Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
-(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
-never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
-supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-10-29 — Devisetti L et al., LLM calculating the PECARN IAI rule (JACEP Open; PMID 42893265) — graded 3/5
+
+OpenAI o1 vs a two-clinician reference standard on **196 paediatric blunt-trauma ED notes** at two
+UCSF-affiliated departments. 1,568 labels, **23 discordant (1.47%)**, binary accuracy 95.4%, weighted
+Cohen's κ 0.96. **First TRIPOD-LLM paper in this list.** No held-out notes anywhere; reference-standard
+reviewers unblinded; every confidence interval too narrow at the bottom.
+
+**121. Rebuild the confusion matrix from the published percentages — the counts are recoverable and
+the CI method falls out with them.** Given n = 196 and five percentages (accuracy 95.4, sensitivity
+94.4, specificity 98.2, PPV 99.3, NPV 86.9), exactly one whole-number 2×2 fits: **TP 134, FN 8, FP 1,
+TN 53.** Check: 134/142 = 94.37, 53/54 = 98.15, 134/135 = 99.26, 53/61 = 86.89, 187/196 = 95.41, F1 =
+268/277 = 0.9675. **So the study is: clinicians called 142 children not-very-low-risk and 54 very-low-
+risk; the model missed 8 of the 142 and over-called 1 of the 54** — far more informative than the
+percentages, and it lets you compute whatever the paper omitted. Companion to #105 and #114: #105 reads
+the sample off a CI, #114 reads the resolution off the sample, **#121 reads the raw counts off the
+point estimates.**
+
+**122. A confidence interval ending at exactly 100% (or 0%) is a broken calculation announcing
+itself.** With the counts in hand, test the formula. Wald (p ± 1.96√(p(1−p)/n)) reproduces **all five**
+reported intervals to two decimals — and two of them ran past the boundary and were clipped:
+specificity 53/54 → Wald **94.55–101.74**, printed as 94.6–100; PPV 134/135 → Wald **97.81–100.71**,
+printed as 97.8–100. The paper never names its CI method; the arithmetic names it. **Why it matters:
+Wald is symmetric and misbehaves against a boundary.** Exact (Clopper–Pearson) intervals for the same
+counts: specificity **90.11–99.95** (not 94.6), PPV **95.94–99.98** (not 97.8), accuracy 91.46–97.88,
+sensitivity 89.20–97.54, NPV 75.78–94.16. **Every reported lower bound is too high — by 1.0, 1.4, 2.6,
+3.4 and 4.4 points — and the error runs the same way every time.** Standing check: look at the upper
+bounds first; a 100 is the tell, and when you see it, widen the other end too.
+
+**123. Accuracy and kappa answer different questions, and the gap between them measures how lopsided
+the data is.** Cohen's κ = (observed − chance)/(1 − chance): agreement beyond what two raters with the
+same habits would reach by guessing. On the reconstructed binary table: observed 187/196 = 0.9541;
+clinician marginals 0.7245/0.2755, model marginals 0.6888/0.3112, so chance = 0.7245×0.6888 +
+0.2755×0.3112 = **0.5848**; κ = 0.3693/0.4152 = **0.889**. **95.4% accuracy is κ 0.89 because 72% of
+these children fall in one category and ~59 of the 95 points were free.** Intuition for the summary:
+two radiologists calling 95 of 100 scans normal at random agree on ~90.5 of them with no skill at all.
+**Three watch-outs: (a) κ depends on the marginal distribution, so it is not comparable across studies
+with a different case mix; (b) the kappa paradox — overwhelming dominance of one category can give high
+agreement and low κ; (c) κ between two raters reading the same text measures consistency, not
+correctness.** This paper's own best insight is that several disagreements were ambiguous *definitions*
+rather than either party being wrong.
+
+**124. "Weighted kappa" without naming the weights is not a reported statistic.** The headline is
+weighted κ **0.96** on a three-category ordered scale (very low / moderate / high). Weighting is the
+right choice for ordered categories — a one-step disagreement should cost less than a two-step. But
+**linear weights penalise a two-step miss twice as much as a one-step; quadratic weights penalise it
+four times as much**, and on a three-level scale quadratic weighting routinely prints a visibly higher
+number. The scheme is not stated, so 0.96 is not reproducible. Standing demand: weighted κ must come
+with its weighting scheme, and ideally the confusion matrix.
+
+**125. In an LLM paper, model selection and prompt refinement on the evaluation set are the new
+threshold-tuning.** Two instances here, both disclosed. **(a)** Three models run (GPT-4o-mini, GPT-4.1,
+o1); o1 kept "because it demonstrated the highest accuracy at the predictor variable level" — on these
+196 notes. **(b)** "LLM prompts were developed over 2 rounds"; two clinicians reviewed the discordant
+extractions and "refine[d] prompts with clearer criteria" — on these 196 notes. **There is no held-out
+set anywhere in the study**, so the reported 95.4% is post-selection and post-refinement, and the
+optimism is never quantified. The paper's own limitation names only the smaller half ("may have overfit
+to institution-specific documentation patterns"). Analogy: marking a practice exam, telling the student
+exactly which answers were wrong, re-sitting the same paper, and reporting the second score as their
+expected grade. **Standing check for every LLM paper: find the sentence describing how the prompt was
+written, then ask which data that happened on.** Fix is cheap — develop on half the notes, freeze, report
+on the other half.
+
+**126. One inference run at temperature 1.0 with no seed is one draw from a distribution.** The paper
+states "default sampling parameters (temperature = 1.0, no seed set)" and "one inference run was
+performed per clinical note" — **credit for reporting this at all, which TRIPOD-LLM is the reason for**
+— but it means the headline figures cannot be reproduced and their run-to-run variability is unknown.
+Three runs and a reported spread would have cost two more hours of compute. Standing demand for LLM
+evaluations: temperature, seed, model version string, and **number of inference runs with the spread
+across them.**
+
+**127. The sample size that matters is the number of units of the thing being claimed — and one study
+can have several.** This paper is simultaneously **196 patients** (for anything about this cohort),
+**1,568 labels** (for the extraction claim — 196 notes × 8 variables, which is what the headline
+actually rests on), and **4 events** (for anything about intra-abdominal injury). The secondary result
+"100% sensitivity for IAI and for IAI requiring acute intervention" is **4/4 and 1/1**: exact 95%
+intervals **39.8–100%** and **2.5–100%**. **This is also why the grade is 3 rather than 2 despite no
+external validation** — the claim is about label extraction and there are 1,568 labels, each of the 23
+errors individually reviewed; contrast 2026-10-28, where the claim was a prediction model and there
+were 61 events. **Match the denominator to the claim before judging whether a study is big enough.**
+
+**128. When missing data is imputed in one direction, check which way the resulting clinical error
+points.** Missing predictors were counted as **negative**. PECARN calls a child very low risk only when
+*all* predictors are negative, so absence→negative pushes children **toward** very low risk, i.e.
+**toward not scanning**. The data match the theory: the two worst errors in the study were children the
+clinicians scored **high risk** and the model scored **very low risk**, and in both the model had missed
+abdominal wall trauma — one of the two variables the authors name as lacking structured fields. Neither
+child had an injury, which is luck in a cohort where only 2% did. **An imputation rule whose errors
+concentrate in the unsafe direction is a design property, not a rounding detail.**
+
+**Also noted — what earns the 3.** **TRIPOD-LLM and STROBE both named**, with exact model version
+strings (`gpt-4o-mini-2024-07-18`, `gpt-4.1-2025-04-14`, `o1-2024-12-17`), reasoning-effort setting,
+sampling parameters, inference count, prompting strategy, median input length (845 words) and prompts in
+a supplement. **Funding disclosed** (NIH NICHD K23HD110716). **COI disclosed including the awkward one**
+— two authors are co-founders and consultants to CaptureDx, named, with a non-involvement statement.
+**IRB number given (25-43740) with the consent-waiver reasoning spelled out in full.** Two independent
+reviewers with third-party adjudication and prespecified criteria. **A complete qualitative analysis of
+all 23 discordances**, which is more useful than the accuracy figure. Conclusion scoped to QI and
+research and repeated three times, with "larger external validation is needed before use to guide
+bedside imaging decisions." **The authors call it a single-system study themselves**, correctly: the two
+sites share an EHR instance, documentation templates and some physicians. And the paper's sharpest
+contribution is reading its own errors the right way round — most discordances reflected **ambiguity in
+the clinical definitions rather than model failure**, with the model refusing to call a mechanism
+dangerous when fall height or crash speed was undocumented.
+
+**Against that.** The Bottom Line box says "negative predictive value was 86.9% for identifying children
+at very low risk of injury," which invites reading agreement-with-clinicians as accuracy-against-injury;
+the Methods are unambiguous but the most-read element is not. **The F1 interval (0.97, CI 0.90–0.98) is
+asymmetric 5.4 : 1 while all five others are exactly symmetric Wald** — a different, unstated method.
+The per-variable table was not in the retrieved text (arithmetic is consistent with the worst variable at
+185/196 = 94.4%, and 11 of 23 errors fell in one variable, named in the Discussion as dangerous mechanism
+of injury). Throughput was 2 h for 196 notes (~37 s each) with **no clinician timing reported**, so the
+efficiency claim is one-sided.
+
+**Deferred-paper status recorded in the summary's appendix**, including a note to decode the JAMA
+OpenEvidence study **abstract-only on 2026-11-05 if its PMC body is still empty at day 21**, and a
+flag that the Annals *Choosing Wisely* overuse rate of 5.4% with a 95% CI of 0.6–12.2% is a **clustering
+signature** — the interval is almost certainly computed across the 15 recommendations rather than the
+4,050 responses, which is the correct choice and worth teaching when that paper becomes readable.
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 10-29; JAMA at day 14).
+Then continue the restocked shelf at **(2) the meta-analysis of 160 deep-learning echocardiography
+studies** (PMID 42899077, PMC13678652) — **this list has never decoded a meta-analysis**, and it would
+teach random-effects pooling, I², PRISMA and why pooling diagnostic accuracy across heterogeneous tasks
+is contested; the paper reports "high heterogeneity that could not be resolved," which is the hook.
+Then (3) SARS-CoV-2 reinfection with external validation (42908321), (4) Dutch complication detection
+with PPV 47.5–81% at near-perfect specificity (42905390), (5) oesophageal SCC habitat deep learning with
+an asymmetric CI (42920785), (6) cholangioscopy quality with a voluntary spectrum-bias re-weighting
+(42898633). Watch item: PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks:
+Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred
+reviews. Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
+McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
