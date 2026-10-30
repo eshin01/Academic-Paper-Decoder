@@ -2649,7 +2649,7 @@ OpenAI o1 vs clinician-derived standards on **196 children** after blunt abdomin
 why κ is not accuracy, what a ceiling-touching CI means). Also a rare non-Chinese, non-single-centre-
 nomogram entry.
 
-**(2) Systematic review and meta-analysis of 160 deep-learning echocardiography studies** — PMID
+**(2) [x] DECODED 2026-10-30 — Systematic review and meta-analysis of 160 deep-learning echocardiography studies** — PMID
 42899077, PMC13678652, *Eur Heart J Digit Health* 2026;7(9):ztag148, Romano-Martinez A et al. (Mainz).
 16,248 records screened, random-effects pooling across five task categories, and the paper reports
 **"high heterogeneity that could not be resolved"**. **This list has never decoded a meta-analysis** —
@@ -2800,15 +2800,154 @@ flag that the Annals *Choosing Wisely* overuse rate of 5.4% with a 95% CI of 0.6
 signature** — the interval is almost certainly computed across the 15 recommendations rather than the
 4,050 responses, which is the correct choice and worth teaching when that paper becomes readable.
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 10-29; JAMA at day 14).
-Then continue the restocked shelf at **(2) the meta-analysis of 160 deep-learning echocardiography
-studies** (PMID 42899077, PMC13678652) — **this list has never decoded a meta-analysis**, and it would
-teach random-effects pooling, I², PRISMA and why pooling diagnostic accuracy across heterogeneous tasks
-is contested; the paper reports "high heterogeneity that could not be resolved," which is the hook.
-Then (3) SARS-CoV-2 reinfection with external validation (42908321), (4) Dutch complication detection
-with PPV 47.5–81% at near-perfect specificity (42905390), (5) oesophageal SCC habitat deep learning with
-an asymmetric CI (42920785), (6) cholangioscopy quality with a voluntary spectrum-bias re-weighting
-(42898633). Watch item: PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks:
-Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred
-reviews. Standing offers never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8,
-McKinney #10) if PDFs are supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-10-30 — Romano-Martinez A et al., DL echocardiography systematic review + meta-analysis (EHJ Digital Health; PMID 42899077) — graded 3/5
+
+**The first meta-analysis in this list.** 16,248 records → 160 studies of *fully automated* DL on echo
+video, five task categories, random-effects pooling with double-arcsine transformation, multilevel
+models, meta-regression, Cook's distance, funnel plots. **The review half earns a 4; the meta-analysis
+half earns a 2**, because the literature turned out not to be poolable and the paper's text never prints
+a pooled number.
+
+**129. I² is a RATIO, not an amount of heterogeneity — and that is why 98% is less alarming than it
+sounds.** I² = between-study variation ÷ (between-study variation + sampling variation). It measures
+disagreement *relative to each study's own precision*, so **making the studies bigger pushes I² up even
+when the real disagreement is unchanged.** Worked intuition: ten studies reporting accuracies between
+0.88 and 0.92 — a four-point spread — give I² near zero if each tested 50 patients and above 95% if each
+tested 50,000. Identical disagreement, opposite verdicts. This is why I² > 90% is routine in diagnostic
+meta-analysis and is not on its own grounds to dismiss a review. Values here: prediction **99.9%/98.8%**,
+LVEF MAE **98.1%**, segmentation **98.2%**, view classification **75.8%**. **Standing check: don't read
+I² as "how much the studies disagree" — look at the actual spread on the forest plot, and ask for the
+prediction interval, which is in the original units and is the number a clinician can use.** Neither
+appears in this paper's text.
+
+**130. Residual heterogeneity RISING when you add moderators means the moderators are noise.**
+Prediction tasks behaved properly: architecture alone **99.9%/98.8%** → adding target **98.4%/98.1%** →
+adding training participants, resolution, frames and batch size **76.8%/82.8%** (a fall of 23.1 and 16.0
+points, and even so three-quarters is still unexplained). Segmentation did the opposite: baseline
+**98.2%** → by target 97.5%/94.9% → adding architecture, segmented area and training size **98.8%, i.e.
+UP** — and the formal test of moderators returned **p = 0.99**. **Standing check: watch the direction.
+Falling residual I² = the explanation is working; rising = you added noise, and that is informative
+rather than an error.**
+
+**131. "Outliers removed, heterogeneity resolved" reads in both directions.** Cook's distance measures
+how much the pooled result moves if one study is deleted; >1 is the usual threshold. Here **5 of 21
+segmentation studies exceeded it, and after removal I² fell from 98.2% to 0.00%.** Reading one: a
+quarter of the studies generated all the apparent disagreement and the other sixteen are consistent.
+Reading two: **deleting the 24% of observations that disagree most and announcing the rest agree is
+close to assuming the conclusion.** The paper offers neither reading. Standing check: always note *what
+fraction* was removed before believing a post-outlier homogeneity claim.
+
+**132. You cannot inverse-variance pool raw proportions — the weights are rigged by the scale.**
+Variance of a proportion is p(1−p)/n, which **shrinks toward the boundary**: p(1−p) is 0.2500 at p=0.50,
+0.0900 at 0.90, **0.0099 at 0.99**. Since meta-analysis weights by inverse variance, **a study reporting
+99% accuracy gets ~25× the weight of an equally sized study reporting 50%, purely for sitting near the
+ceiling** — the optimistic studies would dominate automatically. The **double-arcsine (Freeman–Tukey)**
+transform, which this paper uses correctly, maps t = arcsin√(x/(n+1)) + arcsin√((x+1)/(n+1)), whose
+variance is ≈ **1/(n+1)** and contains no p at all. At n=100 the raw variances 0.002500 / 0.000900 /
+0.000099 (for 50, 90, 99 correct) all become **0.009901**. **This is the same boundary problem that broke
+the Wald intervals in #122, with a different fix.** Watch-out: back-transforming a Freeman–Tukey pooled
+value is known to misbehave when study sizes vary widely — several methodologists prefer logit — and
+this review's studies range from small single-centre series to large multicentre cohorts.
+
+**133. In a meta-analysis of models, independence is about DATASETS, not studies.** The review names it
+in limitations — "overlap in training datasets, derivative model development, and repeated use of the
+same validation cohorts across studies may have reduced the independence of some performance estimates"
+— and never quantifies it. In echocardiographic DL a handful of public datasets are reused across huge
+numbers of papers, so **21 segmentation studies "externally validated" on substantially the same public
+data are not 21 independent tests.** The review extracted dataset information from all 160 papers and
+could have counted this; a single sentence saying how many of the 86 external validations used the same
+repositories would change how every pooled number should be read. **Standing check on any model
+meta-analysis: count the distinct test sets, not the studies.** Companion to #103.
+
+**134. Read the screening funnel — the attrition tells you how well-posed the question was.**
+16,248 identified → 7,903 duplicates → 8,345 → 7,710 excluded on title/abstract → **635 full texts** →
+**160 included**. Every subtraction reconciles. Two numbers worth noting: **475 of 635 (74.8%) were
+excluded after being read in full**, meaning the abstract screen was deliberately permissive; and the
+overall yield was **160/16,248 = 0.98%**. A high full-text rejection rate is a sign of a tight,
+operationalised inclusion rule — here, "fully automated," defined by listing the manual steps that
+disqualify a study, which is the strongest single design decision in the paper.
+
+**135. A meta-analysis whose running text contains no pooled estimate has not delivered its
+deliverable.** Checked exhaustively: every occurrence of "pooled" and every CI mention in the prose is
+either a methods sentence or a **figure caption describing a forest plot**. The five results sections
+lead with I² values and moderator tests and give no accuracy, AUC or Dice coefficient. The abstract's
+conclusion is "DL models achieve high performance across various applications" — **no number**. The
+stated purpose was "to provide pooled performance estimates." **Standing check: before citing a
+meta-analysis, find the pooled estimate and its interval in the text. If they exist only inside a
+figure, you cannot quote the paper, only describe it.**
+
+**136. The unit of analysis sets the weights, and here it varied across studies.** Sample size was
+reported as individuals in 134 entries (83.2%), echo videos in 88 (54.7%), echo studies in 34 (21.1%) —
+overlapping. Variance, hence weight, was derived from the point estimate plus the testing sample size,
+so **the choice of unit directly determines how much each study counts.** The authors handled it
+carefully — excluding studies without a count of individuals, marking ambiguous ones with an asterisk
+where "it could be reasonably interpreted from the text that a one-to-one correspondence with
+participants was intended" — but it is a disclosed judgement call sitting underneath every pooled
+number. Extends #127.
+
+**137. Divergent time trends are findings; internal falling while external rises is the signature of a
+field learning not to overfit.** Four trends, reported in single clauses and never discussed:
+prognostic generalisability **improving**; LVEF estimation improving **both** internally and externally;
+view classification showing "enhanced generalization performance, **despite a gradual decline in
+performance within derivation cohorts**" — the encouraging one, and the clearest sign of reduced
+overfitting anywhere in this list; and **segmentation external performance DECREASING over seven
+years**, which is remarkable and unexplained. Benign readings (later studies tested on harder or more
+varied data, stricter reporting) compete with a less benign one (the earliest external results were
+optimistic), and a review is uniquely placed to separate them. **Standing check: when a review reports
+time trends, read internal and external separately — they can move in opposite directions and the gap
+between them is the overfitting story.**
+
+**Kappa, second instance — and the contrast is the lesson (extends #123/#124).** Screening audit: **103
+abstracts, 92.2% raw agreement, Cohen's κ = 0.78.** Back out the chance agreement: p_e = (p_o − κ)/(1 −
+κ) = (0.922 − 0.78)/0.22 = **0.645**, so **64.5% of the agreement was free** and the implied include rate
+is ~23%. Line it up against yesterday: **PECARN 95.4% raw / p_e 0.585 / κ 0.889** versus **screening
+92.2% raw / p_e 0.645 / κ 0.780** — 3.2 points less raw agreement but **10.9 points less kappa**, purely
+because screening's categories are more lopsided. **κ is never comparable across tasks, and "κ > 0.8 is
+excellent" is folklore with no theoretical standing.** When a paper reports raw agreement and κ, you can
+always recover p_e and see how much free agreement the task handed out.
+
+**Also noted — what earns the 3.** **PRISMA flow** (named in the Figure 1 caption) with arithmetic that
+reconciles exactly. Three databases, 2014–June 2026. **Dual independent screening with agreement
+measured**, which most reviews only assert. Eligibility criteria built jointly by epidemiologists,
+cardiologists and DL specialists. **A data-extraction rule that prefers external results** over held-out
+ones, stated. **Multilevel models for dependent effect sizes.** **Funnel plots reported with the correct
+refusal to over-read them** — "difficult to interpret in diagnostic and prediction-model studies with
+heterogeneous metrics, tasks, and validation designs… not interpreted as definitive evidence for or
+against publication bias," which this list has not seen before. And an honest regulatory framing: three
+approved commercial systems named (Caption Guidance, EchoGo Core, Us2.ai), with the observation that
+their exclusion probably makes this review **understate** achievable performance — papers rarely
+volunteer that their estimate may be too low.
+
+**Against that.** No pooled estimate in abstract or text (#135). Dataset overlap named, not counted
+(#133). **No PROSPERO or other prospective registration** anywhere in the retrieved text. **No funding
+statement and no competing-interests statement** in the retrieved text, in a paper where one author's
+affiliation line names a pharmaceutical company. Within "prediction of disease or mortality" the pooled
+category mixes valvular disease (21), cardiomyopathies (21), heart failure (10) and mortality (2) —
+targets that are not the same prediction problem, and entering target as a moderator moved I² only from
+99.9% to 98.4%, so the mitigation did not work. "External validation" treats same-vendor, same-country,
+same-public-repository testing as equivalent to a different health system.
+
+**Descriptive findings worth carrying regardless of the pooling.** **External 86 (53.4%) vs internal
+only 75 (46.6%)** of 161 task entries — nearly half this literature has never met outside data, under a
+strict definition that excludes retrained or fine-tuned models. Task split: prediction 59, replication
+59, segmentation 59, view classification 22, quality assessment 10. Targets: valvular disease commonest
+in prediction (21/59); systolic function dominates replication (42/59); cardiac chambers dominate
+segmentation (53/59); only **2 studies predicted mortality**. **Only 16 of 160 articles used transformer
+or foundation-model architectures** — "a marked methodological gap between echocardiography research and
+the broader DL literature." Participant characteristics reported in only **40 of 59** prediction studies.
+Risk of bias improved from 2024 onward. Stenosis diagnosis was relatively hard, which the authors
+correctly attribute to the models lacking Doppler.
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 10-30; **JAMA at day 15** —
+**decode abstract-only on 2026-11-05 if still empty at day 21**). Then continue the restocked shelf at
+**(3) SARS-CoV-2 reinfection with external validation** (PMID 42908321, PMC13700530 — 1,156 adults, 128
+events at 11.1%, two prospective cohorts, reported non-linear SHAP association). Then (4) Dutch
+complication detection with **PPV 47.5–81% at 99.4–100% specificity** (42905390), (5) oesophageal SCC
+habitat deep learning with an **asymmetric CI** (42920785), (6) cholangioscopy quality with a voluntary
+spectrum-bias re-weighting (42898633). Watch item: PM Heart trial results (protocol PMID 42893738),
+quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael
+(42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade the
+abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
+(Vishwanath) with a Statistics Spotlight.
