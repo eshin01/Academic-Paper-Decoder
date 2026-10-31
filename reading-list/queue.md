@@ -2656,7 +2656,7 @@ nomogram entry.
 would teach random-effects vs fixed-effect pooling, I², PRISMA, and why pooling diagnostic accuracy
 across heterogeneous tasks is contested.
 
-**(3) Interpretable ML for SARS-CoV-2 reinfection, mucosal + cellular immunity** — PMID 42908321,
+**(3) [x] DECODED 2026-10-31 — Interpretable ML for SARS-CoV-2 reinfection, mucosal + cellular immunity** — PMID 42908321,
 PMC13700530, *Emerg Microbes Infect* 2026;15(1):2746253, Ran J et al. Two prospective cohorts (Wuxi,
 Nantong), **1,156 adults, 128 reinfections (11.1%)**, 18 features, XGBoost internal AUC 0.835, **with
 external validation**. Class imbalance at 11% plus a reported non-linear SHAP association.
@@ -2940,13 +2940,146 @@ the broader DL literature." Participant characteristics reported in only **40 of
 Risk of bias improved from 2024 onward. Stenosis diagnosis was relatively hard, which the authors
 correctly attribute to the models lacking Doppler.
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 10-30; **JAMA at day 15** —
+---
+
+## 2026-10-31 — Ran J et al., SARS-CoV-2 reinfection, mucosal + cellular immunity (Emerg Microbes Infect; PMID 42908321) — graded 3/5
+
+Two **prospective** community cohorts, Wuxi and Nantong, 1,186 enrolled → 1,156 analysed, **128
+reinfections (11.1%)** over a median 10 months. 18 candidates → Boruta → **2**: nasal spike-specific
+sIgA (median **4.99** reinfected vs **66.16** not, p<0.001) and spike-specific CD4⁺ Tcm (0.01% vs 0.05%).
+**The best internal methodology in this list, attached to the least interpretable headline number in it.**
+
+**138. An external result that BEATS the internal result is a red flag, not a triumph — and one that
+beats APPARENT performance is impossible.** The mirror of every paper decoded here. Line them up:
+apparent training AUC **0.914**; nested-CV corrected **0.834 ± 0.084**; internal validation (n=170, ~20
+events) **0.835**; **external validation (n=586, 62 events) 0.996.** External minus internal **+0.161**;
+external minus apparent **+0.082** — the frozen model did better on 586 strangers than on the 400 people
+it was fitted to, and sits **1.93 between-fold SDs** above its own cross-validated mean. Hanley–McNeil
+intervals: internal ≈ **0.72–0.95**, external ≈ **0.985–1.000** — they barely touch, so these are not two
+noisy estimates of one quantity. **A frozen model cannot improve; when it appears to, the task changed.**
+**Standing check: treat an unexpectedly high external result with exactly the scepticism you would give
+an unexpectedly low one.** Readers are trained to doubt a drop and relax at a rise; the rise above
+in-sample performance is the more impossible of the two.
+
+**139. AUC is a property of the model AND the case mix — so two cohorts' AUCs can answer different
+questions.** An AUC counts (case, non-case) pairs ranked correctly. Hand the same model a population
+where cases and non-cases sit further apart and more pairs become easy, so the number rises with nothing
+improving. Worked contrast: cases at 20 / non-cases at 50 with heavy overlap → AUC ~0.83; cases at 3 /
+non-cases at 80 with almost none → AUC ~0.99. **Same model, same biology, different question.** This
+paper contains both halves of the diagnosis and never joins them: (a) Table S3 reports nasal sIgA, serum
+IgG, memory B cells, cTfh and two CD4⁺ subsets **all differ significantly across the three cohorts**
+(p<0.05); (b) Figure S2's description says "the Wuxi cohort showed moderate overlap between groups… the
+Nantong cohort demonstrated **greater separation**." **Standing check: before comparing two cohorts'
+AUCs, compare their predictor distributions — and ask for per-cohort calibration, which is far less
+forgiving of case-mix shift than discrimination.** Exact mirror of #101 (entry 58: AUC travelled while
+calibration collapsed); same tool resolves both.
+
+**140. A per-unit odds ratio is uninterpretable without the variable's spread — compound it.** Headline
+finding: nasal sIgA **OR 0.995 per unit (0.993–0.997), p<0.001**. Reads as nothing; the p-value says it
+is among the most certain results in the study. Both true. Compound across plausible spans: 10 units →
+0.951 (trivial); **61.17 units** (the gap between group medians, 66.16 − 4.99) → **0.736**, i.e. 36%
+higher odds at the low end; 100 units → 0.606; **500 units → 0.082, a twelve-fold effect.** Same
+coefficient, four different stories — and **the range, IQR and SD of sIgA are never reported**, so the
+clinical magnitude of the paper's strongest finding cannot be read from the paper. Analogy: "0.01% risk
+reduction per metre walked" is useless until you learn people walk thousands of metres. **Standing
+demand: odds ratios per SD or per IQR.** The companion failure is in the same table — CD4⁺ Tcm **OR 0.427
+per percentage point** on a variable whose medians are 0.01% and 0.05%, i.e. an increment nobody in the
+study moves by. **As printed, this paper's two ORs (0.995 and 0.427) cannot be compared with each
+other.** Watch-out: an OR near 1 with a tiny p-value is not a negligible effect; an OR far from 1 may
+describe a step nobody takes.
+
+**141. Nested cross-validation with feature selection INSIDE the loop is the gold standard — and the
+corrected number is the one to cite.** Verbatim: "a nested 5-fold cross-validation framework was
+implemented for model tuning and evaluation, in which Boruta feature selection and hyperparameter tuning
+were **strictly restricted to the training folds of each loop**." Result: apparent **0.914** → corrected
+**0.834 ± 0.084**, an optimism of 0.08 that the authors measured and published. **This is the direct
+counterexample to #125** (entry 61, where model choice and prompt refinement both consumed the
+evaluation set). Standing check: find out whether selection happened inside or outside the resampling
+loop — outside means every reported number is post-selection.
+
+**142. Boruta stability analysis beats a p-value for telling you whether a variable would survive a
+different sample.** Boruta builds shuffled "shadow" copies of each variable and keeps only real ones
+that consistently beat their own shadows. Here it was re-run on **100 random 80% subsamples**, with the
+per-variable frequencies published: nasal sIgA and CD4⁺ Tcm **Confirmed in 100/100**; BMI Confirmed 10%,
+Tentative 47%; vaccination rejected 87%; sex 97%; drinking 99%; **smoking, diabetes and prior infection
+history 100% rejected.** "Rejected in 100 of 100 subsamples" is a far stronger statement than p > 0.05,
+and "confirmed in 100 of 100" largely answers the selection-instability worry that #115 exists for.
+**Standing demand for any data-driven selection: how often would this variable be picked again?**
+
+**143. A SHAP non-linearity from a boosted tree on ~46 events is a model artefact until something else
+confirms it.** The paper reports a **U-shape** for CD4⁺ Tcm — moderate protective, very low *and*
+relatively high both harmful — and builds **three paragraphs** of immunology on it (naive T-cell pool
+contraction, TCR repertoire diversity, repeated antigenic stimulation, memory quality vs quantity). But
+the shape appears nowhere else: the univariate medians are **monotone** (0.01% vs 0.05%) and the adjusted
+OR is **monotone and non-significant** (0.427, 0.167–1.093, p=0.076). Boosted trees emit step functions;
+with ~46 events and 2 inputs, a step in the sparse upper tail can be a handful of people. **Standing
+check: when only the ML model sees a shape, and it lives in the thinnest region of the data, it is the
+model's shape, not the world's.** Extends #96.
+
+**144. Check whether the outcome's ascertainment mechanism is correlated with the top predictor.**
+Reinfection counted only when symptoms prompted a self-test. Nasal sIgA's biological job is to blunt
+infection at the point of entry — so a high-sIgA person who *is* infected plausibly has a milder course
+and never tests. **High sIgA therefore reduces the chance of being RECORDED as reinfected, separately
+from reducing the chance of being infected**, which inflates the apparent protective effect exactly
+among the people the model scores as low-risk. The paper names the ascertainment bias and says the model
+applies only to symptomatic reinfection; it never notes that the under-detection is correlated with its
+own strongest predictor. **Standing check: ask whether the thing that triggers outcome detection is
+plausibly caused by the predictor.** Distinct from #119 (measurement-window overlap): that is timing,
+this is detection probability.
+
+**145. A calculator is only deployable if its inputs are obtainable.** The published web application
+takes two inputs: a nasal spike-specific sIgA titre from an **in-house ELISA**, and a spike-specific
+CD4⁺ Tcm percentage from **flow cytometry with activation-induced marker assays on freshly isolated
+PBMCs**. Neither is orderable in routine care anywhere. Contrast entry 59 (paediatric UTI), whose
+calculator used seven routine labs and whose deployment problem was calibration, not availability.
+**Standing check on any deployed tool: can a clinic actually measure every input?** Also note the
+measurement floor — CD4⁺ Tcm medians of **0.01%** mean rare-event flow cytometry: at 500,000 CD4⁺ cells
+acquired that is ~50 events (CV ~14%), at 50,000 it is ~5 events (**CV ~45%**). Cells acquired are in
+Supplementary Methods, unretrievable, so whether 0.01% vs 0.05% is signal or counting noise cannot be
+checked — and a two-variable model resting on it should say so in the main text.
+
+**146. Reconstructing the confusion matrix, third time in four days — and the event count is the
+payoff.** From n=586, accuracy 0.974, sensitivity 1.000, specificity 0.971, PPV 0.805, NPV 1.000, F1
+0.892, exactly one table fits: **TP 62 · FN 0 · FP 15 · TN 509.** All six reproduce (571/586=0.9744;
+62/62=1.000; 509/524=0.9714; 62/77=0.8052; 509/509=1.000; 124/139=0.8921). Three things the paper does
+not print fall out: **the external cohort held 62 events**, so "sensitivity 1.000" has exact CI **94.2%–
+100%** — a genuine result, unlike entry 61's 1/1 (CI 2.5–100%); the errors are **15 false positives and
+zero false negatives**, PPV 62/77 with exact CI 69.9–88.7%; and by subtraction **Wuxi held 66 events of
+570**, so the training cohort had ~46 and the internal validation cohort ~**20**, which is why the
+internal AUC's interval is ~0.22 wide. **EPV: 46/2 = 23 by the usual accounting, 46/18 = 2.56 against
+candidates screened (#115)** — mitigated, genuinely, by #142.
+
+**Also noted — what earns the 3.** **Prospective design with written informed consent.** **Genuine
+external validation at a separate city**, 586 participants, not a held-out slice. **Loss to follow-up
+2.5% (30/1186), enumerated by reason** (14 uncontactable, 7 relocated, 4 died unrelated, 5 withdrew)
+**and the lost compared against the retained** with no differences found — almost nobody runs that
+comparison. **A multivariable confounding check** on both selected markers adjusted for eight
+covariates, with the non-significant result (p=0.076) reported rather than buried. **Nasal sampling
+standardised at the step that matters** — the sponge's residual volume fixed at a 4 mL mark — which is
+what makes concentrations comparable between people. **Final model chosen on generalisation, not
+apparent performance**: the text notes KNN and RF had higher training AUCs and XGB was preferred for
+consistency across validation. **Seven real limitations named**, including that both cohorts came from
+one province in one epidemic period, that assays used JN.1 spike only, and that baseline-only markers
+miss trajectories.
+
+**Against that.** The 0.996 is reported as the model's best result and partly justifies the model choice,
+with no interrogation (#138/#139). **No funding statement, no competing-interests statement, no
+reporting guideline** in the retrieved text (TRIPOD+AI fits and most items are met). The calculator's URL
+was stripped by the extraction and **was not guessed at**. Supplementary tables S1–S7 and figures S1–S3
+unretrievable, which matters more than usual here: S3 (per-cohort baselines), S4 (full Boruta stability),
+S6 (six-model metrics), S7 (nested CV per model) and S2 (joint feature-space plots) would settle most of
+the above. **Note for the record: the abstract reports the internal 0.835 and describes the external
+result in words only** — a reader of the abstract alone gets the more defensible figure.
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 10-31; **JAMA at day 16** —
 **decode abstract-only on 2026-11-05 if still empty at day 21**). Then continue the restocked shelf at
-**(3) SARS-CoV-2 reinfection with external validation** (PMID 42908321, PMC13700530 — 1,156 adults, 128
-events at 11.1%, two prospective cohorts, reported non-linear SHAP association). Then (4) Dutch
-complication detection with **PPV 47.5–81% at 99.4–100% specificity** (42905390), (5) oesophageal SCC
-habitat deep learning with an **asymmetric CI** (42920785), (6) cholangioscopy quality with a voluntary
-spectrum-bias re-weighting (42898633). Watch item: PM Heart trial results (protocol PMID 42893738),
+**(4) Dutch cardiac-intervention complication detection** (PMID 42905390, PMC13694613 — 6,564 patients,
+deliberately optimised for sensitivity: **94.4–100% sensitivity, 99.4–100% specificity, and PPV only
+47.5–81%** — a clean real-world demonstration of base rates destroying positive predictive value at
+near-perfect specificity, and a good vehicle for revisiting #89). Then (5) oesophageal SCC habitat deep
+learning with an **asymmetric CI** (42920785), (6) cholangioscopy quality with a voluntary spectrum-bias
+re-weighting (42898633). **After those the shelf is empty — restock on the 11-03 run** using the
+`pubmed pmc[sb]` + date-window method. Watch item: PM Heart trial results (protocol PMID 42893738),
 quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael
 (42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade the
 abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
