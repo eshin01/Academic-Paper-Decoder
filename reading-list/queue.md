@@ -2661,7 +2661,7 @@ PMC13700530, *Emerg Microbes Infect* 2026;15(1):2746253, Ran J et al. Two prospe
 Nantong), **1,156 adults, 128 reinfections (11.1%)**, 18 features, XGBoost internal AUC 0.835, **with
 external validation**. Class imbalance at 11% plus a reported non-linear SHAP association.
 
-**(4) AI detecting cardiac-intervention complications from Dutch electronic records** — PMID 42905390,
+**(4) [x] DECODED 2026-11-01 — AI detecting cardiac-intervention complications from Dutch electronic records** — PMID 42905390,
 PMC13694613, *Neth Heart J* 2026;34(11):407–413, Okken A et al. **6,564 patients**, structured +
 unstructured data, deliberately **optimised for sensitivity: 94.4–100% sensitivity, 99.4–100%
 specificity — and PPV only 47.5–81%.** A clean, real-world demonstration of base rates destroying
@@ -3071,16 +3071,145 @@ S6 (six-model metrics), S7 (nested CV per model) and S2 (joint feature-space plo
 the above. **Note for the record: the abstract reports the internal 0.835 and describes the external
 result in words only** — a reader of the abstract alone gets the more defensible figure.
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 10-31; **JAMA at day 16** —
-**decode abstract-only on 2026-11-05 if still empty at day 21**). Then continue the restocked shelf at
-**(4) Dutch cardiac-intervention complication detection** (PMID 42905390, PMC13694613 — 6,564 patients,
-deliberately optimised for sensitivity: **94.4–100% sensitivity, 99.4–100% specificity, and PPV only
-47.5–81%** — a clean real-world demonstration of base rates destroying positive predictive value at
-near-perfect specificity, and a good vehicle for revisiting #89). Then (5) oesophageal SCC habitat deep
-learning with an **asymmetric CI** (42920785), (6) cholangioscopy quality with a voluntary spectrum-bias
-re-weighting (42898633). **After those the shelf is empty — restock on the 11-03 run** using the
-`pubmed pmc[sb]` + date-window method. Watch item: PM Heart trial results (protocol PMID 42893738),
-quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael
-(42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade the
-abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
-(Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-11-01 — Okken A et al., AI detection of cardiac-intervention complications (Neth Heart J; PMID 42905390) — graded 3/5
+
+**The first audit/case-finding tool in this list rather than a prediction model**, and the **first paper
+in 64 to report what it cost.** All 6,564 consecutive PVI/PTCA/TAVI procedures at St. Antonius Hospital
+2017–2022, temporal split (2,999 develop → 3,565 validate), four NHR-defined complications, structured +
+unstructured EHR data, deliberately tuned for 100% sensitivity. Sensitivity **94.4–100%**, specificity
+**99.4–100%**, **PPV 47.5–81%**, F 0.64–0.87. **127 records reviewed instead of 6,500+ to find all 79
+complications.**
+
+**147. A low PPV is a catastrophe for a test and a feature for a filter — what a false positive
+TRIGGERS decides.** This list has flagged low PPV as fatal several times; here it is the design working.
+CVA: prevalence **19/3,565 = 0.533%**, sensitivity 100%, specificity 99.41% → **21 false alarms beside 19
+real cases**, PPV **47.5%**. Why: 0.59% of 3,546 non-cases ≈ 21, the same order as 19. **At a prevalence
+under 1%, even 99.4% specificity yields roughly one false alarm per real case — that is arithmetic, not a
+flaw.** Cost of "fixing" it, holding sensitivity at 100%: specificity 99.0% → PPV 34.9%; **99.4% → 47.2%**;
+99.9% → 84.3%; **99.94% → 89.9%**. So moving PPV from 47.5% to 90% needs specificity from 99.41% to
+99.94%, a **tenfold cut in false positives, to save ~19 file-reads.** Nobody should spend that. **Standing
+check: ask what happens to a false positive before judging a PPV.** Treatment, scan or phone call →
+demand high PPV. "A human opens a file" → 50% at a 28-fold workload cut is an excellent trade. Mirror
+image of #89 and the entry-56 precision collapse; same arithmetic, opposite verdict.
+
+**148. When a paper reports RANGES instead of per-group results, mine the Discussion for a worked
+example.** Main text gives only "94.4–100%", "99.4–100%", "47.5–81%", "0.64–0.87" across four
+complications; per-complication tables are in unretrievable supplements. But one Discussion sentence —
+*"the algorithm will produce a shortlist of 40 records for manual review. This shortlist contained all 19
+CVA cases"* — plus n=3,565 pins the whole table: **TP 19 · FN 0 · FP 21 · TN 3,525.** Verify against
+every reported figure: sensitivity 1.000 (=100% top), specificity 3,525/3,546 = **0.9941** (=99.4%
+bottom), PPV 19/40 = **0.4750** (=47.5%), F 38/59 = **0.644** (=0.64). **Four independent confirmations —
+and it reveals that every LOW end of all four ranges is the CVA model**, which the paper never says. The
+bleeding model yields the same way from *"an F-score of 0.87, albeit with two false negative cases out of
+36"*: TP 34, FN 2, solve F=2TP/(2TP+FP+FN)=0.87 → **FP 8**, TN 3,521; sensitivity 0.9444 (=94.4%), PPV
+34/42 = **0.8095** (=81% high end), F 0.8718. **The high ends are the bleeding model.** Standing check:
+authors illustrate tools with one concrete case; a concrete case plus one metric usually pins the matrix,
+and three or four cross-checks confirm it. Extends #121 and #146 to prose rather than percentages.
+
+**149. A negative random-sample check is only as informative as its size — compute the probability of a
+null result arising anyway.** The gold standard contains only cases the pattern statements flagged, so
+"100% sensitivity" means 100% *of what the screen found*. **The authors saw this and checked** — "a
+random sample of non-selected files, as well as a cross-check with existing registry data, did not
+identify additional complication cases" — which is exactly the right move, **and the sample size is never
+stated.** At 0.533% prevalence, P(zero cases found | missed at the full base rate) = 0.99467ⁿ:
+n=50 → **76.6%**; n=100 → **58.6%**; n=200 → 34.3%; n=320 → 18.1%; n=1,000 → 0.5%. **So checking 100
+records and finding nothing would have happened more often than not regardless; ~300 are needed for 80%
+power to surface one case.** Jellybean analogy: one black bean in 200, pull ten and see none — you have
+learned nothing. **Standing check: whenever a paper says it "audited a subset and found no
+discrepancies," find n and compute. Reassuring negative audits of rare things are very cheap to obtain by
+accident.**
+
+**150. A case-finding tool is not a prediction model, and the yardsticks differ.** The complication has
+already happened and is already documented; the model is **retrieving**, not forecasting. High
+sensitivity is far more achievable, AUC comparisons against prediction models are category errors, and
+**calibration is legitimately irrelevant** when the output is a binary triage filter — the first paper
+here where skipping calibration is the right call rather than an omission (a sentence saying so would
+have been worth more than a calibration curve). The paper scopes itself correctly and says prediction
+"remains beyond the scope of the current project." **Standing check: establish whether the outcome
+precedes or follows the data the model reads, then pick the yardstick.** Companion to #127 (match the
+denominator to the claim).
+
+**151. Credit the deliberate removal of a leakage proxy, with its reason stated — the clearest example
+in 64 papers.** Step 3 of the ten-step process assessed "whether the identified patterns were clinically
+plausible, removing spurious signals." Worked example given: **the model found fluoroscopic contrast
+administration predictive of CVA, and the team deleted it, because contrast is given for the CT scan that
+DIAGNOSES the CVA.** A variable *caused by* the diagnosis, masquerading as a predictor of it. Removing it
+cost accuracy and bought validity. **Standing habit: for every top predictor, ask whether it could be a
+consequence of making the diagnosis rather than a cause of the condition.** Reusable template; sharper
+and more concrete than #119 (measurement-window overlap) because the mechanism is named.
+
+**152. Watch for the screening rule that is ALSO a model input.** The pattern statements did two jobs:
+they selected the candidate pool from which the gold standard was built, **and** they are one of three
+inputs to the final ensemble ("the criteria-based approach as input features"). So a complication
+documented in a way no statement anticipated is both absent from the labels and invisible to a third of
+the model — **it can never appear as a false negative.** The paper does not name this circularity, though
+#149's check is the right attempt to bound it. Standing check: trace whether the thing that generated
+the labels also feeds the model.
+
+**153. A component that is not a model should not be reported inside the model's performance range.**
+Phrenic nerve palsy: **2 cases**, and the paper states plainly it was "not feasible to develop a
+meaningful AI model for it. This model used selected criteria only" — a hand-written rule. **Its
+sensitivity and specificity nonetheless sit inside the abstract's "94.4–100%" and "99.4–100%".**
+Sensitivity 2/2 = 100% has an exact 95% CI of **15.8% to 100%**. Credit for disclosing it in the
+limitations; the abstract does not. Standing check: for every component inside a reported range, ask how
+many events it rests on.
+
+**154. PROBAST+AI is an APPRAISAL instrument, not a reporting guideline — TRIPOD+AI is.** The paper
+states "Model development and validation were reported in accordance with the PROBAST-AI guidelines."
+PROBAST and its AI extension are risk-of-bias tools for readers, reviewers and systematic reviewers;
+TRIPOD and TRIPOD+AI are the author-side reporting checklists. Self-appraising against PROBAST+AI is
+sensible and naming something beats naming nothing (two of the last five named nothing) — but it does not
+ask for the items TRIPOD+AI asks for, and **the items it omits are exactly the ones this paper is thin
+on**: per-outcome performance tables, calibration, complete participant flow.
+
+**155. Ask what the tool costs and how much work it saves — and credit the paper that says.**
+**€20,000–30,000 to implement, €10,000/year recurring**, against **100 hours/year** of existing manual
+review, with **127 records to read instead of "over 6,500"** — a 28-fold reduction against the 3,565
+validation set. **This is the first cost figure in 64 papers**, and it moves the conversation from "does
+it work" to "is it worth it," which is the question a hospital actually asks. Caveat recorded: the
+post-implementation review *time* is never stated, so the hours saved are implied rather than measured.
+**Standing demand for any deployed tool: build cost, running cost, and the workload delta.**
+
+**Also noted — what earns the 3.** **A blinded reference standard**: two independent reviewers, consensus
+adjudication by a third, and explicitly "**No model predictions or outputs were available to the
+reviewers during the labeling process**" — entry 61 had to list unblinding as its first limitation; this
+paper simply did it right. **All 6,564 consecutive procedures, no exclusions**, with the rationale stated
+("to reflect routine clinical practice"). **A genuine temporal split.** **The design objective declared
+in advance** — "The primary objective was to achieve 100% sensitivity… accepting a lower specificity
+and—consequently—false positives" — which is what makes every subsequent number interpretable.
+**Outcome definitions from a national registry (NHR)** rather than invented, with the one extension
+(clinically relevant bleeding) specified. **Tuning confined to the training set**, ensemble combiner
+cross-validated five-fold. **Data standardised to OMOP CDM and ZIB with portability as the stated
+rationale** — a design decision aimed at the problem most papers here ignore. **Named model and version
+strings** (`all-MiniLM-L6-v2`, scikit-learn 1.2.2, Optuna). **Honest about the bleeding misses** (2 of 36)
+and why a continuum outcome is hard. **Tool is actually deployed.**
+
+**Against that.** **No external validation, and it is not among the stated limitations**, for a tool in
+clinical use — the OMOP/ZIB work prepares for portability but does not test it. #149's unquantified
+check. #152's circularity. #153's 2-case rule inside the ranges. #154's wrong instrument. **No funding
+statement and no competing-interests statement** in the retrieved text, while **two of the nine authors
+are at Parnas, IT-Services and Consultancy** — disclosed on the author line, not in a declaration.
+**Only ranges in the main text**; per-complication tables in unretrievable supplements. **The journal's
+"What's new?" box cites "near 100% sensitivity and specificity" and omits PPV** — the metric the entire
+value proposition rests on. **The 2.2% incidence and the 79 complications both describe the 3,565
+validation set** (79/6,564 = 1.20%; 79/3,565 = 2.22%) and the text names no denominator. **"Prospective
+validation set" is a temporal split of retrospectively extracted records** — the design deserves credit,
+the word does not.
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 11-01; **JAMA at day 17** —
+**decode abstract-only on 2026-11-05 if still empty at day 21**). Then the last two spares:
+**(5) oesophageal SCC habitat-informed 3D deep learning** (PMID 42920785, PMC13691255 — 277 patients,
+external AUC **0.927 with a markedly asymmetric CI of 0.850–0.951**, 0.077 below the point estimate and
+0.024 above, worth interrogating with #122; and DeLong **p = 0.343** against the simpler habitat-radiomics
+model it claims to beat), then **(6) cholangioscopy visualisation quality** (PMID 42898633, PMC13678035 —
+tiny at 12 validation cases but remarkable: inter-reader weighted **κ 0.98** against model-vs-consensus
+**κ 0.60**, and the authors **voluntarily re-weight their metrics to the natural frame distribution**
+because the validation sample was enriched, giving sensitivity **29.8%** / specificity 93.5%; primary
+endpoint p = 0.15 not significant with post-hoc analyses labelled as such). **After those the shelf is
+empty — restock on the 11-04 run** using the `pubmed pmc[sb]` + date-window method. Watch item: PM Heart
+trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
+(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
+never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
+supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
