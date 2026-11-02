@@ -2667,7 +2667,7 @@ unstructured data, deliberately **optimised for sensitivity: 94.4–100% sensiti
 specificity — and PPV only 47.5–81%.** A clean, real-world demonstration of base rates destroying
 positive predictive value at near-perfect specificity.
 
-**(5) Habitat-informed 3D deep learning for immunochemotherapy response in oesophageal SCC** — PMID
+**(5) [x] DECODED 2026-11-02 — Habitat-informed 3D deep learning for immunochemotherapy response in oesophageal SCC** — PMID
 42920785, PMC13691255, *iScience* 2026;29(11):117782, Li T et al. 277 patients, external test AUC
 **0.927 (95% CI 0.850–0.951)** — note the CI is **markedly asymmetric** (0.077 below, 0.024 above),
 worth interrogating — and DeLong p = 0.343 against the simpler habitat-radiomics model it claims to beat.
@@ -3198,18 +3198,144 @@ validation set** (79/6,564 = 1.20%; 79/3,565 = 2.22%) and the text names no deno
 validation set" is a temporal split of retrospectively extracted records** — the design deserves credit,
 the word does not.
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 11-01; **JAMA at day 17** —
-**decode abstract-only on 2026-11-05 if still empty at day 21**). Then the last two spares:
-**(5) oesophageal SCC habitat-informed 3D deep learning** (PMID 42920785, PMC13691255 — 277 patients,
-external AUC **0.927 with a markedly asymmetric CI of 0.850–0.951**, 0.077 below the point estimate and
-0.024 above, worth interrogating with #122; and DeLong **p = 0.343** against the simpler habitat-radiomics
-model it claims to beat), then **(6) cholangioscopy visualisation quality** (PMID 42898633, PMC13678035 —
-tiny at 12 validation cases but remarkable: inter-reader weighted **κ 0.98** against model-vs-consensus
-**κ 0.60**, and the authors **voluntarily re-weight their metrics to the natural frame distribution**
-because the validation sample was enriched, giving sensitivity **29.8%** / specificity 93.5%; primary
-endpoint p = 0.15 not significant with post-hoc analyses labelled as such). **After those the shelf is
-empty — restock on the 11-04 run** using the `pubmed pmc[sb]` + date-window method. Watch item: PM Heart
-trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
-(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
-never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
-supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-11-02 — Li T et al., habitat-informed 3D deep learning for ESCC immunochemotherapy response (iScience; PMID 42920785) — graded 3/5
+
+277 locally advanced ESCC patients, three Chongqing centres. Voxel-level K-means splits each tumour into
+**3 habitats** (Calinski–Harabasz peaked at K=3); a three-channel 3D ResNet-50 takes image + mask +
+habitat map. **External test at Centre C: 60 patients, 40 responders / 20 non-responders, and a later
+non-overlapping time window.** ResNet-50 external AUC **0.927**, habitat-radiomics XGBoost **0.869**,
+**DeLong p = 0.343.**
+
+**156. Check whether a confidence interval is centred on its own point estimate.** The headline is
+**0.927 (95% CI 0.850–0.951)**: **0.077 below, 0.024 above — a 3.21 ratio.** Measure all nine intervals
+in the paper and the other eight run **0.92 to 1.25** (essentially symmetric). And the odd one's midpoint
+is **(0.850+0.951)/2 = 0.9005**, half-width 0.0505 — **a symmetric interval around 0.9005, not around
+0.927.** Cross-check with Hanley–McNeil at n=40/20: SE at AUC 0.927 ≈ 0.033 → symmetric interval
+≈ 0.863–0.991, so **the reported lower bound is plausible and the upper bound is nowhere near it**; SE at
+AUC 0.900 ≈ 0.039 → 0.823–0.977. **The CI method is never named anywhere in the paper, and the same
+interval appears in the published abstract**, so this is not a PMC rendering artefact. **Standing check:
+subtract both ways and compare. For a bounded statistic near its ceiling expect the lower arm longer —
+but expect it CONSISTENTLY across the paper. A single interval wildly out of line with its neighbours is
+a reporting error, not a property of the statistic.** Do not assert a typo; state that one number does
+not belong to the other. Companion to #122 (an interval ending at exactly 100% is a broken method).
+
+**157. Post hoc power is circular — and the tell is WHICH NULL it was tested against.** Verbatim: "no
+sample-size calculation was performed at the design stage. A post hoc statistical power was estimated by
+Hanley–McNeil variance approximation… the observed AUC of 0.927 yielded power >99.9% against a null AUC
+of 0.5 and >99.9% against a clinically meaningful threshold of 0.75." Two problems. **(a) Power computed
+from the effect you observed is a deterministic restatement of your p-value** — significant results
+always yield high "observed power," non-significant ones always low; the confidence interval already
+carries the information without needing a hypothesis. **(b) The nulls tested are not the ones in
+dispute.** The claim at stake is ResNet-50 (0.927) vs habitat XGBoost (0.869), reported at **p = 0.343**.
+Recover the real power from that p-value alone: two-sided p 0.343 → **z = 0.948**; observed difference
+0.058 → **SE_diff = 0.058/0.948 = 0.0612**; power = Φ(0.948 − 1.96) = **15.6%**. **So the study had ~16%
+power for its own headline while reporting >99.9%.** For 80% power you need SE_diff = 0.0207, and since
+SE scales as 1/√n, **n ≈ 60 × (0.0612/0.0207)² ≈ 524 patients** — a far more useful sentence, computable
+from numbers already printed. Coin analogy: six heads in ten flips, then announcing enormous power to
+detect a two-headed coin. **Standing check: when you see post hoc or "observed" power, especially against
+a null of chance, read it as a flag; then find the comparison the paper rests on and work its power back
+from its p-value.**
+
+**158. Count the uncorrected tests and compute the expected false positives.** **321** habitat radiomics
+features screened by univariate t/Mann–Whitney at **p < 0.05 "without multiple hypothesis testing
+correction"** — stated twice, honestly, which does not fix it. **321 × 0.05 = 16.05 expected by chance,
+against 41 actually retained** at that step: up to ~39% of the survivors could be noise before Spearman
+(|ρ|≥0.9) and LASSO run. Bonferroni threshold would have been **1.56 × 10⁻⁴**. Pipeline 321 → 41 → 24 →
+**9**. Events per feature against the 61 non-responders in development: **61/9 = 6.8** for the final set,
+**61/321 = 0.19** against the screen (#115). Standing check: find the number of features tested and
+multiply by alpha.
+
+**159. ICC and Dice measure different kinds of agreement — a summary statistic can flatter what a
+voxel-wise one exposes.** The paper measures its own segmentation reproducibility (a first in this list):
+30 patients re-delineated independently by two blinded surgeons, giving **ICC on tumour volume 0.95
+(0.92–0.97)** and **Dice on voxel overlap 0.88 (0.85–0.91)**. **ICC ≈ between-subject variance ÷
+(between-subject variance + measurement error)**, so like κ it is inflated by a wide case mix — tumour
+volumes vary by an order of magnitude, so a few cm³ of disagreement barely dents the ratio, and ICC only
+needs the readers to **rank** tumours the same way. **Dice = 2×(voxels in both)÷(voxels in A + voxels in
+B)** has no such escape hatch: it demands voxel-by-voxel agreement within each tumour. Two readers can
+agree on volume to 2% while their outlines sit in different places. **Dice 0.88 means ~12% of the
+delineated volume is not agreed — and every habitat cluster, all 321 features and the network's entire
+input were computed inside those outlines.** Standing check: when agreement is reported on a derived
+summary, ask for agreement on the underlying thing; summaries let errors cancel. Extends #123/#124 from
+categorical to continuous.
+
+**160. A clinical-only baseline sitting at chance is a FINDING, not a formality.** Eight pretreatment
+variables (age, sex, BMI, ECOG, smoking, drinking, cT, cN) in an L2-regularised logistic regression:
+external AUC **0.496 (95% CI 0.356–0.648)** — the interval contains 0.5. **There is currently no clinical
+way to select patients for this treatment**, which is the entire justification for the imaging work and
+the reason the 0.869 from nine hand-crafted features is interesting even without a neural network. The
+paper reports it inside a list of baselines and never returns to it. **Standing check: read the
+clinical-only or simplest baseline first — it tells you how much room there was to improve on, and
+sometimes it is the paper's most important number.**
+
+**161. When the external cohort is the stated basis for choosing an architecture, it has stopped being
+fully held out.** Methods say ResNet-18/34/50/101 and DenseNet were all compared. Results give external
+AUCs for three — ResNet-50 **0.927**, ResNet-18 **0.833**, ResNet-34 **0.805** — and **the only stated
+basis for preferring ResNet-50 is that "its external-test AUC was higher."** ResNet-101 and DenseNet
+appear in the Methods and vanish from the Results prose. Contrast **entry 58**, which met the identical
+situation and **renamed its own cohort** ("an external evaluation cohort rather than independent
+confirmation of a model finalized a priori"); this paper does not raise it. Standing check: count the
+architectures/models compared, then ask which dataset chose the winner.
+
+**162. An external cohort that is ALSO temporally later is a stronger test than either split alone.**
+Centres A+B ran January 2020 – December 2022; **Centre C ran September 2022 – August 2024** — a different
+hospital *and* a non-overlapping later window, so the test covers geographic and temporal shift at once.
+**The paper never points this out.** Also reassuring here: response rates 71.7% / 73.1% / 66.7% are
+close, so unlike entry 58 (23.7% vs 45.6%) the external cohort is not a different population — which is
+part of why the AUCs are comparable at all (#139). Standing habit: check the date ranges of each centre,
+not just the names.
+
+**163. Credit a paper that states its own non-significant headline — in the abstract.** ResNet-50 beat
+the simple model by 0.058 at **p = 0.343**, and the authors say "numerically higher… not statistically
+significant" **five times**: abstract, results, discussion opening, discussion body, and the baseline
+comparison section. They also **admit overfitting in their own voice** ("the near-perfect AUC in the
+training cohort… is therefore likely optimistic… indicates a generalization gap and suggests potential
+overfitting"), and **state the limits of their own ablation** ("does not establish that the AUC
+difference is attributable exclusively to that channel"). Companion to #104 and #120. **A paper that
+argues against its own headline wants to be understood rather than believed.**
+
+**164. Check what the outcome actually is — here, imaging predicting imaging.** The endpoint is
+**iRECIST response at four weeks** read off a post-treatment CT, predicted from a baseline CT. Not
+circular in the leakage sense (#119 — different scans, different times), but: **pCR was unavailable**
+because the cohort was non-surgical, and **survival follow-up was too immature to analyse**, both stated
+honestly. So the outcome inherits iRECIST's own reader variability, and whether responders live longer is
+not addressed. Note also that **SHAP was computed for the habitat-radiomics XGBoost, not for the
+proposed network** — so the interpretability section explains the comparator and the headline model
+remains uninterpreted, which a skimming reader will not notice.
+
+**Also noted — what earns the 3.** **Genuine external validation at a third centre** that contributed no
+training or validation data. **Three baselines including a properly specified ablation** — habitat
+channel removed with architecture, pretrained initialisation, ROI size (96×96×96), optimiser (Adam, lr
+1e−3), batch size and 48-epoch schedule all held identical — each with a DeLong test (vs clinical
+p<0.001; vs whole-tumour radiomics p=0.008; vs two-channel CNN p=0.028). **K chosen by an objective
+criterion** (CH index maximised at K=3, monotone decline for K≥4). **A described and justified
+harmonisation protocol** applied to all 277 scans (300/30 HU window, isotropic 1 mm³ bicubic-spline
+resampling, background suppression below −150 HU). **Segmentation by two blinded surgeons with chief-
+surgeon review and quantified reproducibility** (#159). **Outcome adjudicated by two independent senior
+surgeons with chief-physician arbitration.** **Competing interests declared** ("no competing interests
+related to this study"). **Code deposited publicly on GitHub.** **Three ethics committee IDs given**
+(KY2025056, BNLLKY-2025–050, 2020MSXM014). Entry 64 managed none of those last three.
+
+**Against that.** #156's interval. #158's uncorrected 321. #157's circular power. #161's apparent
+selection peek. **No reporting guideline named** (TRIPOD+AI or CLAIM would fit). Figures and
+supplementary tables unretrievable, so **no sensitivity, specificity, PPV, NPV, calibration intercept or
+slope could be read for any model** — calibration is asserted as "high concordance" in text only. The
+three-habitat biological story (viable / hypoxic-necrotic / immune interface) is a hypothesis the paper
+labels as such, with pathological validation acknowledged as unavailable. **Funder names and grant
+numbers, and the GitHub URL, were stripped by the text extraction and were not guessed at.**
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 11-02; **JAMA at day 18** —
+**decode abstract-only on 2026-11-05 if still empty at day 21**). Then the **last spare: (6)
+cholangioscopy visualisation quality** (PMID 42898633, PMC13678035 — tiny at 12 validation cases but
+remarkable: inter-reader weighted **κ 0.98** against model-vs-consensus **κ 0.60**, and the authors
+**voluntarily re-weight their metrics to the natural frame distribution** because the validation sample
+was enriched, giving sensitivity **29.8%** / specificity 93.5%; primary endpoint median HQVR 22.7% vs
+8.4%, **p = 0.15 not significant**, with post-hoc analyses significant and labelled as such — a clean
+vehicle for primary-vs-post-hoc and for voluntary spectrum-bias correction). **The shelf is then empty —
+restock on the 11-04 run** using the `pubmed pmc[sb]` + date-window method. Watch item: PM Heart trial
+results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845),
+Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers never taken
+up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
+retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
