@@ -2071,7 +2071,7 @@ different city, XGBoost AUC 0.917, and that number deserves scrutiny given a que
 48.6% prevalence with grip strength as a predictor), **(4) CKD after radical nephrectomy** (PMID
 42808223, PMC13629762 — 8 centres, and internal 0.751 vs external 0.755 with essentially **no drop**,
 which is unusual enough to test against #76), **(5) paediatric urine culture positivity** (PMID
-42841462, PMC13647408), **(6) AKI after liver transplant** (PMID 42802088, PMC13618104 — n=127, the
+42841462, PMC13647408), **(6) [x] DECODED 2026-11-03 — AKI after liver transplant** (PMID 42802088, PMC13618104 — n=127, the
 right vehicle for #85). Watch item: PM Heart trial results (protocol PMID 42893738), quarterly.
 Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael (42833894), and the
 four oldest deferred reviews. Standing offers never taken up: upgrade the abstract-only entries
@@ -3326,16 +3326,179 @@ three-habitat biological story (viable / hypoxic-necrotic / immune interface) is
 labels as such, with pathological validation acknowledged as unavailable. **Funder names and grant
 numbers, and the GitHub URL, were stripped by the text extraction and were not guessed at.**
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 11-02; **JAMA at day 18** —
-**decode abstract-only on 2026-11-05 if still empty at day 21**). Then the **last spare: (6)
-cholangioscopy visualisation quality** (PMID 42898633, PMC13678035 — tiny at 12 validation cases but
-remarkable: inter-reader weighted **κ 0.98** against model-vs-consensus **κ 0.60**, and the authors
-**voluntarily re-weight their metrics to the natural frame distribution** because the validation sample
-was enriched, giving sensitivity **29.8%** / specificity 93.5%; primary endpoint median HQVR 22.7% vs
-8.4%, **p = 0.15 not significant**, with post-hoc analyses significant and labelled as such — a clean
-vehicle for primary-vs-post-hoc and for voluntary spectrum-bias correction). **The shelf is then empty —
-restock on the 11-04 run** using the `pubmed pmc[sb]` + date-window method. Watch item: PM Heart trial
-results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845),
-Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers never taken
-up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied;
-retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-11-03 — Kamada H et al., deep learning for cholangioscopy visualisation quality (DEN Open; PMID 42898633) — graded 3/5
+
+**The most honestly reported paper in this list, by a clear margin, and its result is largely negative.**
+Kagawa University pilot: 15 patients — **3 development cases** (training + a convergence check) and **12
+comparison cases** (gel 5, saline 7), no overlap. ResNet-18 scores endoscopic frames 0–4 for visual
+clarity during electrohydraulic lithotripsy. The grade is capped by arithmetic, not candour: twelve
+patients cannot produce strong evidence. But **the claim and the evidence are the same size**, and the
+authors spent most of their effort proving their own negative.
+
+**165. Verification bias — ask how the cases that got the reference standard were chosen.** The
+single most important new technique here, and the first appearance in 66 papers. Expert labels are
+expensive, so only 120 of 1,950 frames were scored — and frames were "drawn at random **while cycling
+through the model's predicted classes**," which enriched the sample for predicted-usable frames
+(**39% of the sample vs 13.8% of all frames**, a 2.8× enrichment). **Because selection depended on the
+test's own output, every raw metric is biased.** Reconstruct the 2×2 from sensitivity 34/56 and
+specificity 51/64: **TP 34 · FN 22 · FP 13 · TN 51**, predicted-usable = 47/120 = 39.2% ✓. Over-sampling
+predicted-usable over-fills **TP relative to FN** (inflating sensitivity) and **FP relative to TN**
+(deflating specificity). **The authors caught this themselves, named the correction (Begg–Greenes, 1983),
+applied it, and printed both sets of numbers in the abstract.** The fix rests on their own precise
+sentence — "per-predicted-class positive predictive values are unbiased" — so you re-weight each
+predicted class back to its natural frequency. My binary re-derivation: PPV 34/47 = 0.723 among
+predicted-usable, 22/73 = 0.301 among predicted-unusable, mix 13.8%/86.2% → prevalence **0.360**,
+sensitivity **27.8%**, specificity **94.0%**; the paper, re-weighting across all five predicted classes,
+reports **31.3% / 29.8% / 93.5%**. Same method, same direction. **Result: sensitivity 60.7% → 29.8%
+(halved), specificity 79.7% → 93.5%.** Model predicts usable 13.8% of the time, truth ≈31.3% → "specific
+but markedly under-sensitive," so HQVR underestimates usable time **in both arms**. School-nurse analogy:
+if you only send the children who look ill for a blood test, the misses were never counted. **Standing
+check on every diagnostic study: find the sampling sentence in the Methods and ask whether the test's
+output could have influenced who got verified.**
+
+**166. Report the human-vs-human agreement first — it establishes whether the ceiling exists.** Four
+numbers, arranged the right way: **reader vs reader 5-class weighted κ = 0.98**; **model vs consensus
+0.60**; binary Cohen's κ **0.95** vs **0.41**. The human–human figure is the one most papers skip and it
+does the most work: a model at 0.60 could be a weak model *or* an inherently subjective task, and only
+the readers' 0.98 distinguishes them. **Here the ceiling is near-perfect, so 0.60 is squarely the
+model's problem.** Note also the **same model, same frames, 0.60 weighted vs 0.41 binary** — collapsing
+an ordered scale discards the partial credit for near-misses, worth **0.19 of κ**. This is the direct
+answer to #124 (weighted κ without its weighting scheme is not a reported statistic): report both.
+**Standing demand: the human–human κ on the same frames, scored blind. Benchmarks from other studies
+will not do — κ depends on case mix (#123).**
+
+**167. With tiny groups, compute the minimum achievable p BEFORE reading the result.** Exact
+Mann–Whitney, 5 vs 7: there are **C(12,5) = 792** arrangements, so perfect separation gives one-sided
+1/792 and **two-sided p = 0.0025 — the floor.** Reported: HQVR **U = 27, p = 0.15** (exact: 0.1490 ✓);
+post-hoc MPQS **U = 34, p = 0.005** (exact: 0.0051 ✓). **U = 34 is one rank-swap from the maximum of 35**,
+so p = 0.005 here means *all but one of the five gel values exceeded all seven saline values* — a
+near-perfect ordering of twelve numbers, not a large-sample effect. Both readings matter: strong
+ordering, twelve observations. **And the floor is a design fact: the primary analysis could never have
+reached significance without near-perfect separation, which was knowable in advance — so a
+non-significant HQVR was always the likely outcome whatever the gel does. A null from a study that could
+barely have produced a non-null is not evidence of no effect.**
+
+**168. A hold-out drawn from the same videos as the training data measures nothing — and this paper
+says so about its own 99%.** Hold-out accuracy **99.0%**, sensitivity 100% (16/16), specificity 98.8%
+(83/84) — against a best training-validation accuracy of **79.5%** and an independent-validation accuracy
+of **70.8%**, a **28.2-point gap**. The paper's verdict on its own number: "the higher hold-out figures
+arise because those frames overlap the training videos and do not establish generalizability." **A 99%
+sitting in a results section explicitly labelled as meaningless is a thing this list has never seen.**
+Standing check: for any hold-out, ask whether it shares *source material* with training — near-duplicate
+neighbouring frames, slices of the same scan, repeat visits by the same patient.
+
+**169. Refusing baseline significance tests is correct, and saying why is better.** Verbatim: "No
+formal statistical testing was performed for baseline characteristics owing to the small sample and
+varying stone burden; **non-significance must not be read as group comparability**." Baseline p-values
+conflate chance imbalance with real imbalance and are actively misleading in a non-randomised
+comparison; declining to produce them, and explaining, is the right call and almost nobody makes it.
+
+**170. Credit a paper that works out which direction each of its own confounders pushes.** Three,
+all stated. **(a)** Gel group had larger stones (16.2 vs 13.3 mm) and longer procedures (928 vs 455 s) —
+harder cases, "a confounder that **biases against, rather than toward**, the efficiency rationale for
+gel." **(b)** The model scored gel more conservatively (mean signed error −0.40 vs −0.19, permutation
+p = 0.34) — also **against** the observed gel advantage. **(c)** Saline cases were earlier and gel later,
+allowing an operator learning curve — this one biases **toward** gel, and is disclosed too. **Standing
+habit: for every confounder, write down its sign. Papers that do this are telling you they tried to
+break their own result.**
+
+**171. Label post hoc analyses as post hoc — in the abstract.** Primary HQVR **p = 0.15, "not
+significant"**; MPQS **p = 0.005, "post hoc exploratory"**; both appear in the abstract with their labels
+attached, and the Methods state in advance that "MPQS and temporal analyses were not pre-specified."
+Caveat worth recording: HQVR, MPQS and longest-usable-interval are three summaries of the same 1,950
+model outputs, so they are not independent; the paper names two post hoc measures but does not say
+whether others were computed and discarded.
+
+**172. Print the class-imbalance counts and say how imbalance was handled.** Score 0/1/2/3/4 =
+**45/964/465/202/56** frames (1,732 total; commonest class 55.7%, rarest 2.6%, ratio **21:1**), handled
+with an inverse-frequency weighted random sampler, "**not augmentation**." Exact counts plus the
+mechanism, which lets a reader judge whether the rare classes could have been learned at all — and
+Table 2 shows they largely weren't: **every per-class precision is below 0.60**, worst in the middle of
+the scale (Score 1: 0.25, Score 2: 0.29) where a human most needs help.
+
+**173. List the reporting-guideline items you FAIL.** "Reporting follows applicable CLAIM and
+TRIPOD+AI items; unmet items are listed in the Limitations" — and they are: **sample-size
+justification, calibration, and a large independent development cohort.** Naming a guideline is common
+(#154); naming your own unmet items is not.
+
+**174. Distinguish "this κ validates the SCALE" from "this κ validates the LABELS."** All training
+labels came from one expert. Two additional endoscopists scored a **disjoint** subset (weighted κ
+0.60–0.79), and the paper states this "**validates the scale rather than the training labels**" — then
+lists single-reader labelling as a separate limitation. The κ subset, hold-out and accuracy-evaluation
+sets were **mutually disjoint**, which is what makes the distinction checkable.
+
+**Also noted.** Development cases were **prespecified**: "the first three consecutive procedures in which
+both viscous gel and saline were used within the same procedure, selected **before the comparison cohort
+was assembled** and solely on this mixed-medium criterion." Sampling interval lengthened from 0.2 s to
+1.1–10.9 s **explicitly to reduce temporal autocorrelation**, with all comparisons kept at the patient
+level. Unrecorded procedural variables disclosed (generator settings, irrigation flow/pressure, gel
+volume; injection not protocolised). **Funding "nothing to report"; conflicts "none."** Off-label use of
+the gel in the bile duct **disclosed in the consent process**. Nine numbered limitations.
+
+**Against that.** Twelve patients, five versus seven (#167's floor). Three development cases, one
+labelling expert. The instrument and the comparison are entangled — the gel result is measured with a
+30%-sensitive ruler, defended reasonably by the per-medium check on 50 and 70 frames. **HQVR has no
+validated threshold and is linked to no clinical outcome**, which the paper states. And the cholangitis
+counts (**4/7 saline vs 1/5 gel**) will read as a safety signal: five events in twelve patients, no test
+run (correctly), mechanism unmeasurable because irrigation volume was not recorded.
+
+---
+
+## Shelf restocked — 2026-11-03
+
+Emptied by today's run. Restocked with the `pubmed pmc[sb]` + date-window method (2026/10/20–2026/11/03,
+380 hits, screened by metadata). **All six are PMC-confirmed.** Ordered by what each would teach.
+
+**(1) Deep learning detection of active pulmonary TB from chest radiographs — retrospective AND
+prospective multicentre, with a reader study** — PMID 42936410, PMC13697335, *iScience* 2026;29(11):117960,
+Tuersun A et al. (Kashi, Xinjiang). 4,613 training radiographs from two centres; **retrospective external
+cohort 1,318 patients AND a prospective cohort of 560**; AUC **0.917** and **0.896**; performance "stable
+across **prespecified** demographic and scanner subgroups"; and in the prospective cohort **AI assistance
+raised radiologist AUCs to 0.897–0.937 across experience levels**. Explicitly: "positive predictions
+should not be used alone to initiate treatment." **Top pick — this list has never decoded a prospective
+validation with a human-AI reader study**, and several authors are at a commercial AI firm (Deepwise), so
+there is a COI angle too.
+
+**(2) Gestational-age estimation from linked mother–infant EHRs across two health systems** — PMID
+42957585, PMC13719529, *Pharmacoepidemiol Drug Saf* 2026;35(11), Bejan CA et al. (Vanderbilt + Michigan).
+**54,344 and 34,345 dyads**; the pipeline was **independently reimplemented and retrained at the second
+site** (MAE 4.4 → 2.8 days); reports **temporal drift** in EHR elements and performance **stratified by
+gestational-age category** (substantially worse for preterm). **Reproducibility and portability as the
+stated outcome** — a framing this list has never covered.
+
+**(3) Bipolar disorder classification from speech and language** — PMID 42967232, PMC13723951, *J Med
+Internet Res* 2026;28:e98094, Yamaguchi Y et al. (Tokyo/Keio). 61 patients, 99 controls, **6,373 acoustic
++ 211 linguistic features**, LASSO with **nested CV**, age/sex-matched undersampling, **permutation
+testing**, medication sensitivity analyses. BP vs HC AUC **0.916** — but the interesting part is the
+failures the authors report: DS vs ES 0.760 (p=.03), **MS/MX vs ES 0.601 (p=.20)**, **DS vs MS/MX 0.569
+(p=.30)**. An extreme multiplicity case (6,373 features on 160 people) — direct extension of #158.
+
+**(4) NOTIFY-DISCUSS: patient and clinician perceptions of a DEPLOYED AI screening tool** — PMID
+42965008, PMC13720997, *Am Heart J Plus* 2026;72:100989, Keamy-Minor E et al. (Stanford). Semi-structured
+interviews and focus groups, **11 patients and 9 clinicians**, thematic analysis in NVivo. Themes include
+consent to AI use, data rights and security, the time burden of contextualising incidental findings,
+potential for unintended harm. **This list has never decoded a qualitative study**, and this one is about
+a tool already in clinical use.
+
+**(5) AI-driven biomarker discovery for precision psychiatry (review)** — PMID 42947584, PMC13720497,
+*Clin Psychopharmacol Neurosci* 2026;24(4):675–691, Serretti A. Proposes a **six-stage framework** linking
+intended use, measurement validity, model evaluation, comparative utility and monitored deployment. Two
+sharp reusable observations: "discrimination is supported more strongly in development data than in
+independent evaluation," and **"many reported metrics also address a simpler task than the intended
+decision: diagnosis instead of differential diagnosis, general prognosis instead of differential
+treatment benefit."**
+
+**(6) Explainable AI in prostate and bladder cancer (review of 70 studies)** — PMID 42960345,
+PMC13719121, *Curr Urol* 2026;20(6):332–348, Diamantidis D et al. Distinguishes **post hoc explanation
+from interpretable-by-design** and concludes "**prospective evidence that explainable AI affects clinical
+decisions is lacking**." A good companion to the accumulated SHAP lessons (#96, #106, #143, #164).
+
+**Next queue entry.** Check the four deferred first (all still blocked as of 11-03; **JAMA at day 19** —
+**decode abstract-only on 2026-11-05 if still empty at day 21**). Then work the restocked shelf in the
+order above, starting with **(1) the TB paper** for its prospective cohort and reader study. Watch item:
+PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
+(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
+never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
+supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
