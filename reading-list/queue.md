@@ -3451,7 +3451,7 @@ run (correctly), mechanism unmeasurable because irrigation volume was not record
 Emptied by today's run. Restocked with the `pubmed pmc[sb]` + date-window method (2026/10/20–2026/11/03,
 380 hits, screened by metadata). **All six are PMC-confirmed.** Ordered by what each would teach.
 
-**(1) Deep learning detection of active pulmonary TB from chest radiographs — retrospective AND
+**(1) [x] DECODED 2026-11-04 — Deep learning detection of active pulmonary TB from chest radiographs — retrospective AND
 prospective multicentre, with a reader study** — PMID 42936410, PMC13697335, *iScience* 2026;29(11):117960,
 Tuersun A et al. (Kashi, Xinjiang). 4,613 training radiographs from two centres; **retrospective external
 cohort 1,318 patients AND a prospective cohort of 560**; AUC **0.917** and **0.896**; performance "stable
@@ -3495,10 +3495,152 @@ PMC13719121, *Curr Urol* 2026;20(6):332–348, Diamantidis D et al. Distinguishe
 from interpretable-by-design** and concludes "**prospective evidence that explainable AI affects clinical
 decisions is lacking**." A good companion to the accumulated SHAP lessons (#96, #106, #143, #164).
 
-**Next queue entry.** Check the four deferred first (all still blocked as of 11-03; **JAMA at day 19** —
-**decode abstract-only on 2026-11-05 if still empty at day 21**). Then work the restocked shelf in the
-order above, starting with **(1) the TB paper** for its prospective cohort and reader study. Watch item:
-PM Heart trial results (protocol PMID 42893738), quarterly. Standing re-checks: Huang J (42765400), Lu J
-(42809845), Holly (42830095) / Mechael (42833894), and the four oldest deferred reviews. Standing offers
-never taken up: upgrade the abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are
-supplied; retrofit summary #1 (Vishwanath) with a Statistics Spotlight.
+---
+
+## 2026-11-04 — Tuersun A et al., deep learning for active vs non-active pulmonary TB on chest radiographs (iScience; PMID 42936410) — graded 4/5
+
+**The first 4/5 in nine days, and the first paper here with a genuine PROSPECTIVE validation cohort.**
+Five hospitals in Kashi Prefecture, Xinjiang: training 4,613 (KCH 2,872 + JCH 1,741), retrospective
+external 1,318 (SCH 1,011 + YCH 307), **prospective 560 (MCH, written consent)**. Total **6,491**.
+ShuffleNetV2 — 2.3 M parameters, 0.9 s/case. AUC **0.926 / 0.917 / 0.896**. **Every arithmetic breakdown
+reconciles exactly** — by cohort, activity status, sex and centre.
+
+**175. PPV belongs to ONE prevalence and travels nowhere — recompute it for your own setting.** The
+paper prints its prospective confusion matrix: **TP 137 · FN 22 · FP 68 · TN 333** (n=560), giving
+sensitivity 0.862, specificity 0.830, **PPV 0.668**, NPV 0.938. Freeze Se and Sp and vary only
+prevalence: **52.2% → PPV 84.7%; 46.5% → 81.5%; 28.4% → 66.8%; 10% → 36.1%; 2% → 9.4%.** **The same
+model has PPV 81.5% where it was built and 66.8% where it was tested — a 14.7-point drop from nothing but
+base rate.** Mechanism: false positives come out of the healthy pool, which grows as prevalence falls —
+at 28.4%, 17% of 401 non-active patients is 68, the same order as the 137 real cases. One-line formula to
+run every time: **PPV = (Se × prev) ÷ (Se × prev + (1 − Sp) × (1 − prev))**. **And copy what these authors
+did with it:** they computed it, stated that "33.2% of positive predictions were false positives," named
+the harms (isolation, extra procedures, distress, resources, inappropriate multidrug therapy), concluded
+triage-only, said the threshold must be re-evaluated per population, and put **"positive predictions
+should not be used alone to initiate treatment" in the abstract.** Direct application of #147 by the
+authors themselves.
+
+**176. When discrimination survives a move and calibration does not, compute the prevalence ratio — the
+direction AND size of the error are predictable.** The list has described this since entry 58; here is
+the arithmetic. Active TB ran at **44.8%** (training), **52.2%** (retrospective external), **28.4%**
+(prospective). Trained at ~46.5% pooled, deployed at 28.4%. Convert to **odds**: training 0.465/0.535 =
+**0.869**; deployment 0.284/0.716 = **0.397**. **Correction factor on the odds = 0.397/0.869 = 0.456 —
+roughly halve every predicted odds.** Worked: model says 20% → **10.2%**; 30% → **16.4%**; 50% →
+**31.3%**; 70% → **51.6%**; 90% → **80.4%**. Every number falls and **the middle of the range moves most
+— exactly where the paper says its calibration curve deviated** ("particularly in the low-to-intermediate
+predicted-probability ranges"). Intuition: a doctor trained where half of coughing patients had TB will
+over-call it in a clinic where a quarter do — their judgement of *which* patients look worse is intact,
+their sense of *how common* it is was formed elsewhere. **Watch-out: this uses one number and assumes
+nothing else changed; real shifts also move case mix, severity and equipment, so a prior adjustment is a
+first approximation. The remedy the paper correctly prescribes is site-specific recalibration on local
+data plus ongoing monitoring** — which needs outcome data from the new site, and is why so few deployed
+models have it.
+
+**177. Check whether the reference standard includes the PREDICTOR'S OWN MODALITY.** Active TB required
+(i) microbiological confirmation, (ii) symptoms, **and (iii) imaging findings** (consolidation, nodules,
+cavities, ground-glass, tree-in-bud); non-active required negative microbiology **and imaging features**
+(calcified/sclerotic lesions, clean cavities, pleural thickening). **The model's input is the chest
+radiograph, so part of what it learned to reproduce is a radiologist's reading of the same image** — an
+easier and less useful task than predicting bacteriology. The microbiological criterion anchors it, so
+this is partial rather than full circularity, and **the paper never raises it.** The right analysis is a
+sensitivity analysis against microbiology alone. **Also a genuine ambiguity: the Methods say "patients
+with microbiologically confirmed TB were included" AND that non-active cases were "defined by negative
+pathogenetic confirmation" — both cannot be true as written.** The likely reading (history of confirmed
+TB, activity re-adjudicated) is not stated, and it determines which population the model applies to.
+Sharper than #119 because the overlap is in the *measurement modality*, not the timing.
+
+**178. A crossover reader study with AI always second, on the same images, with no washout, cannot
+separate AI benefit from re-reading.** Nine radiologists read unassisted (3 senior ≥10 y, 3 intermediate
+5–10 y, 3 junior <5 y): **0.648 (Junior_3) to 0.786 (Senior_3)**, juniors clustered 0.648–0.700, **all
+nine below the model's 0.896**. Then **one randomly selected reader per tier** re-read **the same 560
+images** with AI output live: Senior_A **0.937**, Intermediate_A **0.902**, Junior_A **0.897**. So the
+assisted arm is **n = 3**, not 9; order was not randomised; no washout is stated; and we are not told
+*which* reader per tier was selected, so the assisted figures cannot be matched to their own unassisted
+baselines. Three mechanisms could produce the gain — AI helped, readers remembered the cases, or those
+three were the stronger readers — and the design separates none. **The limitations section covers
+international cohorts, clinical parameters, atypical immunocompetent cases and the architecture benchmark
+— and never mentions the reader study.**
+
+**179. An assisted reader whose AUC lands ON the model's is a sign of wholesale adoption, not synergy.**
+**Junior_A assisted 0.897 vs the model's 0.896 — a difference of 0.001.** **Senior_A assisted 0.937 —
+0.041 ABOVE the model.** The natural reading: the junior adopted the model's call more or less wholesale
+(**automation bias**), while the senior combined it with their own judgement and beat it. That has direct
+implications for who should be given such a tool and with what training. **The paper prints both numbers
+and does not comment.** Standing check in any human-AI study: compare each assisted reader's score with
+the model's, not just with their own baseline — landing on the model is a red flag, exceeding it is the
+goal.
+
+**180. An architecture chosen for efficiency is a legitimate choice — say so, and don't call a 0.001
+lead superiority.** Prospective AUCs: ShuffleNetV2 **0.896**, ViT-Base/16 **0.895**, ResNet50 0.882,
+DenseNet121 0.848, EfficientNet-B0 0.687. Retrospective external: ResNet50 **0.930**, DenseNet121
+**0.927**, ViT **0.927**, **ShuffleNetV2 0.917** (fourth of five), EfficientNet-B0 0.817. Hanley–McNeil
+SE at n=159/401 for AUC 0.896 is **0.0173** (implying 0.862–0.930, and the paper reports 0.860–0.932, so
+its intervals are sound) — **so the 0.001 lead over ViT is 0.06 standard errors**, and **no DeLong test
+between architectures is reported** (they ran DeLong on the subgroups but not on the comparison that
+chose the design). **The paper's real argument is a good one and it makes it: 2.3 M parameters vs 86 M
+(37×) and 0.9 s vs 6.7 s (7.4×)** for a tool meant for county hospitals with few radiologists. Its phrase
+"superior or equivalent" blends an untested lead with the honest word; the honest word is equivalent.
+**Standing check: find the standard error before accepting any ranking — and note what the extra 84
+million parameters bought.**
+
+**181. Augmentation that produces anatomically impossible images, described as dataset expansion.**
+Verbatim: random horizontal and vertical flips "effectively quadrupled the training dataset from 4,613 to
+approximately 18,452 images (4,613 original images × 4 augmentation variants: original, horizontal flip,
+vertical flip, and both flips)." **A vertically flipped chest radiograph puts the diaphragm above the lung
+apices — an image that cannot exist in a human body**; horizontal flipping at least yields a situs-inversus-
+like mirror. Such flips can act as useful regularisation noise (the network learns not to rely on absolute
+position) but they are **not realistic variation**, and **four copies are not 18,452 independent patients
+— the effective sample size is still 4,613.** Standing check: read the augmentation list and ask whether
+each transformation could occur in the real imaging of a real body.
+
+**182. "All subgroup p > 0.05" cannot establish invariance.** Five dimensions (age, gender, occupation,
+residence, scanner type) compared by DeLong in a cohort with **159 active cases**. Split 159 events
+across age bands or scanner models and a non-significant DeLong is close to guaranteed whether or not
+real differences exist. **Absence of a detected difference is not demonstrated fairness**, and the
+abstract's "performance was stable across prespecified demographic and scanner subgroups" reads as the
+latter. Credit for prespecifying them; the inference still needs bounding.
+
+**183. Credit the paper that computes its own PPV, names the harms, and writes "do not treat on this
+alone" into the abstract.** Also credited here: **a proper one-factor-at-a-time ablation** (resolution
+384², width 0.5/2.0, no augmentation, **no pretraining — the largest drop**, focal loss) ; **benchmarking
+that admits three of four rivals won externally**; **error analysis with named anatomical causes** (an
+active case missed where the right clavicle overlapped an apical abnormality; a non-active case over-called
+where pleural calcification and chronic post-TB change were read as active); **consent handled separately
+for retrospective (waived) and prospective (written) arms** with an IRB number; **timing reported** (model
+0.9 s; seniors 16.9 s; intermediates 35.3 s; juniors **87.1 s** — juniors took 5.2× longer than seniors
+*and* scored lower); and an unusually careful **comparison with prior CXR-TB studies**, noting that
+reported 96–99% accuracies came from distinguishing TB from normal — "a different and generally less
+clinically specific task" — and that "latent tuberculosis is not directly equivalent to the non-active
+pulmonary tuberculosis category used in our study."
+
+**184. Two disclosure notes worth recording.** **(a)** "The authors declare no competing interests" sits
+alongside **four authors affiliated to Beijing Deepwise & League of PHD Technology Co., Ltd**, a
+commercial medical-AI company, including the author credited with formal analysis and interpretation. The
+affiliations are disclosed on the author line, which matters most; the formal declaration is in tension
+with them and a reader should know both. **(b) Credit: the first generative-AI-use declaration in this
+list** — "the authors used ChatGPT (OpenAI) for language-editing and document-formatting assistance,"
+with full responsibility retained. Also: **code address published** (`https://github.com/xujingxu/DL_APT`
+as printed; not fetched here), data available on request under a data-use agreement.
+
+**Also noted — minor internal inconsistencies.** The Results give the prospective cohort's mean age as
+**60.73 ± 16.32** — which is the figure for all 6,491 patients — while the participant-details section
+gives **61.51 ± 17.40**. And the reader paragraph says the unassisted range ran "to 0.786 for Senior_3"
+then that seniors reached **0.786–0.811**. **No reporting guideline named** (TRIPOD+AI, CLAIM or STARD
+would fit). All five centres in one prefecture, no international validation (acknowledged). Figures and
+supplementary tables unretrievable, so **Brier scores, calibration intercept/slope, the full ablation
+table, per-architecture sensitivity/specificity and the subgroup table could not be read**; the
+prospective confusion matrix is in the body text and was fully verified.
+
+**Next queue entry.** **JAMA reaches day 21 on 2026-11-05 — the standing instruction fires: decode
+PMID 42879271 abstract-only and say so explicitly, unless its PMC body has filled.** Re-check the other
+three deferred first. After that, continue the restocked shelf at **(2) gestational-age estimation across
+two health systems** (PMID 42957585, PMC13719529 — 54,344 + 34,345 dyads, pipeline **independently
+reimplemented and retrained** at the second site, MAE 4.4 → 2.8 days, with **temporal drift** analysis and
+performance **stratified by gestational-age category**, substantially worse for preterm; reproducibility
+and portability as the stated outcome). Then (3) bipolar speech/NLP with **6,373 features on 160 people**
+and honestly-reported interstate failures (42967232), (4) the NOTIFY-DISCUSS **qualitative** study of a
+deployed AI tool (42965008), (5) the precision-psychiatry six-stage framework review (42947584), (6) the
+explainable-AI urology review (42960345). Watch item: PM Heart trial results (protocol PMID 42893738),
+quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830095) / Mechael
+(42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade the
+abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
+(Vishwanath) with a Statistics Spotlight.
