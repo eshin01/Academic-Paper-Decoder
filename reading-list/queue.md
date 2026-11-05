@@ -3644,3 +3644,113 @@ quarterly. Standing re-checks: Huang J (42765400), Lu J (42809845), Holly (42830
 (42833894), and the four oldest deferred reviews. Standing offers never taken up: upgrade the
 abstract-only entries (Gulshan #2, Ardila #8, McKinney #10) if PDFs are supplied; retrofit summary #1
 (Vishwanath) with a Statistics Spotlight.
+
+## From entry 68 — Patel et al., clinician use of an AI clinical information platform (JAMA, 2026; decoded 2026-11-05, ABSTRACT ONLY)
+
+**The first abstract-only decode since entry 10**, and only after twenty-one consecutive days of an empty PMC body, a paywalled Scite route and DNS-blocked direct fetching. The techniques below are all derived from the abstract's own published numbers — which is itself the lesson: **a well-reported abstract contains enough arithmetic to audit several of its own claims.**
+
+**185. A use ratio is a closed system, and its workforce-weighted mean is forced to be exactly 1.0.**
+
+A use ratio is a share divided by a share: group *i*'s share of the queries, `q_i`, over its share of the workforce, `w_i`. So `R_i = q_i / w_i`. Both sets of shares sum to 1, which means
+
+    sum over i of (w_i * R_i) = sum over i of q_i = 1
+
+exactly, by definition, in every possible dataset. **There is no study in which these ratios do not average to 1.**
+
+Consequence for reading: once you learn that some large groups sit well above 1, you have already learned that others must sit below 1 without being told anything about them. In entry 68, internal medicine (1.88) and family medicine (1.80) are two of the largest physician specialties. Using approximate workforce shares, the six named groups hold about 37% of the workforce and contribute about 0.557 of the required total, so **the unnamed 63% must average about 0.70.** "Lower use in procedural and diagnostic specialties" was therefore partly fixed before any data arrived.
+
+**What is not fixed is the magnitude.** Ophthalmology at 0.23 is far below the 0.70 the constraint merely requires, and *that* gap is the finding. **The sign is arithmetic; the size is evidence.** Report how far below, never just which side.
+
+Applies to every share-over-share metric: standardised morbidity and mortality ratios, observed-to-expected ratios, representation indices, location quotients, lift in a marketing or risk model. Always ask what the weighted average is pinned at.
+
+**186. When the outcome variable is produced by a model, sample size buys you nothing.**
+
+Split error into two parts. **Sampling error** is the luck of which units you observed; it shrinks as 1/sqrt(n). **Measurement error** is the systematic gap between instrument and truth; **it does not shrink with n at all.** More measurements through a bent ruler give a very precise estimate of the wrong length.
+
+Entry 68's classified subset is 38.8 million queries. For the reported 51.9%:
+
+    SE = sqrt(0.519 * 0.481 / 38,800,000) = 0.000080  ->  0.0080 percentage points
+
+A 95% interval of roughly 51.884% to 51.916%. For 33.1% it is 0.0076 points; for 13.9%, 0.0056 points. **Sampling uncertainty is about one hundredth of a percentage point. It is invisible and irrelevant.**
+
+Now let the classifier be 90% accurate — respectable for free-text clinical classification. With symmetric confusion between two categories of true share *t* and *d*:
+
+    observed t = 0.9t + 0.1d
+    observed d = 0.9d + 0.1t
+
+True shares of 35% and 12% would be observed as 32.7% and 14.3% — close to the published 33.1% and 13.9%. **A 10% symmetric classifier error moves these numbers by two percentage points, which is 250 times the sampling uncertainty.** Asymmetric error moves them further, and in one direction.
+
+**The reading rule: when n is enormous, stop reading the confidence intervals and start interrogating the instrument.** At this scale the intervals are theatre. The only question that determines whether 33.1% means anything is how a query was assigned to its category and how often that assignment was right.
+
+**This is the mirror image of technique 157** (post hoc power is circular). There, n was too small and power was the whole question. Here n is vast, power and precision are solved, and **validity is the whole question.** A huge sample makes a study *precise*, not *strong*. Conflating the two is how a reader comes to believe a classifier they have never seen.
+
+**187. The total divided by the final period recovers the shape of a growth curve when only endpoints are published.**
+
+Entry 68's abstract gives two points and a total, and no trajectory. The total constrains the middle.
+
+    Jan 2024 monthly volume:  355 x 18.0        =      6,390
+    Jun 2026 monthly volume:  703,265 x 39.5    = 27,778,968
+
+Define **effective final-volume periods** = total / final-period volume:
+
+    271,000,000 / 27,778,968 = 9.76
+
+So all 30 months hold as much volume as 9.76 months at the final rate. Now compare with pure exponential growth between the same endpoints. The constant monthly multiplier is
+
+    r = (27,778,968 / 6,390) ^ (1/29) = 1.3349   (33.5% per month)
+
+and the geometric sum is
+
+    6,390 * (1.3349^30 - 1) / 0.3349 = 110.7 million  ->  3.99 effective periods
+
+**Observed 9.76 against exponential 3.99.** The real curve accumulated two and a half times more volume than smooth exponential growth between the same endpoints. Only one shape does that: **growth was front-loaded and then flattened.** The platform neared its final scale well before the end rather than climbing steeply to it. S-shaped, not exponential.
+
+Why it matters: an exponential reading forecasts 30x next year; a flattening reading says acquisition is mostly done and the 2.19-fold rise in intensity per user is now the live part of the story. **The abstract does not say which. Its own three numbers do.** Works on any growth report giving a start, an end and a cumulative total — revenue, enrolment, case counts, adoption of anything.
+
+**188. Nested categories and the false "whereas".**
+
+When several percentages appear in one sentence, add the small ones and compare to the large one. In entry 68: clinical decision-making 51.9%, "particularly" treatment and management 33.1%, "whereas" diagnosis 13.9%. Since 33.1 + 13.9 = 47.0 fits inside 51.9 with 4.9 points to spare, **treatment and diagnosis are both children of clinical decision-making** — the contrast is between two siblings.
+
+The sentence structure invites reading 13.9% as small against 51.9%, which compares a part to its own whole. The honest comparison is **33.1 against 13.9, a 2.4-fold ratio.** Mis-reading a part as a peer of its parent makes small categories look smaller than they are, and is one of the most common ways a correctly computed percentage misleads.
+
+**189. Registered, active, and people are three different denominators.**
+
+Entry 68: 271 million queries / 952,008 accounts / 30 months = **9.5 queries per account-month**. The paper reports **39.5 per *active* user-month**. The 4.2-fold gap is not a contradiction — it *is* the inactivity rate, recoverable by division. Separately, 703,265 active in the final month is **73.9% of every account ever created**, which simultaneously indicates high retention and tells you most accounts are recent.
+
+Whenever a paper quotes a per-user rate, ask which users: everyone who ever registered, everyone who did something this period, or everyone who exists in the world. These can differ by an order of magnitude, **and the most flattering one is the one most often quoted.**
+
+**190. Composition checks: predict a reported distribution from a known mix.**
+
+Entry 68 reports 58.5% female across a population that is 58.4% physicians and 41.6% nurse practitioners, physician assistants and others. Taking physicians as roughly 38-40% female and NP/PA as roughly 85%:
+
+    0.40 * 0.584 + 0.85 * 0.416 = 0.587   ->  predicted 58.7%, reported 58.5%
+
+**The check passes**, which is weak positive evidence the population is as described. Run this on any paper reporting a demographic breakdown alongside a composition: it is free, takes thirty seconds, and **when it fails it fails loudly.** Entry 68 is the first paper in this list where this check was run and passed cleanly.
+
+**191. Survivorship in a rapidly growing cohort, and why the fix is cohort analysis.**
+
+When a population grows 1,981-fold, the people present at the start have had 30 months to leave and those present at the end have had none. So any average over "all users" is dominated by recent arrivals, and any *trend* in per-user behaviour is confounded by who survived.
+
+Entry 68's intensity rose 18.0 to 39.5 queries per active user-month. Three explanations fit equally: the product improved; users learned to lean on it more; **or the people who stayed are the ones who liked it.** A server log cannot distinguish a behaviour change *within* people from a composition change *between* people.
+
+**The fix is cohort analysis** — track the January 2024 joiners separately from the January 2025 joiners and see whether each cohort's own intensity rises. Telemetry can do this trivially; abstracts rarely report it. When a paper reports a rising per-user average in a growing population and does not break it out by joining cohort, **treat the rise as unexplained rather than as improvement.**
+
+**192. A definitional artifact masquerading as a finding: check that a measure means the same thing at both ends of its range.**
+
+Entry 68 reports out-of-specialty queries from 35% (oncology/haematology) to 88% (emergency medicine). The 88% is the most eye-catching number and probably the least meaningful: **emergency medicine is the specialty of undifferentiated presentation**, so any topic map assigning "chest pain in a diabetic" to cardiology or endocrinology will label nearly everything an emergency physician asks as out-of-specialty. The number partly measures the taxonomy's inability to represent generalists.
+
+The 35% at the oncology end is interpretable, because oncology has a genuinely bounded topic domain. **A between-group range is only interpretable if the measure is comparable at both ends.** Before believing a range, ask whether the construct even exists in the group at the extreme.
+
+**193. Sponsor-as-author plus non-reproducible data: grade each number by its distance from the raw instrumentation.**
+
+Entry 68 has three of seven authors employed by the company whose product is studied, and the data are proprietary server logs that nobody can re-run. This does not mean the paper is wrong. It means **the error-correction mechanism is absent**, so you weight findings by how hard they would be to get wrong.
+
+**Hard to get wrong:** server-side counts of accounts and requests. They come from the same instrumentation the company bills and reports on, and are visible to engineers with no stake in the paper. Believe 952,008 and 271 million.
+
+**Easy to get wrong:** model-generated interpretive categories. They require judgement calls about taxonomy and prompt, are invisible to anyone outside, and have no published accuracy. Hold 51.9% and 88% loosely.
+
+**The general rule: trustworthiness tracks distance from the raw instrumentation, not the reputation of the journal.** This is the correct way to read any paper whose data cannot be independently obtained — rank the numbers by how many layers of judgement sit between the sensor and the sentence.
+
+**Process note — the 21-day rule, and what it cost.** This list's standing rule has been: attempt full text daily; if a PMC record exists but serves an empty body for twenty-one consecutive days and no second route opens, decode abstract-only and state the reason explicitly. Entry 68 is the first time it fired. **It worked**, in the sense that nine verifiable arithmetic findings came out of a 350-word abstract — but the grade was capped at 2/5 and the single question that decides whether the paper's percentages mean anything (classifier accuracy) is unanswerable from here. **Abstract-only is a real loss, not a formality**, and the honest form of it is to say exactly which judgements are suspended and which way each would move.
+
+**Shelf and deferred plan set on 2026-11-05.** Next run takes shelf spare (2), gestational-age estimation across two health systems (PMID 42957585, PMC13719529), which has a confirmed PMC body. **The BMJ reporting-completeness review (PMID 42869550) reaches its own day 21 on 2026-11-12** — if still without a PMC body then, decode abstract-only under the same rule; its abstract is unusually rich and it is the most relevant paper on the shelf to this list's purpose. The Nature personal-health-agent paper (42907512) and the *Annals* *Choosing Wisely* benchmark (42896192) move to **weekly** re-checks, next 2026-11-12, with 42896192's own abstract-only date set at 2026-11-19.
