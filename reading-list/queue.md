@@ -3461,7 +3461,7 @@ should not be used alone to initiate treatment." **Top pick — this list has ne
 validation with a human-AI reader study**, and several authors are at a commercial AI firm (Deepwise), so
 there is a COI angle too.
 
-**(2) Gestational-age estimation from linked mother–infant EHRs across two health systems** — PMID
+**(2) [x] DECODED 2026-11-06 — Gestational-age estimation from linked mother–infant EHRs across two health systems** — PMID
 42957585, PMC13719529, *Pharmacoepidemiol Drug Saf* 2026;35(11), Bejan CA et al. (Vanderbilt + Michigan).
 **54,344 and 34,345 dyads**; the pipeline was **independently reimplemented and retrained at the second
 site** (MAE 4.4 → 2.8 days); reports **temporal drift** in EHR elements and performance **stratified by
@@ -3754,3 +3754,99 @@ Entry 68 has three of seven authors employed by the company whose product is stu
 **Process note — the 21-day rule, and what it cost.** This list's standing rule has been: attempt full text daily; if a PMC record exists but serves an empty body for twenty-one consecutive days and no second route opens, decode abstract-only and state the reason explicitly. Entry 68 is the first time it fired. **It worked**, in the sense that nine verifiable arithmetic findings came out of a 350-word abstract — but the grade was capped at 2/5 and the single question that decides whether the paper's percentages mean anything (classifier accuracy) is unanswerable from here. **Abstract-only is a real loss, not a formality**, and the honest form of it is to say exactly which judgements are suspended and which way each would move.
 
 **Shelf and deferred plan set on 2026-11-05.** Next run takes shelf spare (2), gestational-age estimation across two health systems (PMID 42957585, PMC13719529), which has a confirmed PMC body. **The BMJ reporting-completeness review (PMID 42869550) reaches its own day 21 on 2026-11-12** — if still without a PMC body then, decode abstract-only under the same rule; its abstract is unusually rich and it is the most relevant paper on the shelf to this list's purpose. The Nature personal-health-agent paper (42907512) and the *Annals* *Choosing Wisely* benchmark (42896192) move to **weekly** re-checks, next 2026-11-12, with 42896192's own abstract-only date set at 2026-11-19.
+
+## From entry 69 — Bejan et al., machine-learning gestational-age estimation across two health systems (Pharmacoepidemiol Drug Saf, 2026; decoded 2026-11-06, FULL TEXT)
+
+Back to full text after yesterday's abstract-only entry, and a useful contrast: entry 68 had 271 million observations and almost nothing checkable; this one has 88,689 and reconciles to the last digit. **The first three techniques here are the most transferable material this list has added in a fortnight.**
+
+**194. Reproducibility of a pipeline, portability of a workflow, and transportability of a model are three different claims.**
+
+When a paper involves a second site, there are three distinct things it might have shown.
+
+**Transportability of a fitted model** — the *trained* model, with its learned split points, run unchanged on the second site's patients. Asks: *do the learned relationships still hold elsewhere?* Hardest test, most clinically relevant, because it is what happens when a hospital installs software.
+
+**Reproducibility of a development process** — a different team takes the *method description* and rebuilds it, training on their own patients. Asks: *is the recipe followable, and does the approach work on another population?* Says nothing about whether the original fitted model travels, because the model is refit from scratch.
+
+**Portability of an analytic workflow** — the narrowest: does the code or procedure *run* at all in another institution's schema and vocabulary?
+
+Entry 69 did the second and third, and says so in exactly those words: "because the machine learning models were retrained at UMich, this analysis evaluated cross-site reproducibility of the development process and portability of the analytic workflow, rather than transportability of the VUMC-fitted models."
+
+**Why the distinction decides what you may conclude.** Technique 138/139 (entry 55) says an external result beating the internal one is a red flag — a fitted model doing better on unseen data usually means leakage or an easier case mix. Here Michigan (MAE 2.8 days) beats Vanderbilt (4.4 days), and **it is not that red flag**, precisely because the model was refit: Michigan's number is a fresh internal result on a different population. **Read "the second site did better" as a red flag only when the same fitted model was used at both.** Get this backwards and you will either dismiss a sound paper or trust an unsound one.
+
+**The analogy.** Transportability is handing someone your sourdough starter and seeing whether their loaf rises. Reproducibility of the process is handing over the written recipe and seeing whether they can bake well with their own starter, flour and oven. Portability is whether the instructions even parse in their kitchen.
+
+**Watch out for:** a paper describing site-specific retraining in the Methods and then writing "externally validated" or "validated in an independent cohort" in the abstract. The tell is one Methods sentence about retraining or refitting. If it is there, **no fitted model was tested anywhere**, and a reader planning to deploy has learned nothing.
+
+**195. Minimising MAE on a lopsided outcome pulls predictions toward the mode, so the rare tail fails by construction.**
+
+Entry 69's outcome: median **274 days**, IQR **265-280** — half of all pregnancies inside a 15-day window; full and early term together **77.2%** of the cohort; preterm **14.3%**, with the range reaching down to 127 days.
+
+Now ask what an error-minimising model does with an uncertain case. The honest answer is "I don't know." The *loss-minimising* answer is **274**, because that is where the mass sits. Guessing near the mode is nearly free: the penalty for being wrong about a rare case is small in the average, and the reward for being right about the common case is large.
+
+    Suppose 85% of pregnancies are 260-290 days and 15% are 200-259.
+    Guess 274  -> small error 85% of the time, large error 15% of the time.
+    Guess 250  -> moderate error almost always.
+    Mean absolute error is LOWER for the first strategy.
+
+So predictions compress toward the centre: too high for short pregnancies, too low for long ones. **That is regression toward the mean, and it is not an algorithm bug — it is the loss function doing what it was asked.**
+
+**How to spot it in any paper:** find the predicted-versus-actual scatterplot and check whether the cloud's slope is visibly **flatter than the 45-degree line**. If it is, the tails are being shrunk inward. Note that correlation is blind to this: entry 69's Pearson r of 0.86-0.95 is fully compatible with heavy compression, because r measures ordering, not magnitude.
+
+**Watch out for:** reporting only an overall MAE or R² on a skewed outcome and then being surprised the clinically important tail fails. **If your decision depends on the tail, the tail is your outcome** — and the fix is to change the loss (upweight rare cases, or model the tail separately), not to collect more of the same data. Entry 69 does the honest interim thing: reports the stratum and warns you off it.
+
+**196. Bootstrap confidence intervals: uncertainty for a statistic with no formula.**
+
+Entry 69 puts a 95% interval on every metric in its results table, by **resampling the test set 1,000 times with replacement, recomputing the metric each time, and taking the 2.5th and 97.5th percentiles.**
+
+**Why no formula would do.** "Proportion within 7 days" is a proportion, so the binomial formula is tempting — but it treats the model as fixed and sampling as the only uncertainty, and it offers nothing at all for **MAE**, a mean of absolute differences with no standard textbook interval. The bootstrap covers both without needing a formula for either.
+
+**The intuition.** Your test set is one draw from a population and you cannot get another. So simulate one: draw the same number of cases *from your own test set, with replacement*, so some appear twice and some not at all. That is a plausible alternative test set. Compute the metric. Repeat 1,000 times; the middle 95% of the results is the interval.
+
+    10 patients, 8 within a week = 80%.
+    Resample: maybe 7 of the 8 successes and 3 draws of the 2 failures -> 70%.
+    Again -> 90%. Again -> 80%. After 1,000 rounds, read off the 2.5th and 97.5th percentiles.
+    At n=10 the spread is enormous; at n=10,869 entry 69's interval is 84.4-85.8%, ~1.4 points wide.
+
+**What the intervals bought here.** Ensemble 85.1% (84.4-85.8) against gradient boosting 84.0% (83.3-84.6): barely overlapping, so the edge is probably real and small. Either against the median baseline 51.7% (50.8-52.6): nowhere close. **The intervals make the comparison that matters unambiguous.**
+
+**Watch out for two things.** First, **the bootstrap quantifies sampling variability only.** It says nothing about a wrong reference standard, an unrepresentative population, or a predictor imputed into uselessness. Technique 186 made this point at n = 38.8 million; it holds at 10,869. **Entry 69's intervals are honest, narrow, and address none of its real limitations.** Second, **resampling does not make the test set bigger** — the interval is conditional on the one dataset you have, and an unrepresentative dataset yields a tight interval around the wrong answer.
+
+**197. Always report what guessing would have achieved.**
+
+Entry 69's best single reporting choice. Constant median prediction: **51.7%** within a week, MAE **11.4 days**. Ensemble: **85.1%** and **4.4 days** — **+33.4 percentage points, 61% error reduction.** Without the baseline, "85% within one week" is unreadable, because an outcome with a 15-day interquartile range can be predicted decently by a ruler. **When a paper reports accuracy on a narrow or imbalanced outcome with no constant-prediction comparator, compute it yourself from the reported distribution before believing the headline.**
+
+**198. Proportion-within-tolerance beats correlation for a continuous prediction used at a threshold.**
+
+Entry 69's Pearson r values (0.86-0.95) are its least informative numbers: r measures *ordering*, is inflated by a wide outcome spread, and is blind to systematic compression — a model predicting exactly half the true deviation from the mean every time still shows near-perfect r. The ±1 week and ±2 week bands answer the user's actual question: **how often is this close enough to act on?** The paper leads with the bands and relegates r to a figure caption, which is the right ordering. This is Bland-Altman logic in a different costume: **correlation is not agreement.**
+
+**199. Median imputation when most values are missing turns a predictor into a constant — exactly where it mattered.**
+
+Entry 69: **birth weight available for 25% of pregnancies**, 5-minute APGAR for 42%, both median-imputed. Since median gestational age is 274 days, the imputed birth weight is a **full-term** weight — so the single most informative signal about prematurity is replaced by a term-looking constant in three cases out of four. **Before accepting median imputation, ask whether the value is missing at random or missing for the same reason it would have been informative.** The paper's own proposed fix is correct: multiple imputation from other predictors available at prediction time, excluding the outcome.
+
+**200. A feature-extraction window derived from the outcome's average is biased at the tails.**
+
+Counting diagnosis codes "during pregnancy" requires knowing when pregnancy began — which requires the gestational age being predicted. Using the dyad's own value is leakage, so entry 69 correctly uses the **training-set median (274 days)** for every dyad. But a 274-day window on a 210-day pregnancy reaches about **64 days before conception**, importing unrelated diagnoses; on a 295-day pregnancy it misses three weeks. **The careful anti-leakage choice introduces a tail-dependent feature error.** When a lookback window is defined by a population average of the target, the window is wrong by roughly the amount your prediction error will be — **check the tails.**
+
+Note that this and technique 199 are **two independent mechanisms both degrading the preterm stratum**, and entry 69 reports the preterm failure and the imputation separately without connecting them. Reading the Methods for mechanisms behind a reported subgroup failure is often more productive than reading the Discussion.
+
+**201. When the reference standard is itself an estimate, "accuracy" means agreement — and sometimes agreement is the right target.**
+
+Entry 69's outcome is "the birth attendant's final assessment," and the paper states that **the underlying clinical dating method could not be determined at either institution.** The usual reading is that this caps the claim: MAE 4.4 days is distance from a note, not from truth.
+
+**But the purpose decides.** The tool exists to fill blank gestational-age fields so EHR research can proceed, so what you want to recover is *what would have been recorded*. Against that goal, agreement with the clinical estimate is not a compromise — it is the specification. **Ask what the number will be used for before deciding whether a soft reference standard is a flaw or the requirement.** Entry 69 never makes this argument for itself; it is the strongest defence of its own design.
+
+**202. Race as a predictor without subgroup performance evaluation.**
+
+Entry 69 used maternal and infant race and ethnicity as inputs, and reported mean gestational age highest among Asian mothers and lowest among Black mothers (**271.7 vs 267.2 days** at VUMC; **273.0 vs 268.1** at UMich — 4.5 and 4.9 days, both of which reproduce exactly). That is a documented disparity driven by social and structural factors, not biology, so **feeding it in encodes a social pattern into something that reads as a clinical measurement.**
+
+The magnitude offers partial reassurance: 4.5 days is about the size of the model's whole mean error, so race can only be doing modest work in any single prediction. **"Modest" is not "none", and the only way to know which way it cuts is a per-group error table** — which the paper acknowledges, in plain words, that it did not produce. **Any model with race as an input owes its readers performance by group.**
+
+**203. A coding-system transition is a free natural experiment in data drift — and a confounder for site comparisons.**
+
+The US ICD-9-CM to ICD-10-CM switch on **1 October 2015** gives a clean date on which the meaning of every diagnosis-derived feature changed. Entry 69 exploits it by prespecifying a before/after stratification, and finds better performance afterwards — a concrete demonstration of temporal drift in EHR features.
+
+**But it also confounds the site comparison.** VUMC spans 2005-2025 (~52% of its calendar span in the ICD-9 era); UMich spans 2012-2024 (~29%). So the **4.4-versus-2.8-day gap is substantially a calendar-era effect, not a site or implementation effect** — and the paper says as much, attributing UMich's edge to "reduced reliance on ICD-9-CM predictors" and adding that earlier years also had noisier reference standards from "more limited ultrasound technology." **When two cohorts cover different calendar spans and the features are administrative codes, era is a confounder before site is.** The fix is to compare within a common window. The per-stratum numbers here are in a supporting table, so the effect size cannot be checked from the retrieved text.
+
+**Reporting-quality note.** Entry 69 is the **third paper in this list to name TRIPOD+AI and the first to deposit the completed checklist** as supporting information. It also gives two IRB approval numbers, grant numbers for every funded author, and itemised industry disclosures held separately from its no-conflicts statement. Against that: **no code or data availability statement appears anywhere** — not "unavailable", simply unaddressed — in a paper whose thesis is reproducibility. That juxtaposition is the sharpest thing in it, and it is the exact behaviour the deferred BMJ reporting-completeness review is built to measure.
+
+**Plan set on 2026-11-06.** Next run takes shelf spare (3), bipolar-disorder classification from speech and language (PMID 42967232, PMC13723951): **6,373 acoustic and linguistic features on 160 people.** After today's entry that is a deliberate contrast — 40 features per participant against entry 69's handful across 88,689 dyads — and the natural place to teach the curse of dimensionality, feature selection inside versus outside the cross-validation loop (techniques 123 and the nested-CV discussion from entry 63), and why a constant baseline matters even more when p >> n. **The BMJ review (PMID 42869550) reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
