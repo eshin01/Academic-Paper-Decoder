@@ -3468,7 +3468,7 @@ site** (MAE 4.4 → 2.8 days); reports **temporal drift** in EHR elements and pe
 gestational-age category** (substantially worse for preterm). **Reproducibility and portability as the
 stated outcome** — a framing this list has never covered.
 
-**(3) Bipolar disorder classification from speech and language** — PMID 42967232, PMC13723951, *J Med
+**(3) [x] DECODED 2026-11-07 — Bipolar disorder classification from speech and language** — PMID 42967232, PMC13723951, *J Med
 Internet Res* 2026;28:e98094, Yamaguchi Y et al. (Tokyo/Keio). 61 patients, 99 controls, **6,373 acoustic
 + 211 linguistic features**, LASSO with **nested CV**, age/sex-matched undersampling, **permutation
 testing**, medication sensitivity analyses. BP vs HC AUC **0.916** — but the interesting part is the
@@ -3850,3 +3850,96 @@ The US ICD-9-CM to ICD-10-CM switch on **1 October 2015** gives a clean date on 
 **Reporting-quality note.** Entry 69 is the **third paper in this list to name TRIPOD+AI and the first to deposit the completed checklist** as supporting information. It also gives two IRB approval numbers, grant numbers for every funded author, and itemised industry disclosures held separately from its no-conflicts statement. Against that: **no code or data availability statement appears anywhere** — not "unavailable", simply unaddressed — in a paper whose thesis is reproducibility. That juxtaposition is the sharpest thing in it, and it is the exact behaviour the deferred BMJ reporting-completeness review is built to measure.
 
 **Plan set on 2026-11-06.** Next run takes shelf spare (3), bipolar-disorder classification from speech and language (PMID 42967232, PMC13723951): **6,373 acoustic and linguistic features on 160 people.** After today's entry that is a deliberate contrast — 40 features per participant against entry 69's handful across 88,689 dyads — and the natural place to teach the curse of dimensionality, feature selection inside versus outside the cross-validation loop (techniques 123 and the nested-CV discussion from entry 63), and why a constant baseline matters even more when p >> n. **The BMJ review (PMID 42869550) reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
+
+## From entry 70 — Yamaguchi et al., bipolar classification from speech and language (J Med Internet Res, 2026; decoded 2026-11-07, FULL TEXT)
+
+**The most self-critical paper in this list.** 3,684 candidate features on 61 patients — 60 features per patient — and a limitations section that pre-empts nearly every criticism, including the two that destroy its own headline. Graded 3/5 because the grade tracks what a reader can conclude, not how well the authors behaved; the authors behaved extremely well. **The first three techniques below are the load-bearing ones, and 204 is the single most reusable piece of arithmetic added to this list.**
+
+**204. A null result means nothing until you compute the minimum detectable effect. Here is how.**
+
+Entry 70's three interstate comparisons returned p = .03, .20 and .30. The two nulls will be cited as "voice cannot distinguish manic from depressive states." They do not show that.
+
+Before believing any null, ask how big an effect the study could have caught 80% of the time. Effects below that floor were invisible, so finding nothing says nothing about them.
+
+The paper's own power framework converts an AUC to Cohen's d and runs a two-sample t test, so invert it. For 80% power at two-sided alpha = .05, the required noncentrality is about **delta = 2.80**, and
+
+    delta = d * sqrt(n1*n2/(n1+n2))
+
+so **d_min = 2.80 / sqrt(n1*n2/N)**, and convert back with the relation the paper itself uses, **AUC = Phi(d/sqrt(2))**.
+
+    DS vs ES      n=23v17: sqrt(391/40)=3.126 -> d_min=0.896 -> AUC_min=0.737; observed 0.760 (p=.03) CLEARED
+    MS/MX vs ES   n=15v21: sqrt(315/36)=2.958 -> d_min=0.947 -> AUC_min=0.748; observed 0.601 (p=.20) BELOW
+    MS/MX vs DS   n=15v27: sqrt(405/42)=3.105 -> d_min=0.902 -> AUC_min=0.738; observed 0.569 (p=.30) BELOW
+
+**All three were blind to anything under roughly AUC 0.74.** A clinically interesting AUC of 0.70 would have been missed most of the time in all three. The two nulls are **uninformative, not negative** — and DS vs ES only just cleared the floor, which is why its p is .03 rather than anything smaller.
+
+**The analogy.** You weigh yourself before and after a diet on a scale marked only in 5-kilogram steps, and the needle does not move. You have not learned you lost no weight; you have learned you lost less than 5 kilograms. **A sample size is an instrument's resolution.**
+
+**Watch out for:** "no significant difference" presented as equivalence. Those are different claims, and the second needs an equivalence or non-inferiority design with a prespecified margin. The honest form of a small-sample null is "we could not detect a difference smaller than X, and we did not detect one." **Entry 70 writes its own version: "nonsignificant results indicate that an effect was undetected rather than absent."** Hold every paper to that sentence, and run the four lines of arithmetic above whenever one does not.
+
+**205. Permutation testing as a multiplicity correction: why it beats Bonferroni when features are correlated.**
+
+Entry 70: **3,684 candidate features, 61 patients.** At an uncorrected p<.05 you would expect ~184 "discoveries" from noise alone.
+
+**Why not Bonferroni.** .05/3684 = **0.0000136**, brutally strict — and it assumes independent tests. These features are nothing like independent: openSMILE builds 6,373 features by applying a few dozen summary functions to a few dozen base signals, so MFCC 8's mean, variance, flatness and rising-slope are four views of one thing. With heavily correlated tests Bonferroni is far too conservative: you discard real findings to control an error rate that was never that high.
+
+**What permutation does instead.** Shuffle the labels so any real association dies but **the correlation structure among features survives untouched.** Re-run the whole selection procedure. Record how often each feature is selected. Repeat. You now have an empirical null — "how often does this get picked when labels are meaningless?" — that **inherits your data's real dependence structure for free.**
+
+    20 coins, best one gets 9 heads in 10 flips. Impressive?
+    Bonferroni: compute p for 9-of-10, divide alpha by 20.
+    Permutation: simulate 20 FAIR coins x 10 flips, record the BEST, repeat 1,000x,
+                 see how often the best of 20 fair coins reaches 9. (~1 in 6 runs.)
+    => 9-of-10 as the winner of 20 is unremarkable. The permutation answered the
+       question actually asked - "is the best of my set surprising?"
+
+Entry 70 does this **twice**: for feature selection (95th percentile of the permutation null of selection frequency) and for model performance (100 label shuffles). The model-level test is what makes p = .03/.20/.30 meaningful at all, and labels were shuffled **at the participant level** — the right unit, since each participant contributes one aggregated point. Shuffling at the observation level would leak and give an over-optimistic null.
+
+**Watch out for the gap between per-feature and family-wise.** A 95th-percentile threshold on each feature's *own* null controls the per-feature rate at 5% — so across 3,684 features you still expect **~184 false positives.** Family-wise control instead takes the 95th percentile of the **maximum** statistic across all features per shuffle, a far higher bar. This matters concretely in entry 70: it reports **178, 121, 108 and 125** significant features against a ~184 per-feature chance expectation, so if the null were per-feature those counts are consistent with noise *at the feature level* even though the model-level test proves real signal exists. The paper says "family-wise error correction" in one sentence (implying the max-statistic) and "permutation-based thresholding... to account for multiple testing" in another; the definition is in supplementary section 7, not in the retrieved text. **When you read a permutation correction, find out which null it is.**
+
+**206. Comparing feature modalities fairly: match the search space, or use a nested comparison.**
+
+Entry 70 ran acoustic-only (**3,473 features, AUC 0.910**), linguistic-only (**211 features, AUC 0.651**) and combined (**3,684, AUC 0.911**).
+
+**The trap.** The acoustic model searched a set **16x larger.** More chances to fit means more apparent performance, some real and some sample noise. So the 0.910-vs-0.651 gap **cannot be cleanly attributed to the modality.** The paper flags this itself.
+
+**The escape.** Compare **combined (0.911) against acoustic-only (0.910).** The combined set *contains* the acoustic set, so this is nested: adding features can only expand what the model can fit. If adding all 211 linguistic features moves the AUC by **0.001**, they genuinely carry no information beyond the acoustic ones. **Airtight, and wholly independent of dimensionality.** The paper: combined-vs-acoustic "is a nested comparison and is unaffected by this asymmetry."
+
+**The analogy.** Two candidates, one interviewed three hours and one ten minutes, and the first seems better — you have learned you had more chances to find something good, not that they are better. **That is the unmatched comparison.** Now: you have already hired the first, and you ask whether adding the second improves output. If it does not, the second adds nothing *given* the first. **That is the nested comparison, and it answers a question you can answer.**
+
+**The fix for the unmatched version**, if you need it: give each modality the same number of candidates by random subsampling the larger set, repeated many times; or compare each against its own permutation null (entry 70 reports both modalities beat chance at p<=.02).
+
+**A corollary worth keeping.** Entry 70's "acoustic features were 96-98% of the significant features" is near-vacuous, because **94.27% of the candidates were acoustic before any analysis ran.** My binomial tests on the enrichment: BP z=+2.00 (p=.046), DS z=+1.54 (p=.124), MS/MX z=+0.91 (p=.365), ES z=+1.99 (p=.047) — two marginal, two null. **The conclusion survives only via the nested route.** Generally: **before reading anything into the composition of a selected set, compute its composition under the candidate pool's base rate.**
+
+**207. When an asymptomatic group classifies better than a symptomatic one, suspect the treatment.**
+
+Entry 70's euthymic group (minimal symptoms, HAMD-17 <=7 and YMRS <=7) hit **AUC 0.874** against the depressed group's **0.805**. Read charitably: a stable trait marker, detectable in remission — the paper's most publishable claim.
+
+Then check the obvious rival. **72.1% (44/61) of patients were on antipsychotics; zero controls were on anything.** The ES model's diagnostic probability was higher in antipsychotic users at **Cohen d = 1.17 (p=.005)**, and the primary marker tracked total medication burden even after adjusting for HAMD-17 (**partial rho = -0.45, p=.02**). Antipsychotics affect arousal, psychomotor activity and articulation — exactly what MFCCs measure.
+
+**Whenever a model performs best in the group with the LEAST disease activity, ask what else is uniform in that group and absent from the controls:** medication, care setting, time spent in clinic, the recording environment, who did the interview. Entry 70 ran this check and **printed the answer against its own interest, in its conclusion.** Also note the operating-point cost: ES specificity was the lowest of the four comparisons at 0.711, so **28 of 97 healthy controls were flagged** to reach sensitivity 0.962.
+
+**208. Feature-selection stability, and what a Jaccard index of 0.48 means concretely.**
+
+Entry 70 reports a mean of **168 (SD 119)** features selected per resample, mean pairwise **Jaccard 0.48**, Nogueira 0.56. Jaccard is intersection over union, so for two sets of ~168:
+
+    I / (2*168 - I) = 0.48  ->  I = 0.48*336/1.48 = 109
+
+So two resamples agree on about **109 of 168** features and each picks ~59 the other missed — consistent with the paper's "116 selected in at least half of resamples." For the mood-state comparisons Jaccard falls to **0.18-0.29**: the selected sets barely overlap.
+
+**An SD of 119 on a mean of 168 is itself the warning.** The right response is the one the paper takes: base feature-level inference on **selection frequency and coefficient-sign direction**, never on one fit's list. **Never print a top-ten feature table from a single model fit** — and when a paper does, ask what its selection stability was.
+
+**209. A sensitivity below 0.5 is a specific, reportable finding.** Entry 70's MS/MX vs DS: sensitivity **0.467 (7/15)**, accuracy 0.548, AUC 0.569. Below a coin flip for the positive class. Not an error — what weak discrimination plus an unlucky threshold produces, with a huge CI at n=15. **Report it plainly rather than retreating to the AUC**, which entry 70 does. Note the framing: the paper's own introduction says treatment "differ[s] markedly between depressive and manic or hypomanic phases," so **the study's own case makes this the decision that matters, and this is the comparison that fails.**
+
+**210. AUC -> Cohen's d for an a priori power analysis: good practice, two caveats.** Entry 70's chain — prior AUCs 0.71-0.76, Rice & Harris conversion, d = 0.78-1.0, G*Power t test, 17-27 per group — is rare and welcome, and the paper names which comparisons failed it. Caveats: **the conversion assumes both groups' scores are normal with equal variance**, so skew distorts the implied d; and **a t-test power analysis only approximates AUC power** — Obuchowski or Hanley-McNeil variance formulas are the proper tools. Neither undermines the exercise here, because the conclusion (interstate subgroups underpowered) is nowhere near the line.
+
+**211. Several comparisons sharing one control group are not independent results.** Entry 70's four HC comparisons drew on the same ~97 controls, and **19 patients appear in more than one mood-state group.** So the four AUCs are correlated, and "four out of four beat chance" is not four independent confirmations. **Observations are independent WITHIN each comparison — what the model needs — but the comparisons are not independent of EACH OTHER, which is what a reader counting successes needs.** Entry 70 flags this explicitly.
+
+**212. A threshold chosen on the data you report is optimistic.** Entry 70's sensitivity/specificity pairs come from the **Youden-index cut-point** (max of sensitivity + specificity - 1) selected on the pooled out-of-fold probabilities — tuned on the same numbers being reported. The **AUC is unaffected** (it averages over all thresholds); the pairs are not. The paper flags this and supplies **0.5-threshold metrics** in its supplement, which is the correct remedy. **When a paper gives only Youden-point metrics with no prespecified-threshold alternative, treat the pair as a best case.**
+
+**213. "Not significant" and "no effect" are different claims.** Technique 204 is the arithmetic; this is the principle, and entry 70 supplies the best phrasing in this list: **"nonsignificant results indicate that an effect was undetected rather than absent."** It appears in the medication analysis, where subgroups of 20-60 patients returned nulls. Absence of evidence is not evidence of absence, and this is the most common error in reading clinical research.
+
+**Reporting note, and a contrast with entry 69.** Entry 70 names and deposits **STROBE** — correct for an observational study — but **does not name TRIPOD+AI or TRIPOD-LLM**, despite developing and evaluating a diagnostic prediction model, which is TRIPOD+AI's exact scope. Entry 69 named TRIPOD+AI and deposited the checklist. **Entry 70 is in most respects the more rigorous study and is held to the less relevant standard.** That mismatch — between checklist adherence and actual methodological care — is precisely what the deferred BMJ reporting-completeness review (PMID 42869550) quantifies, and it found mean TRIPOD-LLM completeness of 40%. The two entries together are the argument for reading methods rather than counting checklists.
+
+**Extraction note.** No funding, competing-interests or data-availability statement appeared anywhere in the retrieved PMC text. JMIR requires all three, so this is almost certainly an **extraction gap rather than an omission by the authors** — recorded here so the distinction is not lost later.
+
+**Plan set on 2026-11-07.** Next run takes shelf spare (4), **NOTIFY-DISCUSS** (PMID 42965008): patient and clinician perceptions of an AI screening tool **actually deployed in clinical use**. It will be the **first qualitative study in this list**, and after seventy quantitative entries that is a deliberate change of instrument — the natural place to teach what qualitative evidence can and cannot establish, how saturation and thematic analysis work, why reflexivity and an audit trail are the qualitative analogues of preregistration and a seed, and above all why **"n=20" means something entirely different in a qualitative design than it did in today's interstate comparisons**. **The BMJ review reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
