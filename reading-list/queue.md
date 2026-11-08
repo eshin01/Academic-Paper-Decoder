@@ -3475,7 +3475,7 @@ testing**, medication sensitivity analyses. BP vs HC AUC **0.916** — but the i
 failures the authors report: DS vs ES 0.760 (p=.03), **MS/MX vs ES 0.601 (p=.20)**, **DS vs MS/MX 0.569
 (p=.30)**. An extreme multiplicity case (6,373 features on 160 people) — direct extension of #158.
 
-**(4) NOTIFY-DISCUSS: patient and clinician perceptions of a DEPLOYED AI screening tool** — PMID
+**(4) [x] DECODED 2026-11-08 — NOTIFY-DISCUSS: patient and clinician perceptions of a DEPLOYED AI screening tool** — PMID
 42965008, PMC13720997, *Am Heart J Plus* 2026;72:100989, Keamy-Minor E et al. (Stanford). Semi-structured
 interviews and focus groups, **11 patients and 9 clinicians**, thematic analysis in NVivo. Themes include
 consent to AI use, data rights and security, the time burden of contextualising incidental findings,
@@ -3943,3 +3943,83 @@ So two resamples agree on about **109 of 168** features and each picks ~59 the o
 **Extraction note.** No funding, competing-interests or data-availability statement appeared anywhere in the retrieved PMC text. JMIR requires all three, so this is almost certainly an **extraction gap rather than an omission by the authors** — recorded here so the distinction is not lost later.
 
 **Plan set on 2026-11-07.** Next run takes shelf spare (4), **NOTIFY-DISCUSS** (PMID 42965008): patient and clinician perceptions of an AI screening tool **actually deployed in clinical use**. It will be the **first qualitative study in this list**, and after seventy quantitative entries that is a deliberate change of instrument — the natural place to teach what qualitative evidence can and cannot establish, how saturation and thematic analysis work, why reflexivity and an audit trail are the qualitative analogues of preregistration and a seed, and above all why **"n=20" means something entirely different in a qualitative design than it did in today's interstate comparisons**. **The BMJ review reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
+
+## From entry 71 — Keamy-Minor et al., NOTIFY-DISCUSS (Am Heart J Plus, 2026; decoded 2026-11-08, FULL TEXT)
+
+**The first qualitative study in this list**, after seventy quantitative entries, and about an AI tool **already in clinical use**. None of the AUC, calibration, power or permutation machinery applies. **Techniques 214-216 are the load-bearing ones and together they are how to read qualitative evidence at all.**
+
+**214. What qualitative evidence can and cannot establish: the existence proof.**
+
+The instinct trained by seventy quantitative papers is "twenty people — what can that show?" The answer is a different kind of thing, unobtainable any other way.
+
+Quantitative work answers **how often** and **how much**, and needs a sample whose proportion resembles the population's. Qualitative work answers **what is going on, in whose words, and what did nobody anticipate**, and needs a sample deep enough that people say things they had not planned to say.
+
+**So the logical form of a qualitative finding is EXISTENCE, not frequency.** Entry 71's most valuable finding is that patients raised **discrimination in health insurance, employment and admission to assisted living** on the basis of an incidental finding. That claim needs no denominator. **One person is enough to establish that a harm pathway is real**, and a system deploying the tool must now decide deliberately what goes into the chart and who can see it — whether it was 1 patient in 11 or 11 in 11.
+
+**The analogy.** To know whether a bridge is safe: a survey of a thousand drivers' confidence tells you about confidence; **one engineer finding one cracked weld tells you the bridge has a cracked weld**, and no amount of survey confidence rebuts it. Now flip it — that engineer cannot tell you what **fraction** of welds are cracked. **Two instruments, two questions, each nearly useless for the other's job.**
+
+What entry 71 CAN support: that seven named concerns exist among people with first-hand experience; that patients and clinicians hold **conflicting** preferences about who delivers results; that years of delay produce confusion and distrust; that insurance discrimination occurred to patients unprompted. **Every one is a design requirement and none needs a percentage.**
+
+What it CANNOT support: that most patients approve; that concerns are rare; that either group worries more than the other. **All frequency claims — and the paper makes versions of the first two, in its abstract.**
+
+**Watch out for** a qualitative abstract that reads like a survey (the tell is most/many/some with no counts) — and for the mirror error, which is more common and worse: **dismissing a qualitative finding because the sample is small.** If a finding's form is existence, sample size is nearly irrelevant to its validity.
+
+**215. Counting in qualitative research, and CQR's general/typical/variant convention.**
+
+The tension: qualitative work is not about frequencies, yet readers need to know whether a theme came from nine people or one, because that changes what you do. Both instincts are right, and the traditions have an answer.
+
+**Consensual Qualitative Research — which entry 71 names in its own Methods — resolves it with counted frequency labels.** As conventionally formulated, each theme is tagged by case count:
+
+    general  = all cases, or all but one
+    typical  = more than half
+    variant  = two or three cases, up to half
+
+Applied to entry 71's 20 participants that machinery yields something precise:
+
+    general (patients)    = 10-11 of 11      typical (patients)    = 6-9 of 11
+    general (clinicians)  =  8-9 of  9       typical (clinicians)  = 5-7 of  9
+
+**That is the whole fix and it costs nothing.** "Concern about consent was *variant* among patients (3 of 11)" is actionable; "some patients felt strongly that consent should be obtained" is not, because *some* spans 2 to 10 of 11. Entry 71 says *"For multiple clinicians, their initial response... was exasperation"* — **"multiple" could be 2 or 8, which are different decisions**: one you note, the other you redesign the workflow for before launch.
+
+**The analogy.** Comment cards say "several diners mentioned the room was cold." Two of two hundred, or two of five? **One is noise, one is a broken thermostat, and "several" cannot distinguish them.** Counting doesn't turn comment cards into a temperature survey — it tells the manager whether to check the thermostat.
+
+**Watch out for** a paper that names a specific qualitative methodology and then skips its characteristic reporting devices. CQR means consensus coding by multiple judges, an auditor, **and** counted frequency labels. Entry 71 has the auditor, a thinner consensus, and no labels. **A named methodology is a claim about procedure — check whether its machinery actually ran.**
+
+**216. Lead time bias: why a sincere "it saved my life" cannot establish that screening saves lives.**
+
+A patient in entry 71 compared her incidental coronary-calcium finding to the mammogram that caught her early breast cancer; several said versions of *"I wouldn't have known until probably it was too late."* Honest statements that feel like evidence. **They are not, and this is the most important idea in all of screening.**
+
+    Take a disease that will kill a person at age 70, and suppose treatment changes NOTHING.
+      Found by symptoms at 65  -> survival from diagnosis = 5 years
+      Found by screening  at 60  -> survival from diagnosis = 10 years
+    Survival from diagnosis DOUBLED. Age at death did not move by one day.
+
+The extra five years is **lead time**: time spent *knowing about* the disease, not time *gained*. **Every screening programme generates it automatically, whether or not the treatment works** — find things earlier and survival-from-diagnosis always rises, so that number can never evidence that finding earlier helped.
+
+It is worse than neutral: those five years are five years of medication, follow-up scans, insurance questions and the ordinary weight of carrying a diagnosis. **Lead time has a cost even when it has no benefit.**
+
+**The only measure immune to it** is **deaths** compared between a screened and an unscreened group over the **same calendar window** — mortality in a population over a fixed period, not survival from diagnosis. That design cannot be fooled by moving the diagnosis date, because the date of death does not care when you learned.
+
+Entry 71's own limitations name it: "prospective studies linking incidental AI-CAC to mortality outcomes are lacking. Further work is needed to assess whether such programs contribute to lead time bias." **A qualitative paper naming lead time bias in its own limitations is unusual and is the best single quality signal in it.** The honest asymmetry: statins for coronary calcium have a real evidence base, so the inference here is far more plausible than for many screening programmes. **Plausible is not demonstrated.**
+
+**Watch out for** five-year survival, median survival from diagnosis, or "caught early" testimony offered as evidence for any screening programme. **All three move when you shift the diagnosis date and change nothing else. Ask for mortality, over a fixed window, against an unscreened comparison.**
+
+**217. Response rate matters differently in qualitative work — but it still matters.** Entry 71 reached **11/129 patients (8.5%)** and **9/63 clinicians (14.3%)** — **20/192, 10.4%.** For a survey estimating a proportion, 8.5% is fatal. **For a qualitative study the themes survive**, because a concern voiced by one person still exists; **the frequency claims do not**, so the damage lands exactly on the most/many/some sentences. Note the awkward feature the paper identifies correctly: participants "may have had strong opinions to share," and **self-selection on strength of opinion inflates praise and complaint alike** — it does not bias in a direction you can correct for.
+
+**218. Single coder, double coder, and the audit trail.** The strongest designs have **two or more analysts code independently**, compare, report agreement, then reconcile by consensus. Entry 71 describes **one coder (CB) with review by one expert (CBJ)** and no agreement statistic — while listing "multiple team perspectives on transcript coding" among its own CQR principles. A reviewer catches errors but **cannot establish that the coding scheme was reproducible**, because reproducibility means two people reaching it separately. **Ask of any qualitative paper: how many coded, independently or sequentially, and was any agreement figure reported?**
+
+**219. Reflexivity, and the specific question of who builds the codebook.** Reflexivity is the qualitative counterpart of preregistration: the analyst is the instrument, so the analyst's position must be declared. The concrete version is **who defined the categories.** Entry 71's codebook was built "in conversation with the project leadership and implementation team (FR, RD)" — **authors of the NOTIFY-1 intervention being evaluated**, FR being this paper's senior author. **The rule: when the people who built a thing help define the categories through which reactions to it are read, the categories are not independent of the thing.** The mitigation is not to exclude them (they hold the context) but to state it as a limitation and describe the guard. Entry 71 states it in the Methods — to its credit — and **does not list it among the limitations.**
+
+**220. COREQ and SRQR exist, and their absence is informative.** COREQ is a **32-item** checklist for interview and focus-group studies (research team and reflexivity; study design; analysis and reporting); SRQR is the broader alternative. **Entry 71 names neither.** A named checklist is not a quality signal — see the sequence note below — **but an unnamed one tells you to check the items yourself**, and here the open items are exactly coder count, agreement, saturation, participant characteristics and reflexivity.
+
+**221. Outcome-dependent recall.** Entry 71: patients who received a new statin prescription "appeared to have particularly positive views." **Evaluations collected after an action, from people who took it, are conditioned on having taken it** — via commitment to the decision, the reasons constructed to justify it, and simply having had a better experience. The fix is **deliberate sampling across outcomes**: people who declined the statin, never opened the portal message, or were annoyed. **Inviting everyone and getting the responders is not sampling across outcomes**, which is why the positivity here is uninterpretable as approval.
+
+**222. An existence proof needs no denominator — and the corollary for harms.** Technique 214 gives the form; the corollary deserves its own number. **For a potential harm, the existence proof is usually enough to act on.** One patient in eleven raising insurance discrimination settles that chart contents and access must be designed deliberately; you do not need the prevalence first. **Prevalence governs how much to spend on a fix. Existence governs whether to think about it at all.** Most harms in deployed systems are found by someone saying something nobody thought to ask about.
+
+**223. Separate a behavioural outcome from a perceptual one — they can move in opposite directions.** Entry 71's notification delay (scans a median of >2 years old) **damaged the experience badly** — confusion, distrust of the old result, a requested repeat scan, clinician liability worry — and, per the pooled analysis of NOTIFY-1 and NOTIFY-PICTURE that the paper cites, **cost nothing in effect size**: timely and delayed notification raised statin prescribing equally. **Both true, and a health system must attend to both**, because an intervention that works while eroding trust is spending down an asset absent from its outcome measure. **Whenever a paper says something "worked," ask what it cost in the experience of the people it worked on** — and note you generally need a qualitative study to find out.
+
+**Reporting-guideline sequence note — three consecutive entries, and the lesson.** Entry 69 (2026-11-06) named **TRIPOD+AI** and deposited the completed checklist. Entry 70 (2026-11-07) named **STROBE** and deposited it, while being arguably the most methodologically careful paper in this list. Entry 71 (today) names **no qualitative reporting guideline at all.** **Three levels of checklist adherence across three days, with the methodological care running in close to the opposite order.** That is precisely the gap the deferred BMJ review (PMID 42869550, mean TRIPOD-LLM completeness **40%**) quantifies — and these three entries are the worked argument both for having that number and for refusing to read it as a quality ranking. **Read the methods, not the checklist name.**
+
+**Disclosure note, and a closed loop.** Entry 71 declares using **OpenEvidence** for aspects of its literature review and **Claude Sonnet 3.5** (enterprise, with data protections) for proofreading and structural suggestions. **OpenEvidence was entry 68 in this list, decoded three days earlier** — the study of 271 million clinician queries. So a paper on clinicians' and patients' experience of a clinical AI tool was written with the help of two clinical AI tools, and says so. Properly declared; also a marker of how fast this became ordinary. Separately, the senior author's COI spans **Novartis, Esperion, Amgen and Arrowhead** (lipid-lowering therapies — and the intervention increases statin prescribing) plus **HeartFlow and Cleerly Health** (coronary-imaging AI — the intervention's own product category). Fully disclosed, directly germane, worth the reader's attention.
+
+**Plan set on 2026-11-08, with the shelf reordered.** A new landmark candidate was assessed and **shelved rather than decoded**: the *Nature Medicine* **gait foundation model** (PMID 42995231, Gabet A et al., Weizmann; 3,328 adults, 3D skeletal motion from a single depth camera, learned embeddings beating engineered gait features for age r=0.69, BMI r=0.91, visceral fat r=0.83, and **1,887 of 3,210 tested phenotypes called significant**). It is biomarker discovery with no clinical decision or deployment, so it did not displace today's first-qualitative-study pick — but **it goes to the front of the shelf**, because 3,210 tests with 1,887 significant is **the largest multiplicity problem this list will have faced**, and the natural extension of techniques 205 (permutation correction for correlated tests) and 186 (precision versus validity at large n). **The first question to ask of it: what false-discovery-rate procedure ran across 3,210 tests, and how many of the 1,887 would chance alone have produced?** **Next run takes the gait paper** if a full text is reachable; otherwise spare (5), the precision-psychiatry framework review. **The BMJ review reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
