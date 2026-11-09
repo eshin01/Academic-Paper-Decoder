@@ -3482,7 +3482,7 @@ consent to AI use, data rights and security, the time burden of contextualising 
 potential for unintended harm. **This list has never decoded a qualitative study**, and this one is about
 a tool already in clinical use.
 
-**(5) AI-driven biomarker discovery for precision psychiatry (review)** — PMID 42947584, PMC13720497,
+**(5) [x] DECODED 2026-11-09 — AI-driven biomarker discovery for precision psychiatry (review)** — PMID 42947584, PMC13720497,
 *Clin Psychopharmacol Neurosci* 2026;24(4):675–691, Serretti A. Proposes a **six-stage framework** linking
 intended use, measurement validity, model evaluation, comparative utility and monitored deployment. Two
 sharp reusable observations: "discrimination is supported more strongly in development data than in
@@ -4023,3 +4023,89 @@ Entry 71's own limitations name it: "prospective studies linking incidental AI-C
 **Disclosure note, and a closed loop.** Entry 71 declares using **OpenEvidence** for aspects of its literature review and **Claude Sonnet 3.5** (enterprise, with data protections) for proofreading and structural suggestions. **OpenEvidence was entry 68 in this list, decoded three days earlier** — the study of 271 million clinician queries. So a paper on clinicians' and patients' experience of a clinical AI tool was written with the help of two clinical AI tools, and says so. Properly declared; also a marker of how fast this became ordinary. Separately, the senior author's COI spans **Novartis, Esperion, Amgen and Arrowhead** (lipid-lowering therapies — and the intervention increases statin prescribing) plus **HeartFlow and Cleerly Health** (coronary-imaging AI — the intervention's own product category). Fully disclosed, directly germane, worth the reader's attention.
 
 **Plan set on 2026-11-08, with the shelf reordered.** A new landmark candidate was assessed and **shelved rather than decoded**: the *Nature Medicine* **gait foundation model** (PMID 42995231, Gabet A et al., Weizmann; 3,328 adults, 3D skeletal motion from a single depth camera, learned embeddings beating engineered gait features for age r=0.69, BMI r=0.91, visceral fat r=0.83, and **1,887 of 3,210 tested phenotypes called significant**). It is biomarker discovery with no clinical decision or deployment, so it did not displace today's first-qualitative-study pick — but **it goes to the front of the shelf**, because 3,210 tests with 1,887 significant is **the largest multiplicity problem this list will have faced**, and the natural extension of techniques 205 (permutation correction for correlated tests) and 186 (precision versus validity at large n). **The first question to ask of it: what false-discovery-rate procedure ran across 3,210 tests, and how many of the 1,887 would chance alone have produced?** **Next run takes the gait paper** if a full text is reachable; otherwise spare (5), the precision-psychiatry framework review. **The BMJ review reaches day 21 on 2026-11-12: decode abstract-only then if its PMC body is still absent.** Nature 42907512 and Annals 42896192 stay on weekly re-checks, next 2026-11-12, with 42896192's abstract-only date at 2026-11-19.
+
+## From entry 72 — Serretti, AI-driven biomarker discovery for precision psychiatry (Clin Psychopharmacol Neurosci, 2026; decoded 2026-11-09, FULL TEXT)
+
+**The first narrative review decoded here, and the paper closest to this list's own purpose.** Its thesis in one line: *"Producing candidates is becoming cheap while qualifying them is not."* **Technique 224 is a piece of arithmetic worth memorising**, and 225-226 are the two failure modes that account for most overclaiming in clinical prediction.
+
+**224. Converting explained variance to AUC — and using it as an optimism detector.**
+
+Entry 72 supplies a calibration figure it does not fully exploit: **reproducible treatment-response prediction in independent data typically explains about 5 to 15% of outcome variance**, and more than that in development data *"usually reflects optimism."* To use it you need to translate between variance and the AUCs papers actually report:
+
+    r = sqrt(R^2)        d = 2r / sqrt(1 - r^2)        AUC = Phi(d / sqrt(2))
+
+Forwards:
+
+    R^2 =  5%  ->  AUC 0.627        R^2 = 20%  ->  AUC 0.760
+    R^2 = 10%  ->  AUC 0.681        R^2 = 30%  ->  AUC 0.823
+    R^2 = 15%  ->  AUC 0.724        R^2 = 40%  ->  AUC 0.876
+
+**So the review's "reproducible" band is roughly AUC 0.63 to 0.73.** Backwards, on entry 72's own treatment-response numbers:
+
+    AUC 0.650  antidepressant selection      -> R^2 ~  6.9%   INSIDE the band
+    AUC 0.850  EEG treatment response pooled -> R^2 ~ 34.9%   (review says it overstates - agrees)
+    AUC 0.851  schizophrenia multimodal EXT  -> R^2 ~ 35.1%   (review cites approvingly - UNRECONCILED)
+    AUC 0.874  same, discovery               -> R^2 ~ 39.6%
+    AUC 0.942  metabolic subtype-specific    -> R^2 ~ 55.3%
+
+**That last line is the technique's whole value.** An AUC of 0.94 for a psychiatric outcome claims to explain **over half the variance** in who gets better — implausible on its face, and you reached that judgement from the reported number alone without reading the methods.
+
+**The analogy.** Someone claims AUC 0.95 predicting height from shoe size: shoe size and height correlate at maybe r = 0.7, about 50% of variance, so it is in the right neighbourhood and you believe it. Now someone claims AUC 0.95 for which of two antidepressants will work better. **That implies a correlation with outcome stronger than shoe size with height, for a decision expert psychiatrists make barely better than chance.** The number is the claim, and the claim is extraordinary.
+
+**Watch out for two things.** The conversion **assumes roughly normal, equal-variance distributions**, so it is a smell test, not an estimator. And **the 5-15% band is specifically for TREATMENT-RESPONSE prediction** — diagnosis against healthy controls can legitimately go much higher. **Always ask: variance in what?** Applying a treatment-response benchmark to a diagnostic AUC is the exact mistake technique 225 is about.
+
+**225. The two substitutions, and what they cost in positive predictive value.**
+
+Entry 72's central methodological finding: reported metrics routinely answer an easier question than the clinical one, in two specific ways.
+
+**Substitution one: diagnosis for DIFFERENTIAL diagnosis.** The example, with a number attached. A schizophrenia classifier kept external **sensitivity 0.75** while **misclassifying 59% of bipolar and 55% of depression cases** — so against the conditions that actually present, its specificity is **0.41** and **0.45**, barely better than a coin.
+
+    Illustrative clinic mix (MY assumption): 20% schizophrenia, 20% bipolar, 40% depression, 20% other
+      true positives                    = 0.20 x 0.75 = 0.1500
+      false positives from bipolar      = 0.20 x 0.59 = 0.1180
+      false positives from depression   = 0.40 x 0.55 = 0.2200
+      false positives from other (0.20) = 0.20 x 0.20 = 0.0400
+      PPV = 0.1500 / 0.5280 = 28.4%   -> about 7 in 10 positive calls wrong
+
+    Same sensitivity vs HEALTHY controls, specificity 0.85, same 20% prevalence:
+      PPV = 55.6%
+
+**The substitution roughly halves the positive predictive value.** The headline was measured on the easy comparison; the clinic supplies the hard one.
+
+**Substitution two: prognosis for DIFFERENTIAL TREATMENT BENEFIT.** *"General outcome prediction identifies who is likely to improve. Treatment selection requires an estimate of how outcomes differ between options for the same patient."* Of **19** comparative antidepressant studies, only **7 (37%)** used external evaluation and **only 1 (5%)** directly ranked treatments.
+
+**The analogy.** You want to know which of two routes to work is faster for you. A model predicting "you will arrive on time today" is a *prognosis* — mostly reading the weather and the hour. It can be highly accurate and tell you nothing about which route to take. **For that you need the difference between two predictions for the same person on the same day**, and accuracy on the first question never delivers the second.
+
+**Watch out for** any AUC whose comparison group is healthy controls when the clinical decision involves distinguishing two diseases. **Ask what the model was asked to separate, and whether that is what you need separated.** Usually one line of the methods; rarely the abstract.
+
+**226. Nonspecific prediction: a marker built without a control arm predicts recovery, not benefit.**
+
+The structural version of 225, with the cleanest example the literature offers. **Anterior cingulate theta activity**, described in entry 72 as **among the most replicated** markers in psychiatry, predicts response to antidepressants — **and to rTMS, and to ECT, and to placebo.**
+
+A marker predicting improvement under *everything, placebo included*, measures **a property of the patient's prognosis**, not of the match between patient and treatment. Useful for enriching a trial; useless for choosing a drug.
+
+**And entry 72 names why this keeps happening:** *"Most treatment-response markers in psychiatry were defined in open-label single-arm data and never tested against a control arm, so their specificity to a treatment is unknown."* **If everyone in your development set got drug A, a marker correlating with improvement cannot be distinguished from a marker correlating with improving anyway. The design makes them indistinguishable — no sample size or model fixes it.**
+
+**The analogy.** Students who sit at the front get better grades, so front-row seating helps? You only ever observed one class. You cannot tell whether the seat helps or whether the kind of student who sits at the front would have done better anywhere. **To find out you have to assign seats.** That is what a control arm is.
+
+**Watch out for** the phrase "treatment-response biomarker" on a marker developed in single-arm or open-label data. **The term asserts a specificity the design could not have tested.**
+
+**227. PPV and alert burden at a realistic base rate.** Entry 72's best example: a wearable study, **144 people over 90,281 person-days**, week-ahead depressive-episode AUC **0.772 (0.75-0.794)**, base rate **5.3%**, PPV **16.7%**, burden **20 alerts per 100 patient-days.** I verified all three are mutually consistent — solving PPV for the false-positive rate, `(1-spec) = sens * prev(1-PPV) / (PPV(1-prev))`, gives **20.6 alerts per 100 patient-days at sensitivity 0.65 and specificity 0.82**, reproducing the reported figure. **PPV 16.7% is one in six: five of every six alerts are false.** A 100-patient service absorbs ~20 alerts a day to catch about **3** real events. **An AUC in the high 0.7s sounds deployable; this is what it looks like in a clinic.** Always convert to alerts-per-day and true-alerts-per-day. Note entry 72 also catches the denominator trap: **144 people, not 90,281** — *"the repeated person-days do not constitute independent participants."*
+
+**228. Predictive versus prognostic markers, and why you need marker-negative participants.** A **prognostic** marker says what will happen; a **predictive** marker says what will happen *differently* under treatment A versus B. Entry 72 grounds this in the **2019 FDA enrichment guidance** and draws the consequence exactly: **a trial conducted only in marker-positive participants can establish efficacy in that group but cannot show the marker is predictive rather than prognostic.** The reason is that evidence for prediction is an **interaction** between marker status and treatment, **and you cannot estimate an interaction from one level of a factor.** Entry 72's ANK3/liafensine example is the failure: placebo-controlled efficacy shown in carriers, **no result reported in non-carriers.** Technique 226 is the mechanism; this is the design consequence.
+
+**229. Standalone model performance versus the model-user pair.** Entry 72's most striking relayed finding, from a preregistered randomised study: **1,298 members of the public, language models alone identified the relevant condition in 94.9% of general medical scenarios, and assisted participants did no better than controls.** **A 94.9% standalone score produced zero measured benefit once a human was in the loop.** Entry 72's conclusion is right: *"performance must be evaluated in the intended model-user pair."* Same lesson as technique 194 in a different register: **what you deploy is not a model, it is a model plus a person plus a workflow, and the only valid test is of the whole assembly.** Caveat entry 72 states itself — the public rather than clinicians, general medical rather than psychiatric scenarios. Indirect, and still the most actionable number in the paper.
+
+**230. The six stages as a two-minute reading checklist.** **(1)** Which decision, which population, which comparator? **(2)** Is the measurement reliable, and does the label represent the clinical state? **(3)** Was the whole pipeline evaluated internally **against a simple baseline**? **(4)** Was a **locked** model tested under a shift in site, time, device or population? **(5)** Has **prospective** testing shown model-guided use improves decisions or outcomes? **(6)** Is deployment monitored for drift and subgroup fairness? Entry 72's own shortcut is two questions: **what was the model compared against, and does the reported metric answer the clinical question** — which catch most weak studies. One caution it supplies: *"development may return to earlier stages when the population, assay or model changes."* **A stage is a property of a claim, not a permanent rank** — and a single "readiness" number is exactly the kind of summary that gets pulled into a slide and compared across rows.
+
+**231. Reporting standards, appraisal instruments and early-evaluation standards do three different jobs.** Entry 72 gets this right where almost nothing does. **TRIPOD+AI** says how a prediction-model study should be *reported* and *"does not prescribe model development or establish low risk of bias."* **PROBAST+AI** *assesses* quality, risk of bias and applicability. **DECIDE-AI** covers reporting of early-stage *live clinical* evaluation. **So a paper can follow TRIPOD+AI perfectly and still be a bad study**, because *"complete reporting enables appraisal, but does not by itself establish validity or utility."* Entries 69, 70 and 71 demonstrated precisely that across three consecutive days, with checklist adherence running counter to methodological care. **Never read a named checklist as a quality signal** — and note entry 72 is the first paper here to state the principle outright rather than illustrate it accidentally.
+
+**232. Overall discrimination conceals subgroup error rates.** Entry 72's example: aggression prediction in acute psychiatric care, **17,703 patients over 42,719 observation-days**, overall AUC **0.81**, while **error rates differed by race or ethnicity, gender, admission mode, citizenship and housing.** An AUC is an average over everyone, and averages hide where errors concentrate. **In a model whose false positives trigger restriction or restraint, which group absorbs the false positives is the whole ethical question.** Demand subgroup performance, subgroup calibration, and what a false decision costs in each group — the same demand technique 202 made of entry 69.
+
+**233. A narrative review that refuses to report frequencies is stronger for refusing.** Entry 72, verbatim: *"It compares method families and evaluation designs across studies too heterogeneous to pool, so it reports no field-wide frequencies and none should be inferred from the examples cited."* The standard failure of a selective review is letting a handful of examples imply a rate across a field. **By declining, it keeps its claims inside what its method can carry**, and what remains is a set of existence proofs about failure modes plus a framework for organising them — the correct product of a narrative review. **Contrast entry 71 the previous day, which made frequency claims from a 10.4% response rate.** Two consecutive entries, opposite discipline, same underlying constraint. **When a narrative review does quote a percentage of the literature, check whether its search was systematic enough to produce one.**
+
+**What caps entry 72 at 4/5, recorded so the grade stays auditable.** **Single author** — no second screener, no inter-rater reliability for study selection, and the six-stage assignments are self-described *"qualitative author judgements."* The instruments it correctly praises (TRIPOD+AI, PROBAST+AI, DECIDE-AI) were built by multi-disciplinary consensus panels precisely because appraisal criteria built by one mind inherit that mind's blind spots. **The framework is also unvalidated in the sense that matters for an instrument**: nobody has shown two readers applying it agree, or that a stage assignment predicts anything. **Fifty-three purposively selected records**, enriched by prespecified criteria for *"large, multicentre, longitudinal, randomised or externally evaluated studies"* — so its central finding (frequent internal evaluation, fewer independent tests, little prospective evidence) is if anything **an optimistic picture of the field**. And **every table is unreachable, including the full six-stage specification**, so the review's central deliverable was graded from its prose.
+
+**One more number worth keeping.** Entry 72's largest cited study: a trans-ancestry depression meta-analysis of **688,808 cases and 4,364,225 controls across 29 countries**, finding **697 associations at 635 loci**, with polygenic scores explaining **at most 5.8% of liability** — which technique 224 converts to **AUC ~0.637**. **Five million participants and 635 real loci produce a predictor barely better than a weighted coin. Sample size bought discovery; it did not buy a clinical test.** Those are different wins, and the distinction should govern where the next grant goes.
+
+**Plan set on 2026-11-09.** **The gait foundation model (PMID 42995231) could not be retrieved** — converting the PMID returns **no PMC identifier**, and Scite returned its paid-plan error — so it **joins the deferred list at day 1 with an abstract-only date of 2026-11-30**, rather than being decoded abstract-only three days after publication. It remains the highest-value outstanding item (**1,887 of 3,210 phenotypes called significant**), and today's technique 224 sharpens the first question for it: its **r = 0.91 for BMI** implies ~83% of variance, which is plausible for a learned embedding predicting a physical measurement, so **the scrutiny belongs on its clinical-diagnosis and medication-use predictions**, not its anthropometrics. **Shelf is down to one spare** — (6) explainable-AI review of 70 prostate and bladder cancer studies (PMID 42960345). **Next run: restock the shelf first** with a `pubmed pmc[sb]` date-window search (six-for-six on 2026-10-28 and again on 2026-11-03), then decode. **The BMJ review (PMID 42869550) hits day 21 on 2026-11-12 and takes priority that day** under the standing rule if its PMC body is still empty.
