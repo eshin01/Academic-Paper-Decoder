@@ -4190,7 +4190,7 @@ Entry 73's own example is uncomfortable and exact. Across bladder registry model
 
 The shelf emptied with entry 73, and was restocked using the `pubmed pmc[sb]` date-window method (six-for-six on 2026-10-28 and again on 2026-11-03). Search: AI/ML/DL/LLM in the title AND validation/external/prospective/multicenter/calibration in title/abstract, PMC-indexed, entered 2026-11-01 to 2026-11-10. **189 records returned; 10 screened; 6 kept.** Rejected as outside clinical medicine: a tea-metabolite study (42997676), a livestock-genetics review (42998995), a remote-sensing parasite-risk model (42999529). **All six below have confirmed PMC IDs.**
 
-**(A) Late prostate radiotherapy toxicity, REQUITE cohort** — PMID 42999685, PMC13744349, *Clin Transl Radiat Oncol* 2026;62:101305, Jordan K et al. **229 men.** **The most valuable item here, because it is a near-null study reported properly.** GI toxicity AUCs **0.573 / 0.571 / 0.587** (L1, Elastic Net, XGBoost) with permutation p = **0.036 / 0.047 / 0.022** — *statistically significant discrimination that is clinically almost worthless*, the cleanest possible teaching case for **significant is not useful**. And **GU discrimination was BELOW chance with no evidence beyond the null distribution.** Repeated nested stratified cross-validation, bootstrap CIs, outcome-label permutation testing, SHAP stability across repeats, rectal EUD the most consistent GI predictor. **This list has almost no honestly reported negative studies. NEXT RUN TAKES THIS ONE.**
+**(A) [x] DECODED 2026-11-11 — Late prostate radiotherapy toxicity, REQUITE cohort** — PMID 42999685, PMC13744349, *Clin Transl Radiat Oncol* 2026;62:101305, Jordan K et al. **229 men.** **The most valuable item here, because it is a near-null study reported properly.** GI toxicity AUCs **0.573 / 0.571 / 0.587** (L1, Elastic Net, XGBoost) with permutation p = **0.036 / 0.047 / 0.022** — *statistically significant discrimination that is clinically almost worthless*, the cleanest possible teaching case for **significant is not useful**. And **GU discrimination was BELOW chance with no evidence beyond the null distribution.** Repeated nested stratified cross-validation, bootstrap CIs, outcome-label permutation testing, SHAP stability across repeats, rectal EUD the most consistent GI predictor. **This list has almost no honestly reported negative studies. NEXT RUN TAKES THIS ONE.**
 
 **(B) Bone tumour multimodal imaging + AI** — PMID 42997475, PMC13742044, *J Bone Oncol* 2026;61:100808, Liu X & Liu L. A review advancing **one argument**: the binding constraint is **the stability of the reference standard, not algorithmic capability** — with numbers. Biopsy-vs-resection grade agreement in central chondrosarcoma falls from **weighted kappa 0.63 in long bones to 0.12 in the pelvis**; interobserver kappa for grading cartilaginous tumours **0.44 among MSK pathologists, 0.35 among radiologists**; molecular reclassification means older datasets "contain classes that no longer exist as defined"; histology does not reliably predict behaviour. **And the inference that inverts technique 194: "apparent failure on external validation may reflect label divergence between institutions rather than model deficiency."** Genuinely new territory for this list.
 
@@ -4205,3 +4205,93 @@ The shelf emptied with entry 73, and was restocked using the `pubmed pmc[sb]` da
 **Also noted, not shelved.** **"Mass Surveillance with Artificial Intelligence — A New Determinant of Health?"** — PMID 43001754, *NEJM*, 7 November 2026, Peoples N, Hoops K, Fleegler EW. A Perspective with no abstract, so not a primary study. Recorded because it is adjacent to **entry 71's** finding that patients spontaneously raised **insurance eligibility, employment and assisted-living admission** as harms of an incidental AI finding. **If a primary study on surveillance-derived health data appears, it goes straight to the shelf.**
 
 **Deferred status, 2026-11-10.** Gait foundation model (42995231) **day 2**, no PMC copy, abstract-only date **2026-11-30**. Nature personal health agent (42907512) **day 21**, weekly. **BMJ LLM-trial reporting review (42869550) day 28 — its twenty-one-day threshold fires 2026-11-12, and it takes priority that day** if the PMC body is still empty; today's entry sharpens it again, since entry 73 states that **"standardized XAI reporting guidelines analogous to TRIPOD do not yet exist"** and calls for a checklist extending TRIPOD-AI to cover explainability depth and validation — precisely the gap the BMJ review quantifies at 40% mean TRIPOD-LLM completeness. *Annals* *Choosing Wisely* (42896192) **day 21**, weekly, abstract-only date 2026-11-19.
+
+## From entry 74 — Jordan et al., late prostate radiotherapy toxicity, REQUITE (Clin Transl Radiat Oncol, 2026; decoded 2026-11-11, FULL TEXT)
+
+**A study that found essentially nothing, and one of the best papers in this list.** 4/5 — the first 4 awarded to a near-null result. Execution at 5 level; a design ceiling (n=229 complete-case, internal validation only, no calibration) holds the grade. **Techniques 244-246 are the load-bearing ones, and 249 is the answer to entry 73.**
+
+**244. A statistically significant AUC can be clinically worthless — convert it before believing it.**
+
+Entry 74's GI models were **significantly** above chance (permutation p = 0.036, 0.047, 0.022). Stop at the p-value and you conclude the model works. **Convert instead, in three steps.**
+
+**Step one, what AUC means.** The probability the model scores a random future-toxicity patient above a random non-toxicity patient. Coin = 0.5. **Best model here = 0.587**, i.e. right 58.7% of the time instead of 50%.
+
+**Step two, the only terms that matter.** At the cohort's 46.7% GI prevalence, taking the best corner of the reported ranges (sens 0.658, spec 0.518):
+
+    PPV = (0.658 x 0.467) / (0.658 x 0.467 + 0.482 x 0.533) = 0.3073 / 0.5642 = 54.5%
+    NPV = (0.518 x 0.533) / (0.518 x 0.533 + 0.342 x 0.467) = 0.2761 / 0.4358 = 63.3%
+
+**A positive result takes a man from a 47% chance to 55%. A negative takes him from 53% to 63%** (i.e. 37% chance of toxicity instead of 53%). **Nothing you would do changes at either number.** Note too: specificity ~0.50 means the model **flags half the men who will never develop toxicity.**
+
+**Step three, the sanity check.** Technique 224: **AUC 0.587 is about 2.4% of the variance.** The other 97.6% is elsewhere.
+
+**The analogy.** A weather service announces it can now predict rain 58.7% of the time instead of 50%. Real, measurable, published. **You take the umbrella exactly as often as before**, because no decision turns on 47% versus 55%. **Significance says the effect exists; magnitude says whether to care.**
+
+**Watch out for** a paper reporting a p-value for discrimination and no PPV. **Always convert an AUC to pre-test-to-post-test movement at the actual prevalence before deciding a model is useful.**
+
+**245. A below-chance AUC: noise, or a signal with the wrong sign? The two-sided permutation test tells you.**
+
+Entry 74's three GU models came in **below 0.5** (0.465, 0.455, 0.466). Two genuinely different explanations, and distinguishing them matters:
+
+**(a) Sampling noise.** If the truth is exactly 0.5, roughly half your estimates land below it. Nothing wrong, nothing there.
+**(b) A real inverted relationship.** The model found genuine signal with the wrong sign. **That would be a POSITIVE finding** — flip it and use it.
+
+One-sided tests answer only "is it above chance?", so entry 74 added **two-sided** tests "to determine whether performance differed from chance in either direction and to assess whether the observed inverse discrimination was greater than expected from sampling variation alone." Result: **p = 0.150-0.412.** Explanation (a).
+
+**Verify it yourself.** Under the null, an AUC's sampling SD is approximately
+
+    SE = sqrt((n1 + n2 + 1) / (12 * n1 * n2))          [Hanley-McNeil]
+
+With 126 GU events and 103 non-events that is **0.0384**, so the observed 0.455 sits **1.17 SD** below 0.5, two-sided p ~ **0.24** — inside the reported range. **The arithmetic agrees: ordinary fluctuation.**
+
+**The analogy.** 8 heads in 20 flips — biased toward tails? Maybe, or maybe that is what fair coins do one time in four. **You cannot tell from the direction; you have to ask how far a fair coin wanders.**
+
+**Watch out for** a below-chance AUC reported with no two-sided test — and the opposite error, treating one as an inverted predictor without testing whether the inversion exceeds noise.
+
+**246. Permutation testing that re-runs the ENTIRE pipeline, hyperparameter search included.**
+
+**The shortcut:** permute labels, refit your already-tuned model, record the AUC, repeat. Fast, and **wrong in a known direction.**
+
+**Why wrong.** Your reported AUC is not one model's output — it is **a procedure's** output: a grid search, an inner-CV selection, then evaluation. That search is itself a source of optimism. **A null built without the search is too narrow**, because it omits the very variance your real estimate contains. Narrow null, inflated significance.
+
+Entry 74 ran **1,000** permutations in which "the complete repeated nested cross-validation pipeline was then repeated, **including inner-loop hyperparameter optimisation**, model fitting and generation of OOF predictions."
+
+**And here is the verification.** Against the asymptotic null SE of 0.0383 (which assumes a single fixed model):
+
+    L1           AUC 0.573 -> 1.91 SD -> asymptotic p 0.028  | reported 0.036
+    Elastic Net  AUC 0.571 -> 1.85 SD -> asymptotic p 0.032  | reported 0.047
+    XGBoost      AUC 0.587 -> 2.27 SD -> asymptotic p 0.012  | reported 0.022
+
+**Every reported p is LARGER than the formula predicts — precisely the signature of a null correctly widened by model-selection variance.** Had they come in *smaller* than asymptotic, I would suspect the shortcut. **This is positive evidence of honest implementation**, and it is a check worth running on any paper that reports permutation p-values.
+
+**The analogy.** Does your talent-scouting system beat chance? **Shortcut:** give the scout you already picked random player ratings. **Honest:** give random ratings to the whole process — hiring twelve scouts, auditioning them, picking the best. The second null is wider, because part of your real success was the luck of picking a scout who looked good on the audition data.
+
+**Watch out for** "permutation testing confirmed above-chance performance" with no statement of what was permuted and what was re-run. **Ask: was the hyperparameter search inside the permutation loop?**
+
+**247. Select the operating threshold on training data only.** Entry 74 computed Youden's J from inner-CV predictions on the outer **training** set, fixed it, then applied it to the unseen outer test fold. **Entry 70 selected its Youden point on the pooled out-of-fold predictions it then reported** — tuning the operating point on the numbers used to report performance, which inflates the sensitivity/specificity pair while leaving the AUC untouched. **This is the fix for technique 212.** When a paper reports Youden-optimal sensitivity and specificity, **ask which data chose the threshold.**
+
+**248. Out-of-fold SHAP.** We insist performance be measured on held-out data; **the same applies to explanations.** SHAP computed on training data tells you what the model leaned on *in data it had already seen*, which can be driven by the same overfitting the held-out evaluation exists to detect. Entry 74 calculated SHAP "within each outer validation fold" and retained values **only for patients in the corresponding unseen test fold.** **A feature-importance analysis computed on the full dataset or the training set is the explanation equivalent of reporting training accuracy.** Ask which it was.
+
+**249. A stable, correct, biologically true explanation can sit on a useless model.**
+
+Entry 74's rectal EUD: **ranked FIRST in every one of 25 repeats, across all three models**, with the correct sign, for a mechanism established in radiobiology. **By every available measure that is a perfect explanation.** The model carrying it has an AUC of 0.587 — worth about eight percentage points of PPV.
+
+The paper, verbatim: *"These findings also highlight the distinction between identifying clinically plausible predictors and developing a clinically useful prediction model. Models may repeatedly identify rectal dose or patient and treatment characteristics as influential while providing insufficient discrimination for individual risk stratification and limit clinical utility."*
+
+**Entry 73 the previous day argued that explanation plausibility is not validation. THIS IS THE DEMONSTRATION.** **Explanation quality and model utility are independent dimensions** — a convincing feature-importance plot is not evidence a model discriminates, and a model that discriminates well need not have a tidy explanation. **Check them separately, always.** Cite this entry whenever someone offers a stable SHAP ranking as evidence a model works.
+
+**250. Check reported p-values against the asymptotic null, and check what the study could have detected.** Two cheap moves. The Hanley-McNeil SE (technique 245) tells you whether a reported p is plausible for the sample size, **and in which direction it deviates, which is diagnostic** (technique 246). And minimum detectable effect (technique 204): at these sample sizes, 80% power at one-sided alpha=.05 needs **AUC >= 0.595**. Observed GI = **0.587**, just below — **which is exactly why its p-values are 0.022-0.047 rather than anything smaller.** **The crucial contrast with entry 70:** there, three underpowered nulls risked being miscited as "no effect." **Here the study's own conclusion also says "limited / no useful discrimination" — precisely what a study powered to 0.60 may say on finding 0.587 and 0.465. Claim and power match; no overclaim in either direction.**
+
+**251. Equivalent uniform dose as a principled answer to collinearity.** V50, V60, V70, mean dose and max dose are different summaries of one curve and are heavily inter-correlated; feed them all in and attribution smears arbitrarily (technique 236). Entry 74 collapsed them into **organ-specific EUD** via the Niemierko formulation with literature-derived parameters, "reducing correlation between individual dose-volume histogram parameters while retaining information on the uniform dose distribution." **General lesson: when several predictors are transformations of one underlying measurement, combine them using domain knowledge BEFORE modelling** — rather than leaving regularisation to pick arbitrarily afterwards.
+
+**252. Baseline-corrected endpoints: what they fix and what they cost.** Defining toxicity as a **one-grade increase from each patient's own baseline** stops pre-existing symptoms being counted as treatment harm — the right correction, rarely made. **The cost: the endpoint becomes sensitive to mild change**, giving event rates of **46.7% and 55.0%** here against far lower conventional Grade >=2 rates. **So entry 74's null is about predicting ANY worsening, not the severe toxicity a clinician would change a plan for.** Both are legitimate endpoints and they are different questions; a near-null on the first does not establish a near-null on the second. **Note the flip side, which strengthens the finding:** ~50/50 classes are the EASIEST setting for a classifier — no imbalance penalty, maximum information per patient. Combined with prespecified features and zero missing data, **the study had near-ideal conditions and still found 2.4%.**
+
+**253. Complete-case analysis without a parent denominator.** Entry 74: 229 men "with a complete record" of baseline, treatment, dosimetric and longitudinal toxicity data, drawn from a prospective multicentre cohort **whose size is never stated.** **Zero missing data is a real analytic advantage — no imputation assumptions enter at all — purchased by a selection you cannot inspect.** Complete dosimetry plus four follow-up visits across 48 months plausibly favours better-resourced centres and healthier attenders; direction and magnitude unknown. **The fix is one sentence: how many enrolled, how many analysed, how did they differ?** This is technique 240 arriving in a primary study rather than a review.
+
+**What caps entry 74 at 4/5, recorded so the grade stays auditable.** **n=229 is a complete-case subset with no parent denominator** (technique 253). **Internal validation only**, stated. **No calibration assessed anywhere** — discrimination start to finish, which matters less for a model this weak but is conspicuous given the care taken elsewhere, and is one of the few places a TRIPOD+AI checklist would have changed the paper. **No reporting guideline named.** And a **one-patient abstract/body discrepancy**: the abstract says 125 (54.6%) GU events, the Methods and Results both say 126 (55%); each is internally consistent with its own percentage, so it is a transcription slip that changes no conclusion — reported because checking is the job, and it is the only arithmetic inconsistency in the paper.
+
+**Reporting-guideline pattern, now four entries deep and consistent enough to state as a rule.** Entry 69 named TRIPOD+AI and deposited the checklist. Entry 70 named STROBE while being arguably more careful. Entry 71 named none. Entry 73 named none and called for an explainability checklist that does not yet exist. **Entry 74 names none and does more of what TRIPOD+AI asks than any of them.** **The checklist is not the quality signal — read the methods.** This is exactly what the deferred BMJ review (PMID 42869550, mean TRIPOD-LLM completeness 40%) quantifies, and it reaches day 21 tomorrow.
+
+**Plan set on 2026-11-11.** **Next run takes shelf item (C)**, the diabetic retinopathy model (PMID 42974596, PMC13727297), **because today's entry is the perfect contrast.** Entry 74 reports **AUC 0.587 / ~2.4% of variance** after validating as hard as anything in this list; (C) reports **AUROC 0.972**, which technique 224 converts to roughly **80% of variance**, from **eight routine laboratory values** — and two of those eight are **nephropathy and neuropathy**, the other two microvascular complications of diabetes, routinely coded alongside retinopathy. **Read side by side the pair is the clearest available lesson in what validation rigour does to a reported number**, and the first question for (C) is whether its headline survives "could the label be inside the inputs?" **Shelf after today: five spares — (B) bone-tumour reference-standard review, (C) next, (D) glaucoma OCT with two-device external validation, (E) MIBC pCR with 102 models screened, (F) bitewing mannequin-only.** **Tomorrow, 2026-11-12, the BMJ review hits day 21 and takes priority** under the standing rule if its PMC body is still empty; the three weekly deferred re-checks (Nature 42907512, Annals 42896192) also fall due.
+
+**Landmark note.** The week's one new record was **"Deep learning-based gait analysis predicts multisystem health phenotypes"** (PMID 43003904, *Nature Medicine*, 9 Nov 2026) — **no abstract, no author list, and a DOI one digit from the gait foundation model already deferred** (`...04725-8` vs `...04724-9`), which identifies it as the journal's accompanying commentary rather than a primary study. **Does not displace the queue**, but it shows the journal is featuring the gait paper, strengthening the case for decoding the primary article once reachable.
